@@ -14,41 +14,22 @@
 </script>
 <style>
   :root{
-    color-scheme: light dark;
-    --paper:#F6F1E5;
-    --paper-soft:#EFE8D6;
-    --card:#FFFDF6;
-    --ink:#2B2B26;
-    --ink-soft:rgba(43,43,38,.68);
-    --ink-faint:rgba(43,43,38,.45);
-    --line:rgba(43,43,38,.16);
+    color-scheme: light;
+    --paper:#F3F0E8;
+    --paper-soft:#ECE7D8;
+    --card:#FCFBF4;
+    --ink:#232624;
+    --ink-soft:rgba(35,38,36,.68);
+    --ink-faint:rgba(35,38,36,.45);
+    --line:rgba(35,38,36,.16);
     --petrol:#315F5B;
     --petrol-deep:#22423F;
     --petrol-tint:rgba(49,95,91,.10);
-    --terra:#B5502F;
+    --terra:#B55B46;
     --terra-tint:#F8E9E2;
     --gold:#C08A2D;
-    --shadow:0 2px 0 rgba(43,43,38,.85);
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --paper:#22241F;
-      --paper-soft:#2A2C26;
-      --card:#2E3029;
-      --ink:#EFE9D8;
-      --ink-soft:rgba(239,233,216,.72);
-      --ink-faint:rgba(239,233,216,.48);
-      --line:rgba(239,233,216,.22);
-      --petrol:#7FB3AC;
-      --petrol-deep:#A8CCC5;
-      --petrol-tint:rgba(127,179,172,.14);
-      --terra:#E08A6D;
-      --terra-tint:rgba(224,138,109,.14);
-      --gold:#D9A94F;
-      --shadow:0 2px 0 rgba(0,0,0,.6);
-    }
-  }
-  html{ -webkit-text-size-adjust:100%; }
+    --shadow:0 2px 0 rgba(35,38,36,.85);
+  }  html{ -webkit-text-size-adjust:100%; }
   body{
     margin:0;
     background-color:var(--paper);
@@ -96,16 +77,12 @@
 
   /* ---------- ヒーロー（上限額） ---------- */
   .hero{
-    background:var(--petrol); color:#FBF7EA;
+    background:var(--petrol); color:#F7F4EA;
     border:2px solid var(--petrol-deep);
     border-radius:14px 255px 14px 225px/225px 14px 255px 14px;
     box-shadow:0 3px 0 rgba(34,66,63,.55);
     padding:24px 20px 20px; margin-top:20px; position:relative; overflow:hidden;
-  }
-  @media (prefers-color-scheme: dark){
-    .hero{ background:#2C4A46; border-color:#1E332F; color:#F2EDDD; }
-  }
-  .hero .ring{ position:absolute; border:1.5px solid rgba(251,247,234,.13); border-radius:50%; pointer-events:none; }
+  }  .hero .ring{ position:absolute; border:1.5px solid rgba(251,247,234,.13); border-radius:50%; pointer-events:none; }
   .hero-label{ font-size:12.5px; font-weight:700; letter-spacing:.06em; opacity:.85; margin:0; }
   .hero-amount{ display:flex; align-items:baseline; gap:8px; margin:2px 0 0; flex-wrap:wrap; }
   .hero-amount .num{
@@ -123,10 +100,10 @@
   .diffrow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; margin-top:14px; font-size:12px; }
   .diffbadge{
     display:inline-block; font-weight:700; font-size:12px; padding:2px 10px; border-radius:6px;
-    background:var(--terra); color:#FFF7EF;
+    background:var(--terra); color:#F7F4EA;
   }
-  .diffbadge.flat{ background:rgba(251,247,234,.22); color:#FBF7EA; }
-  .diffbadge.plus{ background:#FBF7EA; color:var(--petrol-deep); }
+  .diffbadge.flat{ background:rgba(251,247,234,.22); color:#F7F4EA; }
+  .diffbadge.plus{ background:#F7F4EA; color:var(--petrol-deep); }
   .diffrow .old{ opacity:.78; }
 
   /* 折りたたみ（共通） */
@@ -139,7 +116,7 @@
   details.fold > summary .chev{ display:inline-block; transition:transform .18s ease; font-size:11px; }
   details.fold[open ] > summary .chev{ transform:rotate(90deg); }
   details.fold .fold-body{ font-size:12.5px; line-height:1.85; }
-  .hero details.fold > summary{ color:#FBF7EA; opacity:.92; }
+  .hero details.fold > summary{ color:#F7F4EA; opacity:.92; }
   .hero .fold-body{ color:rgba(251,247,234,.85); max-width:640px; }
   .hero .fold-body p{ margin:4px 0 8px; }
 
@@ -180,9 +157,8 @@
     color:var(--petrol); background:var(--card); border:2px solid var(--petrol);
     border-radius:225px 12px 255px 12px/12px 255px 12px 225px;
   }
-  .toggle-btn[aria-expanded="true"]{ background:var(--petrol); color:#FBF7EA; }
-  @media (prefers-color-scheme: dark){ .toggle-btn[aria-expanded="true"]{ color:#20302D; } }
-  .detail-panel{ margin-top:14px; background:var(--paper-soft); border:1.5px dashed var(--line); border-radius:12px; padding:14px; }
+  .toggle-btn[aria-expanded="true"]{ background:var(--petrol); color:#F7F4EA; }
+    .detail-panel{ margin-top:14px; background:var(--paper-soft); border:1.5px dashed var(--line); border-radius:12px; padding:14px; }
   .detail-panel h3{ font-family:"Klee One",sans-serif; font-size:14px; margin:0 0 4px; font-weight:600; }
   .dgrid{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:10px; }
   @media (min-width:640px){ .dgrid{ grid-template-columns:1fr 1fr; } }
@@ -227,7 +203,7 @@
     flex:1; font-size:12px; font-weight:700; padding:8px 6px; cursor:pointer;
     background:var(--card); color:var(--ink); border:1.5px solid var(--ink); border-radius:10px 3px 10px 3px;
   }
-  .presets button:hover{ background:var(--petrol); color:#FBF7EA; border-color:var(--petrol); }
+  .presets button:hover{ background:var(--petrol); color:#F7F4EA; border-color:var(--petrol); }
   .steps{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:16px; }
   @media (min-width:640px){ .steps{ grid-template-columns:repeat(3,1fr); } }
   .step{ background:var(--paper-soft); border:1.5px solid var(--line); border-radius:4px 14px 4px 14px; padding:13px 14px; }
@@ -245,19 +221,18 @@
   .decision .dnote{ font-size:12px; opacity:.75; line-height:1.8; margin:10px 0 0; }
   .copy-btn{
     margin-top:14px; width:100%; font-size:13.5px; font-weight:700; cursor:pointer;
-    background:var(--petrol); color:#FBF7EA; border:none; padding:12px 18px;
+    background:var(--petrol); color:#F7F4EA; border:none; padding:12px 18px;
     border-radius:225px 12px 255px 12px/12px 255px 12px 225px;
   }
   @media (min-width:640px){ .copy-btn{ width:auto; } }
-  @media (prefers-color-scheme: dark){ .copy-btn{ color:#20302D; } }
-
+  
   /* ---------- 手続きの窓口（アフィリエイト導線） ---------- */
   .portal .ptext{ font-size:13.5px; line-height:1.85; color:var(--ink-soft); margin:6px 0 0; }
   .portal-btn{
     display:flex; flex-direction:column; gap:1px; text-decoration:none;
     margin-top:14px; padding:13px 16px; color:var(--ink); background:var(--paper-soft);
     border:2px solid var(--ink); border-radius:12px 3px 12px 3px;
-    box-shadow:0 2px 0 rgba(43,43,38,.7); transition:transform .12s ease, background .12s ease;
+    box-shadow:0 2px 0 rgba(35,38,36,.7); transition:transform .12s ease, background .12s ease;
   }
   .portal-btn:hover{ transform:translateY(-1px); background:var(--petrol-tint); }
   .portal-btn .pt{ font-family:"Klee One",sans-serif; font-size:16.5px; font-weight:600; color:var(--petrol); display:flex; align-items:center; justify-content:space-between; gap:8px; }
@@ -298,7 +273,7 @@
     display:flex; flex-direction:column; gap:1px; text-decoration:none;
     padding:13px 16px; color:var(--ink); background:var(--paper-soft);
     border:2px solid var(--ink); border-radius:12px 3px 12px 3px;
-    box-shadow:0 2px 0 rgba(43,43,38,.7); transition:transform .12s ease, background .12s ease;
+    box-shadow:0 2px 0 rgba(35,38,36,.7); transition:transform .12s ease, background .12s ease;
   }
   .link-btn:hover{ transform:translateY(-1px); background:var(--petrol-tint); }
   .link-btn .lt{ font-family:"Klee One",sans-serif; font-size:16.5px; font-weight:600; color:var(--petrol); display:flex; align-items:center; justify-content:space-between; gap:8px; }
@@ -730,17 +705,17 @@ s += '<path d="' + line + '" fill="none" stroke="#315F5B" stroke-width="4" strok
 var ticks = [minMan, centerMan, maxMan];
 ticks.forEach(function(inc){
 var isC = inc === centerMan;
-s += '<text x="' + X(inc).toFixed(1) + '" y="' + (H - 14) + '" text-anchor="middle" font-size="15" font-weight="' + (isC? '700': '400') + '" fill="' + (isC? '#B5502F': 'currentColor') + '" fill-opacity="' + (isC? '1': '0.6') + '">' + fmt(inc) + '万' + (isC? '（予測）': '') + '</text>';
+s += '<text x="' + X(inc).toFixed(1) + '" y="' + (H - 14) + '" text-anchor="middle" font-size="15" font-weight="' + (isC? '700': '400') + '" fill="' + (isC? '#B55B46': 'currentColor') + '" fill-opacity="' + (isC? '1': '0.6') + '">' + fmt(inc) + '万' + (isC? '（予測）': '') + '</text>';
 });
 var cx = X(centerMan), cy = Y(currentLimit);
-s += '<line x1="' + cx.toFixed(1) + '" y1="' + padT + '" x2="' + cx.toFixed(1) + '" y2="' + (padT + plotH) + '" stroke="#B5502F" stroke-width="1.8" stroke-dasharray="4 4" stroke-opacity="0.6"/>';
-s += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="16" fill="none" stroke="#B5502F" stroke-width="2.6" stroke-opacity="0.9" transform="rotate(-8 ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')"/>';
-s += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="6" fill="#B5502F" stroke="#FFFDF6" stroke-width="2.5"/>';
+s += '<line x1="' + cx.toFixed(1) + '" y1="' + padT + '" x2="' + cx.toFixed(1) + '" y2="' + (padT + plotH) + '" stroke="#B55B46" stroke-width="1.8" stroke-dasharray="4 4" stroke-opacity="0.6"/>';
+s += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="16" fill="none" stroke="#B55B46" stroke-width="2.6" stroke-opacity="0.9" transform="rotate(-8 ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')"/>';
+s += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="6" fill="#B55B46" stroke="#FCFBF4" stroke-width="2.5"/>';
 var label = fmt(currentLimit) + '円';
 var bw = Math.max(120, label.length * 11 + 26), bx = Math.min(W - padR - bw, Math.max(padL, cx - bw / 2));
 var by = Math.max(6, cy - 52);
-s += '<g><rect x="' + bx.toFixed(1) + '" y="' + by.toFixed(1) + '" width="' + bw + '" height="32" rx="8" fill="#B5502F"/>'
-+ '<text x="' + (bx + bw / 2).toFixed(1) + '" y="' + (by + 22).toFixed(1) + '" text-anchor="middle" font-size="16" font-weight="700" fill="#FFF7EF">' + label + '</text></g>';
+s += '<g><rect x="' + bx.toFixed(1) + '" y="' + by.toFixed(1) + '" width="' + bw + '" height="32" rx="8" fill="#B55B46"/>'
++ '<text x="' + (bx + bw / 2).toFixed(1) + '" y="' + (by + 22).toFixed(1) + '" text-anchor="middle" font-size="16" font-weight="700" fill="#F7F4EA">' + label + '</text></g>';
 svg.innerHTML = s;
 }
 

@@ -14,39 +14,21 @@
 </script>
 <style>
   :root{
-    color-scheme: light dark;
-    --paper:#F6F1E5;
-    --paper-soft:#EFE8D6;
-    --card:#FFFDF6;
-    --ink:#2B2B26;
-    --ink-soft:rgba(43,43,38,.68);
-    --ink-faint:rgba(43,43,38,.45);
-    --line:rgba(43,43,38,.16);
+    color-scheme: light;
+    --paper:#F3F0E8;
+    --paper-soft:#ECE7D8;
+    --card:#FCFBF4;
+    --ink:#232624;
+    --ink-soft:rgba(35,38,36,.68);
+    --ink-faint:rgba(35,38,36,.45);
+    --line:rgba(35,38,36,.16);
     --petrol:#315F5B;
     --petrol-deep:#22423F;
     --petrol-tint:rgba(49,95,91,.10);
-    --brick:#B5502F;
+    --brick:#B55B46;
     --brick-tint:#F8E9E2;
-    --shadow:0 2px 0 rgba(43,43,38,.85);
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --paper:#22241F;
-      --paper-soft:#2A2C26;
-      --card:#2E3029;
-      --ink:#EFE9D8;
-      --ink-soft:rgba(239,233,216,.74);
-      --ink-faint:rgba(239,233,216,.48);
-      --line:rgba(239,233,216,.22);
-      --petrol:#7FB3AC;
-      --petrol-deep:#A8CCC5;
-      --petrol-tint:rgba(127,179,172,.14);
-      --brick:#E08A6D;
-      --brick-tint:rgba(224,138,109,.14);
-      --shadow:0 2px 0 rgba(0,0,0,.6);
-    }
-  }
-  html{ -webkit-text-size-adjust:100%; }
+    --shadow:0 2px 0 rgba(35,38,36,.85);
+  }  html{ -webkit-text-size-adjust:100%; }
   body{
     margin:0; background-color:var(--paper);
     background-image:radial-gradient(var(--line) .7px, transparent .8px);
@@ -86,9 +68,8 @@
     font-size:13px; font-weight:700; padding:7px 12px; cursor:pointer; line-height:1.4;
     color:var(--ink); background:var(--paper-soft); border:1.5px solid var(--ink); border-radius:10px 3px 10px 3px;
   }
-  .taps button[aria-pressed="true"]{ background:var(--petrol); color:#FBF7EA; border-color:var(--petrol); }
-  @media (prefers-color-scheme: dark){ .taps button[aria-pressed="true"]{ color:#20302D; } }
-  .taps.col button{ text-align:left; flex:1 1 100%; }
+  .taps button[aria-pressed="true"]{ background:var(--petrol); color:#F7F4EA; border-color:var(--petrol); }
+    .taps.col button{ text-align:left; flex:1 1 100%; }
   @media (min-width:640px){ .taps.col button{ flex:1 1 30%; } }
   input[type="range"]{ -webkit-appearance:none; appearance:none; width:100%; height:38px; background:transparent; cursor:pointer; margin:2px 0 0; }
   input[type="range"]::-webkit-slider-runnable-track{ height:8px; border-radius:99px; background:var(--paper-soft); border:1.5px solid var(--line); }
@@ -106,9 +87,8 @@
   .grp{ font-size:12px; font-weight:700; color:var(--ink-faint); letter-spacing:.06em; margin:20px 0 -6px; }
 
   /* 結果 */
-  .hero{ background:var(--petrol); color:#FBF7EA; border:2px solid var(--petrol-deep); border-radius:14px 255px 14px 225px/225px 14px 255px 14px; box-shadow:0 3px 0 rgba(34,66,63,.55); padding:22px 20px 18px; margin-top:14px; }
-  @media (prefers-color-scheme: dark){ .hero{ background:#2C4A46; border-color:#1E332F; color:#F2EDDD; } }
-  .hero .hl{ font-size:12.5px; font-weight:700; letter-spacing:.05em; opacity:.88; margin:0; }
+  .hero{ background:var(--petrol); color:#F7F4EA; border:2px solid var(--petrol-deep); border-radius:14px 255px 14px 225px/225px 14px 255px 14px; box-shadow:0 3px 0 rgba(34,66,63,.55); padding:22px 20px 18px; margin-top:14px; }
+    .hero .hl{ font-size:12.5px; font-weight:700; letter-spacing:.05em; opacity:.88; margin:0; }
   .hero .hn{ font-family:"Klee One",sans-serif; font-weight:600; font-size:52px; line-height:1.2; margin:2px 0 0; }
   .hero .hn small{ font-size:20px; font-weight:700; margin-left:6px; }
   @media (min-width:640px){ .hero .hn{ font-size:64px; } }
@@ -120,7 +100,7 @@
   .stat .amt{ font-family:"Klee One",sans-serif; font-size:22px; font-weight:600; margin:2px 0 0; }
   .stat .note{ font-size:11px; color:var(--ink-soft); margin:2px 0 0; line-height:1.6; }
   .verdict{ margin-top:16px; background:var(--ink); color:var(--paper); border-radius:14px 4px 14px 4px; padding:16px 18px; }
-  .verdict .vl{ font-size:11.5px; font-weight:700; color:#D9A94F; letter-spacing:.05em; margin:0 0 4px; }
+  .verdict .vl{ font-size:11.5px; font-weight:700; color:#C08A2D; letter-spacing:.05em; margin:0 0 4px; }
   .verdict .vt{ font-size:15px; font-weight:700; line-height:1.85; margin:0; }
   .verdict .vn{ font-size:12px; opacity:.78; line-height:1.8; margin:8px 0 0; }
   ul.notes{ margin:12px 0 0; padding-left:20px; font-size:12.5px; color:var(--ink-soft); line-height:1.85; }
