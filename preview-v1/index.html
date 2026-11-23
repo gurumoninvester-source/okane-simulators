@@ -3,12 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>お金を考えすぎる会社員｜数字で確かめる、お金の道具箱と物語</title>
-<meta name="description" content="年金・税金・NISA・住宅。制度と数字を一次情報で確かめて、自分でも計算できる無料シミュレーターと、棒人間で追うお金の物語のサイトです。">
+<title>お金を考えすぎる会社員｜触って確かめる、お金のサイト</title>
+<meta name="description" content="年金・こどもNISA・ふるさと納税・証券口座のシミュレーターと、棒人間と歩くお金の物語。数字は触って、動かして確かめられます。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./assets/style.css">
+<style>
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+a.tile{display:block;border:2px solid var(--ink);border-radius:18px 6px 16px 8px/8px 16px 6px 18px;background:var(--paper2);padding:16px 14px;text-decoration:none;color:var(--ink);min-height:104px}
+a.tile:nth-child(odd){transform:rotate(-.5deg)}a.tile:nth-child(even){transform:rotate(.5deg)}
+a.tile .ic{font-family:"Klee One",cursive;font-size:1.6rem;line-height:1;color:var(--brick);border:1.5px solid var(--ink);border-radius:50%;display:inline-grid;place-items:center;width:40px;height:40px;background:var(--paper)}
+a.tile b{display:block;font-family:"Klee One",cursive;font-size:1.08rem;color:var(--petrol);margin:6px 0 2px}
+a.tile span{font-size:.82rem;color:#444}
+a.tile.wide{grid-column:1/-1;border-color:var(--brick)}
+a.tile.wide b{color:var(--brick)}
+@media (max-width:360px){.tiles{grid-template-columns:1fr}a.tile{min-height:0}}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">本文へスキップ</a>
@@ -19,46 +30,22 @@
   <nav><a href="./tools/">道具箱</a><a href="./stories/">物語</a><a href="./about/">このサイトについて</a></nav>
 </header>
 <main id="main">
+<h1>お金は、触って確かめる。</h1>
+<p class="lead">考えなくていい状態になりたいから、考えすぎている会社員のサイト。気になるところから、どうぞ。</p>
 
-<h1>お金を考えなくていい状態になりたい。<br>だから、考えすぎている。</h1>
-<p class="lead">年金はいつから受け取るのが得か。児童手当をこどもNISAに入れたらどう育つか。ふるさと納税の上限はいくらか。証券口座を移すと、いくらかかるか。<br>気になったら、記事の数字を「自分の数字」に変えて計算できます。全部無料、入力はブラウザの中だけで計算します。</p>
-<a class="btn" href="./tools/">シミュレーターで計算する</a>
-<a class="btn sub" href="./stories/">物語シリーズを見る</a>
-
-<section class="box">
-<h2>考えすぎる人の道具箱</h2>
-<div class="cards">
-  <a class="card" href="./tools/pension/"><b>年金 受給タイミング</b><span>繰り上げ・繰り下げで生涯の受給総額がどう変わるか。損益分岐の年齢まで出ます。</span></a>
-  <a class="card" href="./tools/kodomo-nisa/"><b>こどもNISA × 児童手当</b><span>児童手当をこどもNISAで運用したらどう育つか。枠（総額600万円・年60万円）との関係も確認できます。</span></a>
-  <a class="card" href="./tools/furusato/"><b>ふるさと納税 上限＆実質利益</b><span>年収と家族構成から、自己負担2,000円に収まる上限の目安と実質利益を出す。</span></a>
-  <a class="card" href="./tools/securities/"><b>証券口座 生存＆出口診断</b><span>今の証券会社から全部出すと、いくらかかるか。出口コストと「守り」の設定をチェック。</span></a>
+<div class="tiles">
+  <a class="tile wide" href="./stories/"><span class="ic">歩</span><b>お金の物語 ― 住宅編</b><span>賃貸と持ち家、月7.5万円をそろえて85歳まで歩く。再生ボタンで2人が歩き出します。</span></a>
+  <a class="tile" href="./tools/pension/"><span class="ic">年</span><b>年金</b><span>いつから受け取る？分岐点が出る。</span></a>
+  <a class="tile" href="./tools/kodomo-nisa/"><span class="ic">子</span><b>こどもNISA</b><span>児童手当を運用したらどう育つ？</span></a>
+  <a class="tile" href="./tools/furusato/"><span class="ic">故</span><b>ふるさと納税</b><span>上限と実質利益を出す。</span></a>
+  <a class="tile" href="./tools/securities/"><span class="ic">券</span><b>証券口座の出口</b><span>全部出すと、いくらかかる？</span></a>
+  <a class="tile" href="https://note.com/okane_kangaesugi"><span class="ic">読</span><b>noteで深掘り</b><span>数字の根拠を、一次情報で掘る。</span></a>
+  <a class="tile" href="./tools/"><span class="ic">箱</span><b>道具箱ぜんぶ</b><span>シミュレーターの一覧へ。</span></a>
 </div>
-</section>
-
-<section class="box">
-<h2>お金の物語 ― 住宅編</h2>
-<p>家賃7.5万円と、持ち家7.5万円。毎月の支出を同じ額にそろえて、30歳から85歳まで棒人間と一緒に歩くと、累計はこうなります。</p>
-<table>
-<tr><th></th><th>65歳時点</th><th>85歳時点</th></tr>
-<tr><th scope="row">賃貸（月7.5万円を払い続ける）</th><td>3,150万円</td><td>約4,950万円</td></tr>
-<tr><th scope="row">持ち家・固定（65歳で完済、以後は所有コストのみ）</th><td>3,150万円（同点）</td><td>約3,720万円</td></tr>
-</table>
-<p>85歳時点の差は <span class="big-num">約1,230万円</span>。完済後の20年間で開いていきます。家賃が上がる条件ではどう動くかは、次の物語で追います。</p>
-<a class="btn sub" href="./stories/">物語の前提と出典を見る</a>
-</section>
-
-<section class="box">
-<h2>深掘りは note で</h2>
-<p>シミュレーターの数字の背景、一次情報の確認過程、計算の前提は note で1つの疑問を深く掘っています。</p>
-<a class="btn sub" href="https://note.com/okane_kangaesugi">note｜お金を考えすぎる会社員</a>
-<a class="btn sub" href="https://www.threads.net/@okane.kangaesugi">Threads</a>
-<a class="btn sub" href="https://www.instagram.com/okane.kangaesugi">Instagram</a>
-</section>
-
 </main>
 <footer>
   <a href="./tools/">道具箱</a><a href="./stories/">物語</a><a href="./about/">このサイトについて</a><a href="./privacy/">プライバシー</a>
-  <p>お金を考えすぎる会社員 ― 制度と数字を、一次情報で確かめる個人メディアです。各シミュレーターの前提・出典は各ページ末尾に記載しています。計算結果は目安であり、個別の状況によって変わります。</p>
+  <p>お金を考えすぎる会社員 ― 制度と数字を一次情報で確かめる個人メディア。各シミュレーターの前提・出典は各ページ末尾にあります。入力はブラウザの中だけで計算し、外部に送信・保存しません。</p>
 </footer>
 </div>
 </body>
