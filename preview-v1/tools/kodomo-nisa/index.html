@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:," />
+    <title>こどもNISA戦略シミュレーションツール</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --paper:#F3F0E8;
+        --card:#FCFBF4;
+        --ink:#232624;
+        --ink-soft:rgba(35,38,36,.62);
+        --ink-faint:rgba(35,38,36,.16);
+        --teal:#315F5B;
+        --teal-soft:rgba(49,95,91,.13);
+        --brick:#B55B46;
+        --shadow:3px 4px 0 rgba(35,38,36,.15);
+      }
+      *{box-sizing:border-box;}
+      html{-webkit-text-size-adjust:100%;}
+      body{
+        margin:0;
+        background-color:var(--paper);
+        background-image:radial-gradient(rgba(35,38,36,.055) 1px, transparent 1.4px);
+        background-size:22px 22px;
+        color:var(--ink);
+        font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;
+        font-size:15px;
+        line-height:1.65;
+      }
+      .wrap{max-width:1060px;margin:0 auto;padding:20px 16px 56px;}
+      h1,h2,h3,.hand{font-family:"Klee One","BIZ UDPGothic",sans-serif;}
+      header{margin:6px 0 18px;}
+      h1{font-size:clamp(26px,6vw,40px);font-weight:600;line-height:1.3;margin:0;letter-spacing:.02em;}
+      .squig{display:block;margin-top:2px;}
+      .lead{margin:10px 0 0;color:var(--ink-soft);font-size:14px;max-width:640px;}
+      .lead b{color:var(--ink);}
+
+      .layout{display:grid;grid-template-columns:1fr;gap:18px;align-items:start;}
+      @media(min-width:920px){
+        .layout{grid-template-columns:372px 1fr;}
+        .controls{position:sticky;top:14px;}
+      }
+      .controls{display:grid;gap:14px;}
+      .results{display:grid;gap:14px;min-width:0;}
+
+      .card{
+        background:var(--card);
+        border:2px solid var(--ink);
+        border-radius:16px 5px 18px 6px / 6px 18px 5px 16px;
+        box-shadow:var(--shadow);
+        padding:16px 16px 18px;
+      }
+      .card.tilt{transform:rotate(-.3deg);}
+      .card.tilt2{transform:rotate(.25deg);}
+      .card h2{font-size:19px;font-weight:600;margin:0 0 4px;}
+      .card h3{font-size:16px;font-weight:600;margin:0 0 6px;}
+      .card .sub{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px;}
+
+      /* mode switch */
+      .seg{display:flex;border:2px solid var(--ink);border-radius:12px 4px 12px 4px/4px 12px 4px 12px;overflow:hidden;background:var(--card);}
+      .seg button{
+        flex:1;appearance:none;border:0;background:transparent;cursor:pointer;
+        font-family:"Klee One",sans-serif;font-size:16px;font-weight:600;color:var(--ink);
+        padding:10px 6px;line-height:1.3;
+      }
+      .seg button small{display:block;font-family:"BIZ UDPGothic",sans-serif;font-weight:400;font-size:11px;color:inherit;opacity:.75;}
+      .seg button.on{background:var(--teal);color:#F7F4EA;}
+      .seg button + button{border-left:2px solid var(--ink);}
+
+      .field{margin-top:14px;}
+      .field:first-of-type{margin-top:6px;}
+      .flabel{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13.5px;font-weight:700;margin-bottom:6px;}
+      .flabel .val{font-size:15px;color:var(--teal);white-space:nowrap;}
+      .toggle-row{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+      .fhint{font-size:12px;color:var(--ink-soft);margin-top:5px;}
+
+      select,input[type="number"]{
+        font-family:inherit;font-size:15px;color:var(--ink);
+        background:#fff;border:2px solid var(--ink);border-radius:9px 3px 9px 3px/3px 9px 3px 9px;
+        padding:8px 10px;min-height:42px;
+      }
+      select:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid var(--teal-soft);outline-offset:1px;}
+      .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+      .row-birth{display:grid;grid-template-columns:1.2fr .8fr;gap:8px;}
+
+      .mini-seg{display:flex;gap:6px;flex-wrap:wrap;}
+      .mini-seg button{
+        appearance:none;cursor:pointer;background:#fff;color:var(--ink);
+        border:2px solid var(--ink);border-radius:10px 3px 10px 3px/3px 10px 3px 10px;
+        font-family:inherit;font-size:14px;font-weight:700;padding:7px 0;flex:1;min-width:44px;min-height:40px;
+      }
+      .mini-seg button.on{background:var(--teal);color:#F7F4EA;}
+
+      .chips{display:flex;gap:6px;flex-wrap:wrap;}
+      .chip{
+        appearance:none;cursor:pointer;background:transparent;color:var(--ink);
+        border:1.8px dashed rgba(35,38,36,.55);border-radius:999px;
+        font-family:"Klee One",sans-serif;font-size:13.5px;padding:6px 12px;min-height:38px;
+      }
+      .chip.on{border:2px solid var(--ink);background:var(--teal-soft);font-weight:600;}
+      .chip:active{transform:translateY(1px);}
+
+      input[type="range"]{
+        -webkit-appearance:none;appearance:none;width:100%;height:30px;background:transparent;cursor:pointer;margin:0;
+      }
+      input[type="range"]::-webkit-slider-runnable-track{height:4px;background:var(--ink);border-radius:2px;}
+      input[type="range"]::-webkit-slider-thumb{
+        -webkit-appearance:none;appearance:none;width:24px;height:24px;margin-top:-10px;
+        background:var(--paper);border:2.5px solid var(--ink);border-radius:48% 52% 55% 45%/52% 46% 54% 48%;
+        box-shadow:2px 2px 0 rgba(35,38,36,.25);
+      }
+      input[type="range"]::-moz-range-track{height:4px;background:var(--ink);border-radius:2px;}
+      input[type="range"]::-moz-range-thumb{width:20px;height:20px;background:var(--paper);border:2.5px solid var(--ink);border-radius:48% 52% 55% 45%/52% 46% 54% 48%;}
+      input[type="range"]:disabled{opacity:.35;cursor:not-allowed;}
+
+      /* toggle: the checkbox itself is the switch (visible & tappable) */
+      .toggle{flex:none;line-height:0;}
+      .toggle input{
+        -webkit-appearance:none;appearance:none;width:58px;height:32px;margin:0;cursor:pointer;
+        border:2px solid var(--ink);border-radius:999px;background:#fff;position:relative;
+        transition:background .15s;min-height:0;padding:0;
+      }
+      .toggle input::after{
+        content:"";position:absolute;top:2px;left:3px;width:22px;height:22px;
+        background:var(--paper);border:2px solid var(--ink);border-radius:48% 52% 55% 45%/52% 46% 54% 48%;
+        transition:left .15s;
+      }
+      .toggle input:checked{background:var(--teal);}
+      .toggle input:checked::after{left:27px;background:#F7F4EA;}
+      .toggle input:focus-visible{outline:3px solid var(--teal-soft);outline-offset:2px;}
+
+      /* results */
+      .big-num{font-size:clamp(30px,7vw,42px);font-weight:700;line-height:1.15;letter-spacing:.01em;}
+      .big-num .unit{font-size:.5em;font-weight:700;}
+      .sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:12px;}
+      @media(min-width:560px){.sum-grid{grid-template-columns:repeat(4,1fr);}}
+      .sum-item .k{font-size:12px;color:var(--ink-soft);}
+      .sum-item .v{font-size:17px;font-weight:700;white-space:nowrap;}
+      .sum-item .v.gain{color:var(--teal);}
+      .sum-item .v.brick{color:var(--brick);}
+      .diff-note{
+        margin-top:12px;border-top:1.8px dashed rgba(35,38,36,.35);padding-top:10px;
+        font-family:"Klee One",sans-serif;font-size:15.5px;
+      }
+      .diff-note b{color:var(--teal);}
+      .diff-note .ng{color:var(--brick);}
+
+      .chart-box{width:100%;}
+      .chart-box svg{width:100%;height:auto;display:block;}
+      .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-top:6px;}
+      .legend .sw{display:inline-block;width:20px;height:0;border-top:3px solid var(--teal);vertical-align:middle;margin-right:5px;border-radius:2px;}
+      .legend .sw.ink{border-top-color:var(--ink);}
+      .legend .sw.brick{border-top:3px dashed var(--brick);}
+      .legend .sw.band{height:10px;border:0;background:var(--teal-soft);border-radius:2px;}
+
+      .child-grid{display:grid;gap:12px;}
+      @media(min-width:680px){.child-grid{grid-template-columns:1fr 1fr;}}
+      .child-card{
+        background:var(--card);border:2px solid var(--ink);
+        border-radius:14px 5px 15px 5px/5px 15px 5px 14px;box-shadow:var(--shadow);padding:14px;
+      }
+      .child-card h3{font-size:17px;margin:0;}
+      .child-card .born{font-size:12px;color:var(--ink-soft);margin:2px 0 8px;}
+      .kv{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;padding:3.5px 0;border-bottom:1.5px dotted var(--ink-faint);}
+      .kv:last-child{border-bottom:0;}
+      .kv .k{color:var(--ink-soft);}
+      .kv .v{font-weight:700;white-space:nowrap;}
+      .kv.total{border-top:2px solid var(--ink);border-bottom:0;margin-top:4px;padding-top:7px;}
+      .kv.total .v{color:var(--teal);font-size:15.5px;}
+      .kv .v.brick{color:var(--brick);}
+
+      .mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:10px;}
+      @media(min-width:560px){.mc-grid{grid-template-columns:repeat(4,1fr);}}
+      .copy-btn{
+        appearance:none;cursor:pointer;background:var(--ink);color:var(--paper);
+        border:2px solid var(--ink);border-radius:11px 4px 11px 4px/4px 11px 4px 11px;
+        font-family:"Klee One",sans-serif;font-size:15px;font-weight:600;padding:11px 18px;min-height:46px;width:100%;
+      }
+      .copy-btn:active{transform:translateY(1px);}
+      .copy-msg{font-size:12.5px;color:var(--teal);text-align:center;min-height:1.4em;margin-top:6px;font-weight:700;}
+
+      .notes{font-size:12.5px;color:var(--ink-soft);}
+      .notes h2{color:var(--ink);font-size:16px;}
+      .notes ul{margin:6px 0 0;padding-left:1.2em;}
+      .notes li{margin:3px 0;}
+      .hidden{display:none !important;}
+      .otaku-only-note{font-size:12px;color:var(--ink-soft);}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>こどもNISA<br />戦略シミュレーション</h1>
+        <svg class="squig" width="220" height="10" viewBox="0 0 220 10" aria-hidden="true"><path d="M2 6 Q 16 1, 30 6 T 58 6 T 86 6 T 114 6 T 142 6 T 170 6 T 198 6 T 218 6" fill="none" stroke="#B55B46" stroke-width="3" stroke-linecap="round"/></svg>
+        <p class="lead">児童手当（＋東京都の018サポート）を、こどもNISAの<b>枠600万円</b>にどこまで・どう積めるか。子どもの人数と年齢差で、手当の総額も「第3子の30,000円」が続く期間も変わります。まず触って、差を見てください。</p>
+      </header>
+
+      <div class="layout">
+        <!-- ===== controls ===== -->
+        <div class="controls">
+          <div class="seg" role="tablist" aria-label="モード切替">
+            <button id="modeSimple" class="on" type="button">かんたん<small>年利を決めて計算</small></button>
+            <button id="modeOtaku" type="button">オタク<small>ブレ幅まで見る</small></button>
+          </div>
+
+          <section class="card tilt" aria-label="家族の設定">
+            <h2>家族の設定</h2>
+            <p class="sub">シミュレーションは2027年1月開始。手当は生まれた月の翌月分から、18歳の年度末（3月）までを数えます。</p>
+
+            <div class="field">
+              <div class="flabel">子どもの人数</div>
+              <div class="mini-seg" id="numKidsSeg">
+                <button type="button" data-n="1" class="on">1人</button>
+                <button type="button" data-n="2">2人</button>
+                <button type="button" data-n="3">3人</button>
+                <button type="button" data-n="4">4人</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="flabel">第1子の生年月</div>
+              <div class="row-birth">
+                <select id="birthYear" aria-label="第1子の生年"></select>
+                <select id="birthMonth" aria-label="第1子の生月"></select>
+              </div>
+              <div class="chips" style="margin-top:8px;">
+                <button type="button" class="chip" id="chipNewborn">2027年4月生まれ（0歳から）</button>
+                <button type="button" class="chip" id="chipAge3">2024年1月生まれ（3歳から）</button>
+              </div>
+            </div>
+
+            <div class="field" id="spacingField">
+              <div class="flabel">きょうだいの年齢差<span class="val" id="spacingVal">2年</span></div>
+              <select id="spacing" style="width:100%;">
+                <option value="2">2歳差</option>
+                <option value="3">3歳差</option>
+                <option value="4">4歳差</option>
+                <option value="5">5歳差</option>
+                <option value="6">6歳差</option>
+              </select>
+              <p class="fhint">下の子は全員、第1子と同じ生まれ月・等間隔で生まれる前提。第3子以降の手当（月30,000円）は、上の子が「22歳の年度末」までカウントに残る前提で計算します。年齢差が開くと、第3子が途中で第2子扱いに戻ります。</p>
+            </div>
+
+            <div class="field">
+              <div class="toggle-row">
+                <div>
+                  <div style="font-weight:700;font-size:13.5px;">東京都に住んでいる</div>
+                  <div style="font-size:12px;color:var(--ink-soft);">018サポート 月5,000円を手当と同期間上乗せ</div>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="tokyoToggle" aria-label="東京都に住んでいる" />
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="flabel">シナリオで試す</div>
+              <div class="chips">
+                <button type="button" class="chip" data-scenario="three2">3人・2歳差</button>
+                <button type="button" class="chip" data-scenario="three6">3人・6歳差</button>
+                <button type="button" class="chip" data-scenario="tokyo3">3歳開始＋東京</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="card tilt2" aria-label="積立と出口の設定">
+            <h2>積立と出口</h2>
+            <div class="field">
+              <div class="flabel">手当に上乗せする追加入金<span class="val" id="extraVal">0円／月</span></div>
+              <input type="range" id="extraRange" min="0" max="30000" step="500" value="0" />
+              <p class="fhint">1人あたり・毎月末に手当と一緒にNISAへ。入金は簿価累計600万円までで、超えた分は「枠外（現金のまま）」として分けます。</p>
+            </div>
+            <div class="field">
+              <div class="flabel">出口（評価する年齢）</div>
+              <select id="exitAge" style="width:100%;">
+                <option value="18">18歳の年度末まで</option>
+                <option value="20">20歳まで運用を続ける</option>
+                <option value="22">22歳まで運用を続ける</option>
+                <option value="25">25歳まで運用を続ける</option>
+                <option value="30">30歳まで運用を続ける</option>
+              </select>
+              <p class="fhint">18歳の年度末で手当と入金は終了。その先は入金なしで運用だけ続けた場合の評価額です。</p>
+            </div>
+          </section>
+
+          <section class="card tilt" id="simpleCard" aria-label="年利の設定">
+            <h2>年利（かんたん）</h2>
+            <div class="field">
+              <div class="flabel">想定年利<span class="val" id="rateVal">5.0%</span></div>
+              <input type="range" id="rateRange" min="0" max="20" step="0.5" value="5" />
+              <div class="chips" id="rateChips" style="margin-top:4px;">
+                <button type="button" class="chip" data-rate="3">3%</button>
+                <button type="button" class="chip" data-rate="5">5%</button>
+                <button type="button" class="chip" data-rate="7">7%</button>
+                <button type="button" class="chip" data-rate="10">10%</button>
+              </div>
+              <p class="fhint">毎月末入金、月利＝年率÷12の月複利で計算します（直線計算）。</p>
+            </div>
+          </section>
+
+          <section class="card tilt hidden" id="otakuCard" aria-label="オタク設定">
+            <h2>オタク設定</h2>
+            <p class="sub">リターンを毎月、正規分布でブレさせて1,000回試行します。乱数の種は固定なので、同じ条件では毎回同じ結果になります。</p>
+            <div class="field">
+              <div class="flabel">指数プリセット</div>
+              <select id="indexPreset" style="width:100%;">
+                <option value="orukan">オルカン（全世界株式）</option>
+                <option value="nasdaq">ナスダック100</option>
+                <option value="custom">カスタム</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="flabel">期待リターン（年）<span class="val" id="expVal">7.0%</span></div>
+              <input type="range" id="expRange" min="0" max="20" step="0.5" value="7" disabled />
+            </div>
+            <div class="field">
+              <div class="flabel">標準偏差（年）<span class="val" id="sdVal">17%</span></div>
+              <input type="range" id="sdRange" min="0" max="40" step="1" value="17" disabled />
+              <p class="fhint">月次リターンは 平均＝期待リターン÷12、標準偏差＝年率標準偏差÷√12 の正規分布から引く。標準偏差0にすると直線計算と一致します。</p>
+            </div>
+          </section>
+        </div>
+
+        <!-- ===== results ===== -->
+        <div class="results">
+          <section class="card tilt2" aria-label="世帯合計">
+            <h2 id="sumTitle">世帯合計（直線計算）</h2>
+            <p class="sub" id="sumSub"></p>
+            <div class="hand" style="font-size:14px;color:var(--ink-soft);">出口時点の評価額</div>
+            <div class="big-num"><span id="sumValue">—</span></div>
+            <div class="sum-grid">
+              <div class="sum-item"><div class="k">元本（入金総額）</div><div class="v" id="sumPrincipal">—</div></div>
+              <div class="sum-item"><div class="k">運用益</div><div class="v gain" id="sumGain">—</div></div>
+              <div class="sum-item"><div class="k">うちNISA枠内（簿価）</div><div class="v" id="sumNisa">—</div></div>
+              <div class="sum-item"><div class="k">枠外（現金のまま）</div><div class="v brick" id="sumOutside">—</div></div>
+            </div>
+            <div id="mcPanel" class="hidden">
+              <div class="mc-grid">
+                <div class="sum-item"><div class="k">中央値（1,000回試行）</div><div class="v" id="mcMedian">—</div></div>
+                <div class="sum-item"><div class="k">25〜75%の帯</div><div class="v" id="mcBand" style="font-size:14.5px;">—</div></div>
+                <div class="sum-item"><div class="k">下位5%</div><div class="v brick" id="mcP5">—</div></div>
+                <div class="sum-item"><div class="k">直線計算との差（中央値）</div><div class="v" id="mcDiff">—</div></div>
+              </div>
+            </div>
+            <p class="diff-note" id="diffNote"></p>
+          </section>
+
+          <section class="card tilt" aria-label="グラフ">
+            <h2 id="chartTitle">積み上がり方</h2>
+            <div class="chart-box" id="chartBox"></div>
+            <div class="legend" id="chartLegend"></div>
+          </section>
+
+          <section aria-label="子どもごとの内訳">
+            <h2 class="hand" style="font-size:20px;margin:2px 0 10px;">子どもごとの内訳</h2>
+            <div class="child-grid" id="childGrid"></div>
+          </section>
+
+          <div>
+            <button type="button" class="copy-btn" id="copyBtn">結果をテキストでコピーする</button>
+            <div class="copy-msg" id="copyMsg" role="status"></div>
+          </div>
+
+          <section class="card notes" aria-label="計算の前提">
+            <h2>計算の前提（メモ）</h2>
+            <ul>
+              <li>こどもNISAは2027年1月開始の前提。入金枠は1人あたり簿価累計600万円まで。</li>
+              <li>児童手当は月額：3歳未満15,000円／3歳以上10,000円／第3子以降30,000円。生まれた月の翌月分から、18歳の年度末（18歳になる年度の3月）まで。</li>
+              <li>第3子の判定では、上の子は22歳の年度末までカウントに残る前提（最大ケース）。実際の判定は世帯の状況で変わります。</li>
+              <li>東京都の018サポートは月5,000円を児童手当と同期間で上乗せしています。</li>
+              <li>運用益は税金・手数料・信託報酬を引く前の試算です。将来の成果を保証するものではありません。</li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </div>
+
+<script>
+(function(){try{fetch("https://abacus.jasoncameron.dev/hit/Q6Frn-71iu2mvPya/q5hql0Ih1f0qPpIn",{mode:"no-cors",keepalive:true}).catch(function(){});}catch(e){}})();
+</script>
+<script>
+"use strict";
+/* ============ engine (verified spec) ============
+Month index: y*12 + (m-1). Simulation starts 2027-01.
+Payments: from month after birth (and not before 2027-02 for
+children already born) to March of the fiscal year in which
+the child turns 18. Deposit at month end: existing balance
+earns the month's interest first, then the deposit lands. */
+var START = 2027*12 + 0; /* Jan 2027 */
+var CAP = 6000000;
+var MC_TRIALS = 1000;
+var MC_SEED = 20270101;
+
+function idx(y,m){ return y*12 + (m-1);}
+function yOf(i){ return Math.floor(i/12);}
+function mOf(i){ return (i%12)+1;}
+/* March (month idx..+2) of the fiscal year containing the age-th birthday */
+function fyEndIdx(birth, age){
+var y = yOf(birth), m = mOf(birth);
+var endY = y + age + (m >= 4? 1: 0);
+return idx(endY, 3);
+}
+
+var state = {
+mode: "simple",
+nKids: 1,
+birth: idx(2027,4),
+spacing: 2,
+tokyo: false,
+extra: 0,
+exitAge: 18,
+rate: 5, /* simple annual % */
+preset: "orukan",
+expRet: 7, /* otaku expected % */
+sd: 17 /* otaku annual sd % */
+};
+
+function buildChildren(){
+var kids = [];
+for (var i=0;i<state.nKids;i++){
+var b = state.birth + i*state.spacing*12;
+kids.push({
+n: i+1,
+birth: b,
+payStart: Math.max(b+1, START+1),
+payEnd: fyEndIdx(b,18),
+countEnd: fyEndIdx(b,22),
+exitEnd: fyEndIdx(b,state.exitAge)
+});
+}
+return kids;
+}
+
+function allowanceAt(kids, i, p){
+var kid = kids[i];
+var rank = 1;
+for (var j=0;j<i;j++){
+if (p <= kids[j].countEnd) rank++;
+}
+if (rank >= 3) return 30000;
+var ageMonths = p - kid.birth; /* payment month count since birth month */
+return ageMonths <= 36? 15000: 10000;
+}
+
+/* Build per-child monthly deposit schedule with the 6,000,000 book cap.
+Returns schedule[kid] = { months:[{p, nisa, out}], totals...} and global maxExit. */
+function buildSchedule(kids){
+var maxExit = START;
+var sched = kids.map(function(kid){
+var principal = 0, outside = 0, allowanceSum = 0, tokyoSum = 0, extraSum = 0;
+var deposits = {}; /* p -> {nisa, out} */
+for (var p=kid.payStart; p<=kid.payEnd; p++){
+var allow = allowanceAt(kids, kids.indexOf(kid), p);
+var tk = state.tokyo? 5000: 0;
+var ex = state.extra;
+var inflow = allow + tk + ex;
+allowanceSum += allow; tokyoSum += tk; extraSum += ex;
+var room = CAP - principal;
+var nisa = Math.max(0, Math.min(inflow, room));
+var out = inflow - nisa;
+principal += nisa; outside += out;
+deposits[p] = { nisa:nisa, out:out};
+}
+if (kid.exitEnd > maxExit) maxExit = kid.exitEnd;
+return { kid:kid, deposits:deposits, principal:principal, outside:outside,
+allowanceSum:allowanceSum, tokyoSum:tokyoSum, extraSum:extraSum,
+inflowSum: allowanceSum+tokyoSum+extraSum};
+});
+return { sched:sched, maxExit:maxExit};
+}
+
+/* Deterministic run. monthlyRate = annualPct/12/100.
+Returns household monthly series + per-child finals. */
+function runDeterministic(schedule, annualPct){
+var rm = annualPct/100/12;
+var kids = schedule.sched;
+var bal = kids.map(function(){return 0;});
+var outCum = kids.map(function(){return 0;});
+var months=[], value=[], principal=[], outside=[];
+for (var p=START; p<=schedule.maxExit; p++){
+var tv=0, tp=0, to=0;
+kids.forEach(function(s, i){
+var kid = s.kid;
+if (p <= kid.exitEnd){
+if (p >= kid.payStart && p <= kid.payEnd){
+bal[i] = bal[i]*(1+rm);
+var d = s.deposits[p];
+bal[i] += d.nisa;
+outCum[i] += d.out;
+} else if (p > kid.payEnd){
+bal[i] = bal[i]*(1+rm);
+}
+}
+tv += bal[i] + outCum[i];
+tp += Math.min(s.principal, cumNisa(s,p)) + outCum[i];
+to += outCum[i];
+});
+months.push(p); value.push(tv); principal.push(tp); outside.push(to);
+}
+var finals = kids.map(function(s,i){
+return { value: bal[i] + s.outside, nisaValue: bal[i], outside: s.outside,
+principal: s.principal};
+});
+return { months:months, value:value, principal:principal, outside:outside, finals:finals};
+}
+function cumNisa(s, p){
+var t=0; for (var k in s.deposits){ if (+k <= p) t += s.deposits[k].nisa;} return t;
+}
+
+/* Seeded RNG (mulberry32) + Box-Muller normal */
+function mulberry32(seed){
+var a = seed >>> 0;
+return function(){
+a = (a + 0x6D2B79F5) | 0;
+var t = Math.imul(a ^ (a >>> 15), 1 | a);
+t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+}
+function makeNormal(rng){
+var spare = null;
+return function(){
+if (spare!== null){ var v = spare; spare = null; return v;}
+var u=0, v=0, s=0;
+do { u = rng()*2-1; v = rng()*2-1; s = u*u+v*v;} while (s >= 1 || s === 0);
+var mul = Math.sqrt(-2*Math.log(s)/s);
+spare = v*mul;
+return u*mul;
+};
+}
+
+function runMonteCarlo(schedule){
+var mu = state.expRet/100/12;
+var sg = state.sd/100/Math.sqrt(12);
+var kids = schedule.sched;
+/* precompute per-child outside cumulative by month */
+var snapMonths = [];
+for (var p=START; p<=schedule.maxExit; p++){
+if ( ((p-START) % 12 === 11) || p === schedule.maxExit) snapMonths.push(p);
+}
+var rng = mulberry32(MC_SEED);
+var randn = makeNormal(rng);
+var trialSnaps = []; /* [trial][snap] household value */
+var trialFinals = []; /* [trial] household final */
+var childFinals = kids.map(function(){return [];});
+for (var t=0; t<MC_TRIALS; t++){
+var bal = kids.map(function(){return 0;});
+var outCum = kids.map(function(){return 0;});
+var snaps = [];
+for (var q=START; q<=schedule.maxExit; q++){
+var r = mu + sg*randn();
+if (r < -0.99) r = -0.99;
+var tv = 0;
+kids.forEach(function(s,i){
+var kid = s.kid;
+if (q <= kid.exitEnd){
+if (q >= kid.payStart && q <= kid.payEnd){
+bal[i] = bal[i]*(1+r) + s.deposits[q].nisa;
+outCum[i] += s.deposits[q].out;
+} else if (q > kid.payEnd){
+bal[i] = bal[i]*(1+r);
+}
+}
+tv += bal[i] + outCum[i];
+});
+if (snapMonths.indexOf(q) >= 0) snaps.push(tv);
+}
+trialSnaps.push(snaps);
+trialFinals.push(snaps[snaps.length-1]);
+kids.forEach(function(s,i){ childFinals[i].push(bal[i] + s.outside);});
+}
+function quant(sorted, qv){
+var pos = (sorted.length-1)*qv;
+var lo = Math.floor(pos), hi = Math.ceil(pos);
+if (lo === hi) return sorted[lo];
+return sorted[lo]*(hi-pos) + sorted[hi]*(pos-lo);
+}
+var finalsSorted = trialFinals.slice().sort(function(a,b){return a-b;});
+var bandSnaps = snapMonths.map(function(_, si){
+var col = trialSnaps.map(function(tr){return tr[si];}).sort(function(a,b){return a-b;});
+return { p25: quant(col,.25), med: quant(col,.5), p75: quant(col,.75)};
+});
+var childStats = childFinals.map(function(arr){
+var s = arr.slice().sort(function(a,b){return a-b;});
+return { med: quant(s,.5), p5: quant(s,.05)};
+});
+return {
+snapMonths: snapMonths, band: bandSnaps, childStats: childStats,
+median: quant(finalsSorted,.5), p25: quant(finalsSorted,.25),
+p75: quant(finalsSorted,.75), p5: quant(finalsSorted,.05)
+};
+}
+
+/* ============ formatting ============ */
+function fmtYen(v){ return "¥" + Math.round(v).toLocaleString("ja-JP");}
+function fmtMan(v){
+var man = v/10000;
+if (Math.abs(man) >= 100) return (Math.round(man*10)/10).toLocaleString("ja-JP") + "万円";
+return (Math.round(man*100)/100).toLocaleString("ja-JP") + "万円";
+}
+function fmtSigned(v){ return (v>=0?"+":"−") + fmtYen(Math.abs(v)).slice(0);}
+function el(id){ return document.getElementById(id);}
+
+/* ============ chart ============ */
+function niceCeil(v){
+if (v<=0) return 10000;
+var pow = Math.pow(10, Math.max(0, Math.floor(Math.log10(v))-1));
+return Math.ceil(v/pow)*pow;
+}
+function buildChart(det, mc){
+var W=680, H=392, PL=46, PR=150, PT=32, PB=30;
+var iw = W-PL-PR, ih = H-PT-PB;
+var months = det.months;
+var maxV = 0;
+if (state.mode === "otaku" && mc){
+mc.band.forEach(function(b){ if (b.p75>maxV) maxV=b.p75;});
+det.value.forEach(function(v){ if (v>maxV) maxV=v;});
+} else {
+det.value.forEach(function(v){ if (v>maxV) maxV=v;});
+}
+var yMax = niceCeil(maxV*1.06);
+var x0 = months[0], x1 = months[months.length-1];
+function X(p){ return PL + (p-x0)/Math.max(1,(x1-x0))*iw;}
+function Y(v){ return PT + ih - (v/yMax)*ih;}
+var s = "";
+s += '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="積み上がりグラフ">';
+/* frame around the plot only, so end labels sit outside it */
+s += '<rect x="'+PL+'" y="'+PT+'" width="'+iw+'" height="'+ih+'" fill="none" stroke="rgba(35,38,36,.35)" stroke-width="1.6" stroke-dasharray="7 5" rx="8"/>';
+/* gridlines */
+for (var g=0; g<=4; g++){
+var gv = yMax*g/4, gy = Y(gv);
+s += '<line x1="'+PL+'" y1="'+gy+'" x2="'+(PL+iw)+'" y2="'+gy+'" stroke="rgba(35,38,36,.14)" stroke-width="1" stroke-dasharray="3 4"/>';
+s += '<text x="'+(PL-6)+'" y="'+(gy+4)+'" font-size="11" text-anchor="end" fill="rgba(35,38,36,.6)" font-family="BIZ UDPGothic">'+Math.round(gv/10000)+'</text>';
+}
+s += '<text x="'+PL+'" y="'+(PT-10)+'" font-size="11.5" text-anchor="start" fill="rgba(35,38,36,.65)" font-family="BIZ UDPGothic">（万円）</text>';
+/* x ticks every 5 years */
+var yStart = yOf(x0), yEnd = yOf(x1);
+for (var yy=yStart; yy<=yEnd; yy++){
+if ( (yy-yStart)%5!== 0 && yy!== yEnd) continue;
+var xp = X(idx(yy,1));
+if (xp > PL+iw) xp = PL+iw;
+s += '<text x="'+xp+'" y="'+(PT+ih+20)+'" font-size="11" text-anchor="middle" fill="rgba(35,38,36,.6)" font-family="BIZ UDPGothic">'+yy+'</text>';
+}
+function pathFrom(pts){
+return pts.map(function(pt,i){ return (i===0?"M":"L")+pt[0].toFixed(1)+" "+pt[1].toFixed(1);}).join(" ");
+}
+var endLabels = [];
+if (state.mode === "otaku" && mc){
+var top=[], bot=[];
+mc.snapMonths.forEach(function(p,i){ top.push([X(p), Y(mc.band[i].p75)]);});
+mc.snapMonths.slice().reverse().forEach(function(p){
+var i = mc.snapMonths.indexOf(p); bot.push([X(p), Y(mc.band[i].p25)]);
+});
+s += '<path d="'+pathFrom(top.concat(bot))+' Z" fill="rgba(49,95,91,.15)" stroke="none"/>';
+var medPts = mc.snapMonths.map(function(p,i){ return [X(p), Y(mc.band[i].med)];});
+var startPt = [X(x0), Y(0)];
+s += '<path d="'+pathFrom([startPt].concat(medPts))+'" fill="none" stroke="#315F5B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+var detPts = det.months.map(function(p,i){ return [X(p), Y(det.value[i])];});
+s += '<path d="'+pathFrom(detPts)+'" fill="none" stroke="#232624" stroke-width="1.8" stroke-dasharray="6 4" stroke-linecap="round"/>';
+endLabels.push({ y: Y(mc.median), color:"#315F5B", text:"中央値 "+fmtMan(mc.median), bold:true});
+endLabels.push({ y: Y(det.value[det.value.length-1]), color:"#232624", text:"直線 "+fmtMan(det.value[det.value.length-1])});
+endLabels.push({ y: Y(mc.p25), color:"rgba(35,38,36,.55)", text:"25% "+fmtMan(mc.p25)});
+endLabels.push({ y: Y(mc.p75), color:"rgba(35,38,36,.55)", text:"75% "+fmtMan(mc.p75)});
+} else {
+var area = det.months.map(function(p,i){ return [X(p), Y(det.value[i])];});
+var areaPath = pathFrom(area) + " L"+X(x1).toFixed(1)+" "+Y(0).toFixed(1)+" L"+X(x0).toFixed(1)+" "+Y(0).toFixed(1)+" Z";
+s += '<path d="'+areaPath+'" fill="rgba(49,95,91,.16)" stroke="none"/>';
+s += '<path d="'+pathFrom(area)+'" fill="none" stroke="#315F5B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+var prinPts = det.months.map(function(p,i){ return [X(p), Y(det.principal[i])];});
+s += '<path d="'+pathFrom(prinPts)+'" fill="none" stroke="#232624" stroke-width="2" stroke-linecap="round"/>';
+var hasOutside = det.outside[det.outside.length-1] > 0;
+if (hasOutside){
+var outPts = det.months.map(function(p,i){ return [X(p), Y(det.outside[i])];});
+s += '<path d="'+pathFrom(outPts)+'" fill="none" stroke="#B55B46" stroke-width="2.2" stroke-dasharray="7 5" stroke-linecap="round"/>';
+endLabels.push({ y: Y(det.outside[det.outside.length-1]), color:"#B55B46", text:"枠外 "+fmtMan(det.outside[det.outside.length-1])});
+}
+endLabels.push({ y: Y(det.value[det.value.length-1]), color:"#315F5B", text:"評価額 "+fmtMan(det.value[det.value.length-1]), bold:true});
+endLabels.push({ y: Y(det.principal[det.principal.length-1]), color:"#232624", text:"元本 "+fmtMan(det.principal[det.principal.length-1])});
+}
+/* end labels: de-collide */
+endLabels.sort(function(a,b){ return a.y-b.y;});
+for (var li=1; li<endLabels.length; li++){
+if (endLabels[li].y - endLabels[li-1].y < 17) endLabels[li].y = endLabels[li-1].y + 17;
+}
+endLabels.forEach(function(L){
+s += '<text x="'+(PL+iw+8)+'" y="'+(L.y+4)+'" font-size="12.5" fill="'+L.color+'" font-family="Klee One" '+(L.bold?'font-weight="600"':'')+'>'+L.text+'</text>';
+});
+s += "</svg>";
+return s;
+}
+
+/* ============ render ============ */
+var lastResult = null;
+function render(){
+var kids = buildChildren();
+var schedule = buildSchedule(kids);
+var isOtaku = state.mode === "otaku";
+var detRate = isOtaku? state.expRet: state.rate;
+var det = runDeterministic(schedule, detRate);
+var mc = isOtaku? runMonteCarlo(schedule): null;
+lastResult = { kids:kids, schedule:schedule, det:det, mc:mc};
+
+var finalValue = det.value[det.value.length-1];
+var finalPrincipal = det.principal[det.principal.length-1];
+var finalOutside = det.outside[det.outside.length-1];
+var nisaPrincipalTotal = schedule.sched.reduce(function(a,s){return a+s.principal;},0);
+var gain = finalValue - finalPrincipal;
+
+var endKid = kids[kids.length-1];
+el("sumSub").textContent = kids.length+"人 ／ 第1子 "+yOf(kids[0].birth)+"年"+mOf(kids[0].birth)+"月生まれ"
++ (kids.length>1? "・"+state.spacing+"歳差": "")
++ (state.tokyo? "・東京都（018）": "")
++ " ／ 出口は最後の子の"+state.exitAge+"歳の年度末（"+yOf(endKid.exitEnd)+"年"+mOf(endKid.exitEnd)+"月）";
+
+if (isOtaku){
+el("sumTitle").textContent = "世帯合計（モンテカルロ中央値）";
+el("sumValue").innerHTML = fmtMan(mc.median);
+el("mcPanel").classList.remove("hidden");
+el("mcMedian").textContent = fmtYen(mc.median);
+el("mcBand").textContent = fmtMan(mc.p25)+" 〜 "+fmtMan(mc.p75);
+el("mcP5").textContent = fmtYen(mc.p5);
+var d = mc.median - finalValue;
+el("mcDiff").textContent = (d>=0?"+":"−") + fmtYen(Math.abs(d)).replace("¥","¥");
+el("mcDiff").style.color = d>=0? "var(--teal)": "var(--brick)";
+} else {
+el("sumTitle").textContent = "世帯合計（直線計算）";
+el("sumValue").innerHTML = fmtMan(finalValue);
+el("mcPanel").classList.add("hidden");
+}
+el("sumPrincipal").textContent = fmtYen(finalPrincipal);
+el("sumGain").textContent = (isOtaku? "直線計算で ": "") + (gain>=0?"+":"−") + fmtYen(Math.abs(gain)).replace("¥","¥");
+el("sumNisa").textContent = fmtYen(nisaPrincipalTotal);
+el("sumOutside").textContent = fmtYen(finalOutside);
+
+/* diff note */
+var note = "";
+if (isOtaku){
+var dd = mc.median - finalValue;
+note = "中央値と直線計算の差は <b>"+(dd>=0?"+":"−")+fmtMan(Math.abs(dd))+"</b>。"
++ "ブレがあると、複利の効き方はまっすぐにはならず、中央値は直線を下回りやすくなります（下位5%は "+fmtMan(mc.p5)+"）。"
++ (finalOutside>0? ' 枠外（現金）が <span class="ng">'+fmtMan(finalOutside)+'</span> あり、これはブレずに残ります。': "");
+} else {
+note = "元本 "+fmtMan(finalPrincipal)+" に対して評価額 "+fmtMan(finalValue)+"、差は <b>+"+fmtMan(gain)+"</b> が運用益の目安。"
++ (finalOutside>0? ' うち <span class="ng">'+fmtMan(finalOutside)+'</span> は600万円の枠に入り切らず、現金のまま残ります。': " 600万円の枠には収まっています。");
+}
+el("diffNote").innerHTML = note;
+
+/* chart */
+el("chartTitle").textContent = isOtaku? "積み上がり方（中央値と25〜75%の帯）": "積み上がり方";
+el("chartBox").innerHTML = buildChart(det, mc);
+if (isOtaku){
+el("chartLegend").innerHTML =
+'<span><span class="sw"></span>中央値</span><span><span class="sw band"></span>25〜75%の帯</span><span><span class="sw ink" style="border-top-style:dashed;"></span>直線計算（同期待リターン）</span>';
+} else {
+el("chartLegend").innerHTML =
+'<span><span class="sw"></span>評価額</span><span><span class="sw ink"></span>元本（累計）</span>'
++ (finalOutside>0? '<span><span class="sw brick"></span>枠外（現金）</span>': "");
+}
+
+/* child cards */
+var grid = el("childGrid");
+grid.innerHTML = "";
+schedule.sched.forEach(function(s, i){
+var kid = s.kid, fin = det.finals[i];
+var card = document.createElement("div");
+card.className = "child-card";
+var startAgeTxt;
+if (kid.birth >= START) startAgeTxt = "出生から参加";
+else {
+var ageM = kid.payStart - kid.birth - 1;
+startAgeTxt = Math.floor(ageM/12)+"歳"+(ageM%12>0? (ageM%12)+"か月": "")+"から参加";
+}
+var months = kid.payEnd - kid.payStart + 1;
+var rows = "";
+rows += kv("児童手当の総額", fmtYen(s.allowanceSum));
+if (state.tokyo) rows += kv("018サポート", fmtYen(s.tokyoSum));
+if (state.extra>0) rows += kv("追加入金", fmtYen(s.extraSum));
+rows += kv("入金月数", months+"か月");
+rows += kv("NISA元本（簿価）", fmtYen(s.principal));
+if (s.outside>0) rows += kv("枠外（現金のまま）", fmtYen(s.outside), "brick");
+rows += kv("運用益（直線）", "+"+fmtYen(fin.value - (s.principal+s.outside)).replace("¥","¥"));
+if (isOtaku && mc){
+rows += kv("中央値（試行）", fmtYen(mc.childStats[i].med));
+rows += kv("下位5%（試行）", fmtYen(mc.childStats[i].p5), "brick");
+}
+rows += '<div class="kv total"><span class="k">評価額（'+state.exitAge+'歳・出口）</span><span class="v">'+fmtYen(fin.value)+"</span></div>";
+card.innerHTML = "<h3>第"+kid.n+"子</h3>"
++ '<p class="born">'+yOf(kid.birth)+"年"+mOf(kid.birth)+"月生まれ ・ "+startAgeTxt+" ・ 手当は"+yOf(kid.payEnd)+"年"+mOf(kid.payEnd)+"月分まで</p>"
++ rows;
+grid.appendChild(card);
+});
+
+el("rateVal").textContent = state.rate.toFixed(1)+"%";
+document.querySelectorAll("#rateChips.chip").forEach(function(c){
+c.classList.toggle("on", +c.getAttribute("data-rate") === state.rate);
+});
+el("extraVal").textContent = state.extra.toLocaleString("ja-JP")+"円／月";
+el("spacingVal").textContent = state.spacing+"年";
+el("expVal").textContent = state.expRet.toFixed(1)+"%";
+el("sdVal").textContent = state.sd+"%";
+}
+function kv(k, v, cls){
+return '<div class="kv"><span class="k">'+k+'</span><span class="v'+(cls?" "+cls:"")+'">'+v+"</span></div>";
+}
+
+/* ============ controls wiring ============ */
+function initControls(){
+var by = el("birthYear"), bm = el("birthMonth");
+for (var y=2020; y<=2032; y++){
+var o=document.createElement("option"); o.value=y; o.textContent=y+"年"; by.appendChild(o);
+}
+for (var m=1; m<=12; m++){
+var o2=document.createElement("option"); o2.value=m; o2.textContent=m+"月"; bm.appendChild(o2);
+}
+by.value = "2027"; bm.value = "4";
+by.addEventListener("change", function(){ state.birth = idx(+by.value, +bm.value); render();});
+bm.addEventListener("change", function(){ state.birth = idx(+by.value, +bm.value); render();});
+
+el("numKidsSeg").querySelectorAll("button").forEach(function(b){
+b.addEventListener("click", function(){
+state.nKids = +b.getAttribute("data-n");
+el("numKidsSeg").querySelectorAll("button").forEach(function(x){ x.classList.toggle("on", x===b);});
+el("spacingField").style.opacity = state.nKids>1? "1": ".45";
+render();
+});
+});
+el("spacing").addEventListener("change", function(){ state.spacing = +this.value; render();});
+el("tokyoToggle").addEventListener("change", function(){ state.tokyo = this.checked; render();});
+el("extraRange").addEventListener("input", function(){ state.extra = +this.value; render();});
+el("exitAge").addEventListener("change", function(){ state.exitAge = +this.value; render();});
+
+el("rateRange").addEventListener("input", function(){ state.rate = +this.value; render();});
+el("rateChips").querySelectorAll(".chip").forEach(function(c){
+c.addEventListener("click", function(){
+state.rate = +c.getAttribute("data-rate");
+el("rateRange").value = state.rate;
+render();
+});
+});
+
+function setMode(m){
+state.mode = m;
+el("modeSimple").classList.toggle("on", m==="simple");
+el("modeOtaku").classList.toggle("on", m==="otaku");
+el("simpleCard").classList.toggle("hidden", m!=="simple");
+el("otakuCard").classList.toggle("hidden", m!=="otaku");
+render();
+}
+el("modeSimple").addEventListener("click", function(){ setMode("simple");});
+el("modeOtaku").addEventListener("click", function(){ setMode("otaku");});
+
+var presets = { orukan:{r:7,s:17}, nasdaq:{r:10,s:23}};
+el("indexPreset").addEventListener("change", function(){
+state.preset = this.value;
+if (presets[this.value]){
+state.expRet = presets[this.value].r;
+state.sd = presets[this.value].s;
+el("expRange").value = state.expRet; el("sdRange").value = state.sd;
+}
+var custom = this.value === "custom";
+el("expRange").disabled =!custom;
+el("sdRange").disabled =!custom;
+render();
+});
+el("expRange").addEventListener("input", function(){ state.expRet = +this.value; render();});
+el("sdRange").addEventListener("input", function(){ state.sd = +this.value; render();});
+
+function setBirth(y, m){
+state.birth = idx(y,m);
+el("birthYear").value = String(y); el("birthMonth").value = String(m);
+}
+el("chipNewborn").addEventListener("click", function(){ setBirth(2027,4); render();});
+el("chipAge3").addEventListener("click", function(){ setBirth(2024,1); render();});
+
+document.querySelectorAll("[data-scenario]").forEach(function(btn){
+btn.addEventListener("click", function(){
+var sc = btn.getAttribute("data-scenario");
+if (sc === "three2"){ setKids(3); state.spacing = 2; el("spacing").value="2"; setBirth(2027,4); state.tokyo=false; el("tokyoToggle").checked=false;}
+if (sc === "three6"){ setKids(3); state.spacing = 6; el("spacing").value="6"; setBirth(2027,4); state.tokyo=false; el("tokyoToggle").checked=false;}
+if (sc === "tokyo3"){ setKids(1); setBirth(2024,1); state.tokyo=true; el("tokyoToggle").checked=true;}
+render();
+});
+});
+function setKids(n){
+state.nKids = n;
+el("numKidsSeg").querySelectorAll("button").forEach(function(x){
+x.classList.toggle("on", +x.getAttribute("data-n") === n);
+});
+el("spacingField").style.opacity = n>1? "1": ".45";
+}
+
+el("copyBtn").addEventListener("click", function(){
+if (!lastResult) return;
+var det = lastResult.det, mc = lastResult.mc, sch = lastResult.schedule;
+var fv = det.value[det.value.length-1], fp = det.principal[det.principal.length-1];
+var lines = [];
+lines.push("");
+lines.push("子ども"+state.nKids+"人・第1子 "+yOf(state.birth)+"年"+mOf(state.birth)+"月生まれ"
++ (state.nKids>1? "・"+state.spacing+"歳差": "") + (state.tokyo? "・東京都（018サポート）": "")
++ "・追加 "+state.extra.toLocaleString("ja-JP")+"円/月・出口 "+state.exitAge+"歳");
+sch.sched.forEach(function(s,i){
+lines.push("第"+(i+1)+"子：手当総額 "+fmtYen(s.allowanceSum)+" → NISA元本 "+fmtYen(s.principal)
++ (s.outside>0? "（枠外 "+fmtYen(s.outside)+"）": "") + "、評価額 "+fmtYen(det.finals[i].value));
+});
+if (state.mode === "otaku" && mc){
+lines.push("世帯：期待リターン年"+state.expRet+"%・標準偏差"+state.sd+"% で1,000回試行 → 中央値 "+fmtYen(mc.median)
++"（25〜75%："+fmtMan(mc.p25)+"〜"+fmtMan(mc.p75)+"／下位5%："+fmtYen(mc.p5)+"）");
+} else {
+lines.push("世帯：年利"+state.rate+"%の直線計算 → 元本 "+fmtYen(fp)+" が評価額 "+fmtYen(fv)+" に（運用益 +"+fmtYen(fv-fp).replace("¥","¥")+"）");
+}
+var text = lines.join("\n");
+var done = function(){
+el("copyMsg").textContent = "コピーしました。そのまま投稿やメモに貼れます。";
+setTimeout(function(){ el("copyMsg").textContent="";}, 3500);
+};
+if (navigator.clipboard && navigator.clipboard.writeText){
+navigator.clipboard.writeText(text).then(done, function(){ fallbackCopy(text); done();});
+} else { fallbackCopy(text); done();}
+});
+}
+function fallbackCopy(text){
+var ta = document.createElement("textarea");
+ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+document.body.appendChild(ta); ta.select();
+try { document.execCommand("copy");} catch(e){}
+document.body.removeChild(ta);
+}
+
+initControls();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>証券口座「生存＆出口」リスク診断シミュレーター｜お金を考えすぎる会社員</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<script>
+(function(){try{fetch("https://abacus.jasoncameron.dev/hit/F4_Ht-3F1M0DgiEC/W-utVopPvDYaLDOB",{mode:"no-cors",keepalive:true}).catch(function(){});}catch(e){try{var i=new Image();i.src="https://abacus.jasoncameron.dev/hit/F4_Ht-3F1M0DgiEC/W-utVopPvDYaLDOB";}catch(_){}}})();
+</script>
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#F3F0E8;
+    --paper-soft:#ECE7D8;
+    --card:#FCFBF4;
+    --ink:#232624;
+    --ink-soft:rgba(35,38,36,.68);
+    --ink-faint:rgba(35,38,36,.45);
+    --line:rgba(35,38,36,.16);
+    --petrol:#315F5B;
+    --petrol-deep:#22423F;
+    --petrol-tint:rgba(49,95,91,.10);
+    --brick:#B55B46;
+    --brick-tint:#F8E9E2;
+    --shadow:0 2px 0 rgba(35,38,36,.85);
+  }  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0; background-color:var(--paper);
+    background-image:radial-gradient(var(--line) .7px, transparent .8px);
+    background-size:18px 18px; color:var(--ink);
+    font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;
+    font-size:15px; line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{ max-width:880px; margin:0 auto; padding:20px 16px 40px; }
+  h1,h2,h3,.hand{ font-family:"Klee One","BIZ UDPGothic",sans-serif; }
+  button,input{ font-family:inherit; }
+  button,[role="button"],summary{ min-height:2.25rem; }
+
+  .top{ text-align:center; padding:10px 4px 4px; }
+  .top h1{ font-size:26px; font-weight:600; line-height:1.45; margin:6px 0 8px; }
+  .top h1 .accent{ color:var(--petrol); }
+  .top .decl{ margin:0 auto; max-width:600px; font-size:13px; font-weight:700; color:var(--petrol); }
+  .top .lead{ margin:6px auto 0; max-width:600px; font-size:13px; color:var(--ink-soft); line-height:1.8; }
+  @media (min-width:640px){ .top h1{ font-size:32px; } }
+
+  .box{
+    background:var(--card); border:2px solid var(--ink);
+    border-radius:255px 14px 225px 14px/14px 225px 14px 255px;
+    box-shadow:var(--shadow); padding:20px 18px; margin-top:22px;
+  }
+  @media (min-width:640px){ .box{ padding:26px 28px; } }
+  .box h2{ font-size:19px; font-weight:600; margin:0 0 4px; display:flex; align-items:center; gap:9px; }
+  .box h2 .dot{ width:11px; height:11px; border-radius:50%; background:var(--brick); flex:none; }
+  .box h2 .dot.petrol{ background:var(--petrol); }
+  .box .sub{ font-size:12.5px; color:var(--ink-soft); margin:0 0 6px; }
+
+  .field{ margin-top:18px; }
+  .field-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .flabel{ font-size:14.5px; font-weight:700; }
+  .fval{ font-family:"Klee One",sans-serif; font-size:20px; font-weight:600; color:var(--petrol); }
+  .taps{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .taps button{
+    font-size:13px; font-weight:700; padding:7px 12px; cursor:pointer; line-height:1.4;
+    color:var(--ink); background:var(--paper-soft); border:1.5px solid var(--ink); border-radius:10px 3px 10px 3px;
+  }
+  .taps button[aria-pressed="true"]{ background:var(--petrol); color:#F7F4EA; border-color:var(--petrol); }
+    .taps.col button{ text-align:left; flex:1 1 100%; }
+  @media (min-width:640px){ .taps.col button{ flex:1 1 30%; } }
+  input[type="range"]{ -webkit-appearance:none; appearance:none; width:100%; height:38px; background:transparent; cursor:pointer; margin:2px 0 0; }
+  input[type="range"]::-webkit-slider-runnable-track{ height:8px; border-radius:99px; background:var(--paper-soft); border:1.5px solid var(--line); }
+  input[type="range"]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:27px; height:27px; margin-top:-11px; border-radius:50%; background:var(--petrol); border:3px solid var(--card); box-shadow:0 1px 5px rgba(0,0,0,.3); }
+  input[type="range"]::-moz-range-track{ height:8px; border-radius:99px; background:var(--paper-soft); border:1.5px solid var(--line); }
+  input[type="range"]::-moz-range-thumb{ width:21px; height:21px; border-radius:50%; background:var(--petrol); border:3px solid var(--card); box-shadow:0 1px 5px rgba(0,0,0,.3); }
+  input[type="range"]:disabled{ opacity:.4; cursor:default; }
+  .scale{ display:flex; justify-content:space-between; font-size:11px; color:var(--ink-faint); margin-top:-2px; }
+  .checkline{ display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700; color:var(--petrol); cursor:pointer; padding:6px 0; }
+  .checkline input{ width:20px; height:20px; accent-color:var(--petrol); }
+  .premise{ font-size:12px; color:var(--ink-soft); background:var(--paper-soft); border:1.5px dashed var(--line); border-radius:8px; padding:10px 12px; margin:12px 0 0; line-height:1.8; }
+  .warn{ margin-top:14px; background:var(--brick-tint); border:2px solid var(--brick); border-radius:10px; padding:12px 14px; font-size:13px; font-weight:700; color:var(--brick); line-height:1.8; }
+  .warn[hidden]{ display:none; }
+  hr.sep{ border:none; border-top:1.5px dashed var(--line); margin:20px 0 0; }
+  .grp{ font-size:12px; font-weight:700; color:var(--ink-faint); letter-spacing:.06em; margin:20px 0 -6px; }
+
+  /* 結果 */
+  .hero{ background:var(--petrol); color:#F7F4EA; border:2px solid var(--petrol-deep); border-radius:14px 255px 14px 225px/225px 14px 255px 14px; box-shadow:0 3px 0 rgba(34,66,63,.55); padding:22px 20px 18px; margin-top:14px; }
+    .hero .hl{ font-size:12.5px; font-weight:700; letter-spacing:.05em; opacity:.88; margin:0; }
+  .hero .hn{ font-family:"Klee One",sans-serif; font-weight:600; font-size:52px; line-height:1.2; margin:2px 0 0; }
+  .hero .hn small{ font-size:20px; font-weight:700; margin-left:6px; }
+  @media (min-width:640px){ .hero .hn{ font-size:64px; } }
+  .hero .hs{ font-size:13px; line-height:1.85; margin:8px 0 0; }
+  .stats{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:14px; }
+  @media (min-width:640px){ .stats{ grid-template-columns:repeat(3,1fr); } }
+  .stat{ background:var(--paper-soft); border:1.5px solid var(--line); border-radius:4px 14px 4px 14px; padding:12px 14px; }
+  .stat .cap{ font-size:11.5px; font-weight:700; color:var(--ink-soft); margin:0; }
+  .stat .amt{ font-family:"Klee One",sans-serif; font-size:22px; font-weight:600; margin:2px 0 0; }
+  .stat .note{ font-size:11px; color:var(--ink-soft); margin:2px 0 0; line-height:1.6; }
+  .verdict{ margin-top:16px; background:var(--ink); color:var(--paper); border-radius:14px 4px 14px 4px; padding:16px 18px; }
+  .verdict .vl{ font-size:11.5px; font-weight:700; color:#C08A2D; letter-spacing:.05em; margin:0 0 4px; }
+  .verdict .vt{ font-size:15px; font-weight:700; line-height:1.85; margin:0; }
+  .verdict .vn{ font-size:12px; opacity:.78; line-height:1.8; margin:8px 0 0; }
+  ul.notes{ margin:12px 0 0; padding-left:20px; font-size:12.5px; color:var(--ink-soft); line-height:1.85; }
+  ul.notes li{ margin:4px 0; }
+  ul.notes li.hl{ color:var(--ink); font-weight:700; }
+
+  .bars{ margin-top:14px; display:grid; gap:12px; }
+  .bar .bl{ display:flex; justify-content:space-between; font-size:13px; font-weight:700; }
+  .bar .track{ height:22px; background:var(--paper-soft); border:1.5px solid var(--line); border-radius:6px; margin-top:4px; overflow:hidden; }
+  .bar .fill{ height:100%; background:var(--petrol); transition:width .25s ease; }
+  .bar.big .fill{ background:var(--petrol); }
+  .diff{ margin-top:14px; background:var(--brick-tint); border:2px solid var(--brick); border-radius:12px 3px 12px 3px; padding:12px 14px; }
+  .diff p{ margin:0; }
+  .diff .dl{ font-size:12px; font-weight:700; color:var(--brick); }
+  .diff .dn{ font-family:"Klee One",sans-serif; font-size:30px; font-weight:600; color:var(--brick); line-height:1.4; }
+  .closing{ font-size:14px; font-weight:700; margin:14px 0 0; }
+
+  .score{ display:flex; align-items:center; gap:16px; margin-top:12px; }
+  .grade{ font-family:"Klee One",sans-serif; font-size:56px; font-weight:600; line-height:1; width:84px; height:84px; display:flex; align-items:center; justify-content:center; border:2.5px solid var(--petrol); color:var(--petrol); border-radius:50%; flex:none; background:var(--petrol-tint); }
+  .grade.low{ border-color:var(--brick); color:var(--brick); background:var(--brick-tint); }
+  .score .pts{ font-family:"Klee One",sans-serif; font-size:22px; font-weight:600; margin:0; }
+  .score .pd{ font-size:13px; color:var(--ink-soft); margin:2px 0 0; line-height:1.75; }
+  .items{ display:grid; gap:8px; margin-top:14px; }
+  .item{ display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:13px; background:var(--paper-soft); border:1.5px solid var(--line); border-radius:8px; padding:8px 12px; }
+  .item b{ font-family:"Klee One",sans-serif; font-size:16px; }
+  .item.gap{ border-color:var(--brick); }
+  .item.gap b{ color:var(--brick); }
+  .cnote{ margin-top:14px; background:var(--petrol-tint); border:1.5px solid var(--petrol); border-radius:10px; padding:10px 14px; font-size:12.5px; line-height:1.85; }
+  .cnote .ct{ font-weight:700; color:var(--petrol); margin:0 0 2px; }
+  .cnote p{ margin:0; }
+
+  ol.steps{ list-style:none; padding:0; margin:12px 0 0; display:grid; gap:10px; counter-reset:s; }
+  ol.steps li{ counter-increment:s; display:flex; gap:12px; align-items:flex-start; background:var(--paper-soft); border:1.5px solid var(--line); border-radius:4px 14px 4px 14px; padding:12px 14px; font-size:13.5px; font-weight:700; line-height:1.7; }
+  ol.steps li::before{ content:counter(s); font-family:"Klee One",sans-serif; font-size:20px; color:var(--brick); line-height:1.3; flex:none; }
+  ol.steps li small{ display:block; font-weight:400; font-size:12px; color:var(--ink-soft); }
+  h3.sh{ font-size:15px; font-weight:600; margin:20px 0 0; }
+  .branches{ display:grid; gap:8px; margin:10px 0 0; padding:0; list-style:none; }
+  .branches li{ font-size:13px; background:var(--paper-soft); border:1.5px solid var(--line); border-radius:8px; padding:9px 12px; line-height:1.7; }
+  .branches li b{ color:var(--petrol); }
+
+  details.fold{ background:var(--card); border:1.5px solid var(--line); border-radius:10px; padding:4px 16px; margin-top:10px; }
+  details.fold > summary{ cursor:pointer; list-style:none; font-size:13.5px; font-weight:700; padding:10px 2px; }
+  details.fold > summary::-webkit-details-marker{ display:none; }
+  .endnote{ margin-top:26px; background:var(--card); border:1.5px solid var(--line); border-radius:10px; padding:14px 18px; }
+  .endnote h2{ font-size:15px; margin:0 0 4px; }
+  .endnote ul{ margin:6px 0 0; padding-left:20px; font-size:12.5px; color:var(--ink-soft); line-height:1.85; }
+  footer{ margin-top:30px; text-align:center; font-size:12px; color:var(--ink-soft); }
+  footer .brand{ font-family:"Klee One",sans-serif; font-size:14px; color:var(--ink); font-weight:600; }
+  footer a{ color:var(--petrol); font-weight:700; text-decoration:underline; text-underline-offset:3px; }
+  .hidden{ display:none !important; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="top">
+    <h1>証券口座<span class="accent">「生存＆出口」</span>リスク診断シミュレーター</h1>
+    <p class="decl">入力した情報は送信・保存されません。このページ内だけで計算します。</p>
+    <p class="lead">今の証券会社から全部出すといくらかかるか。ポイント差との比較と、「守り」の設定チェックまで、15秒で並べて見ます。</p>
+  </header>
+
+  <!-- 入力 -->
+  <section class="box" aria-label="入力">
+    <h2><span class="dot petrol"></span>あなたの条件</h2>
+    <p class="sub">タップとスライダーだけで完結します。</p>
+
+    <div class="field">
+      <span class="flabel" id="l-from">① 移管元（メインで利用している証券会社）</span>
+      <div class="taps" id="t-from" role="group" aria-labelledby="l-from"></div>
+    </div>
+    <div class="field">
+      <span class="flabel" id="l-to">② 移管先</span>
+      <div class="taps" id="t-to" role="group" aria-labelledby="l-to"></div>
+    </div>
+    <div class="field">
+      <span class="flabel" id="l-acct">③ 口座区分</span>
+      <div class="taps" id="t-acct" role="group" aria-labelledby="l-acct"></div>
+    </div>
+    <div class="warn" id="nisaWarn" role="alert" hidden>NISA口座の商品は他社のNISA口座へそのまま移せません。移すには課税口座への払出し（非課税メリットの喪失）を挟みます</div>
+
+    <div class="field">
+      <div class="field-head"><label class="flabel" for="s-fund">④ 保有中の投資信託の銘柄数</label><span class="fval"><span id="v-fund">3</span>銘柄</span></div>
+      <input id="s-fund" type="range" min="0" max="10" step="1" value="3" />
+      <div class="scale"><span>0</span><span>5</span><span>10</span></div>
+    </div>
+    <div class="field">
+      <div class="field-head"><label class="flabel" for="s-stock">⑤ 保有中の国内株式の銘柄数</label><span class="fval"><span id="v-stock">0</span>銘柄</span></div>
+      <input id="s-stock" type="range" min="0" max="10" step="1" value="0" />
+      <div class="scale"><span>0</span><span>5</span><span>10</span></div>
+    </div>
+    <div class="field hidden" id="f-units">
+      <span class="flabel" id="l-units">⑥ 1銘柄あたりの平均単元数（野村証券のみ）</span>
+      <div class="taps" id="t-units" role="group" aria-labelledby="l-units"></div>
+    </div>
+    <div class="field">
+      <div class="field-head"><label class="flabel" for="s-gain">⑦ 現在の含み益</label><span class="fval"><span id="v-gain">100</span>万円</span></div>
+      <input id="s-gain" type="range" min="0" max="500" step="5" value="100" />
+      <div class="scale"><span>0</span><span>250万</span><span>500万</span></div>
+      <label class="checkline"><input type="checkbox" id="c-gain" />分からない／含み損（税額0として、分岐点だけ表示）</label>
+    </div>
+    <div class="field">
+      <div class="field-head"><label class="flabel" for="s-card">⑧ 毎月のクレカ積立額</label><span class="fval"><span id="v-card">5</span>万円</span></div>
+      <input id="s-card" type="range" min="0" max="10" step="0.5" value="5" />
+      <div class="scale"><span>0</span><span>5万</span><span>10万</span></div>
+    </div>
+
+    <p class="grp">守りの設定（自己チェック）</p>
+    <div class="field">
+      <span class="flabel" id="l-auth">⑨ ログイン認証の設定</span>
+      <div class="taps col" id="t-auth" role="group" aria-labelledby="l-auth"></div>
+    </div>
+    <div class="field">
+      <span class="flabel" id="l-spread">⑩ 口座の分散状況</span>
+      <div class="taps col" id="t-spread" role="group" aria-labelledby="l-spread"></div>
+    </div>
+    <div class="field">
+      <span class="flabel" id="l-wd">⑪ 出金先・通知の設定</span>
+      <div class="taps col" id="t-wd" role="group" aria-labelledby="l-wd"></div>
+    </div>
+
+    <p class="premise">前提：銘柄数・含み益は同一名義での移管を前提とします。対象は国内株式と投資信託のみ（米国株・中国株・FX等は対象外）。相続・贈与等の異名義移管も対象外です。</p>
+  </section>
+
+  <!-- モジュールA -->
+  <section class="box" aria-label="出口コストと損益分岐">
+    <h2><span class="dot"></span>「いざ逃げる時」のリアル出庫コスト</h2>
+    <div class="hero">
+      <p class="hl">今の証券会社から全部出すと、出庫手数料は</p>
+      <p class="hn"><span id="a-F">0</span><small>円</small></p>
+      <p class="hs" id="a-sub"></p>
+    </div>
+    <div class="stats">
+      <div class="stat"><p class="cap" id="a-tcap">売却して現金で移した場合の税額</p><p class="amt" id="a-T">0円</p><p class="note" id="a-tnote"></p></div>
+      <div class="stat"><p class="cap">損益分岐点（含み益）</p><p class="amt" id="a-G">—</p><p class="note">これを超えると移管の方が安い</p></div>
+      <div class="stat"><p class="cap">内訳</p><p class="amt" id="a-split" style="font-size:16px;line-height:1.6"></p><p class="note">投信／国内株式</p></div>
+    </div>
+    <div class="verdict">
+      <p class="vl">判定</p>
+      <p class="vt" id="a-verdict"></p>
+      <p class="vn" id="a-vnote"></p>
+    </div>
+    <ul class="notes" id="a-notes"></ul>
+  </section>
+
+  <!-- モジュールB -->
+  <section class="box" aria-label="ポイント誤差メーター">
+    <h2><span class="dot petrol"></span>ポイント還元「誤差」メーター</h2>
+    <p class="sub">基本還元率の物差し（0.5%と1.1%）で単純比較した、年間のポイント差です。</p>
+    <div class="bars">
+      <div class="bar"><div class="bl"><span>還元率 0.5%</span><span id="b-p1">0円/年</span></div><div class="track"><div class="fill" id="b-f1" style="width:0%"></div></div></div>
+      <div class="bar big"><div class="bl"><span>還元率 1.1%</span><span id="b-p2">0円/年</span></div><div class="track"><div class="fill" id="b-f2" style="width:0%"></div></div></div>
+    </div>
+    <div class="diff"><p class="dl">還元率0.5%と1.1%の差は、年</p><p class="dn"><span id="b-D">0</span>円</p></div>
+    <p class="sub" id="b-link" style="margin-top:12px;font-size:13.5px;color:var(--ink);font-weight:700"></p>
+    <p class="sub hidden" id="b-tier" style="margin-top:8px">マネックスカードは積立5万円を超えた部分の還元率が下がる段階制のため、実際の差額はこの表示より小さくなります。</p>
+    <p class="closing">この差のために、資産の逃げ道（出口）を塞いでいませんか？</p>
+  </section>
+
+  <!-- モジュールC -->
+  <section class="box" aria-label="守りスコア">
+    <h2><span class="dot"></span>守りスコア</h2>
+    <p class="sub">認証・分散・出金先と通知の3項目（各0〜2点）の自己チェックです。</p>
+    <div class="score">
+      <div class="grade" id="c-grade">D</div>
+      <div><p class="pts"><span id="c-pts">0</span> / 6点</p><p class="pd" id="c-desc"></p></div>
+    </div>
+    <div class="items" id="c-items"></div>
+    <div class="cnote"><p class="ct" id="c-ct"></p><p id="c-cn"></p></div>
+  </section>
+
+  <!-- モジュールD -->
+  <section class="box" aria-label="処方箋">
+    <h2><span class="dot petrol"></span>処方箋</h2>
+    <h3 class="sh" style="margin-top:8px">今日やる3ステップ</h3>
+    <ol class="steps" id="d-steps"></ol>
+    <h3 class="sh">メイン／サブの考え方（配分は一例です）</h3>
+    <p class="sub" style="font-size:13px;margin-top:6px">メイン＝日常の積立・取引、サブ＝非常時の受け皿・分散先。役割を分けておくと、メインに何かあっても取引と資産の逃げ道が残ります。配分や比率はあくまで一例で、ここでは断定しません。</p>
+    <h3 class="sh">記事の「属性分岐」へ</h3>
+    <ul class="branches">
+      <li>投信の移管まで現実的に考えるなら <b>SBI証券</b>（投信お引越しプログラム）</li>
+      <li>移管コスト自体を最小にしたいなら <b>楽天証券</b>（投信出庫が当面無料）</li>
+      <li>補償の条件を約款で読みたいなら <b>マネックス証券</b></li>
+      <li>移管先の負担サービスまで含めて考えるなら <b>松井証券</b></li>
+    </ul>
+  </section>
+
+  <!-- 前提・注記 -->
+  <div class="endnote">
+    <h2>前提・注記</h2>
+    <ul>
+      <li>手数料・制度の確認日：2026年11月21日（各社公式ページ・約款に基づく）。</li>
+      <li>楽天証券の投信出庫無料は「当面の間」の措置であり、変更され得ます。</li>
+      <li>野村証券の投信出庫手数料は一次情報で未確認のため、計算対象外です。</li>
+      <li>損益通算は扱っていません。税率は20.315%（所得税＋復興特別所得税＋住民税）です。</li>
+      <li>本ツールは目安です。実際の手続き・費用は各社公式で最終確認してください。</li>
+    </ul>
+  </div>
+
+  <footer>
+    <p class="brand">並べて初めて見える。｜ お金を考えすぎる会社員</p>
+    <p>Threads：<a href="https://www.threads.net/@okane.kangaesugi" target="_blank" rel="noopener">@okane.kangaesugi</a> ／ note：<a href="https://note.com/okane_kangaesugi" target="_blank" rel="noopener">okane_kangaesugi</a></p>
+    <p><a href="../">シミュレータ一覧へ戻る</a></p>
+  </footer>
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/*CALC-START*/
+var TAX = 0.20315;
+var COMPANIES = ['SBI証券','楽天証券','マネックス証券','三菱UFJ eスマート証券','野村証券','松井証券','DMM株'];
+var FUND_FEE = {'SBI証券':3300,'楽天証券':0,'マネックス証券':3300,'三菱UFJ eスマート証券':5500,'野村証券':null,'松井証券':3300,'DMM株':null};
+var NOMURA_UNIT_FEE = [1100,3300,6050,11000]; /* 1/5/10/20単元以上 */
+var MUFG_MS = '三菱UFJモルガン・スタンレー証券';
+function stockFee(from, n, unitIdx){
+  if (from === '三菱UFJ eスマート証券') return Math.min(1100 * n, 33000);
+  if (from === '野村証券') return NOMURA_UNIT_FEE[unitIdx] * n;
+  return 0;
+}
+function fundFee(from, to, n){
+  if (from === '三菱UFJ eスマート証券' && to === MUFG_MS) return 0;
+  var u = FUND_FEE[from];
+  return u === null ? 0 : u * n;
+}
+function calcExit(s){
+  var Ff = fundFee(s.from, s.to, s.fund);
+  var Fs = stockFee(s.from, s.stock, s.unit);
+  var F = Ff + Fs;
+  var gainYen = s.gainUnknown ? 0 : s.gain * 10000;
+  var T = Math.max(gainYen, 0) * TAX;
+  var G = F / TAX;
+  return {Ff:Ff, Fs:Fs, F:F, T:T, G:G, gainYen:gainYen};
+}
+function calcPoint(cardMan){
+  var m = cardMan * 10000;
+  return {p1:m*12*0.005, p2:m*12*0.011, D:m*0.072};
+}
+function calcScore(s){ return s.auth + s.spread + s.wd; }
+/*CALC-END*/
+
+var S = {from:'SBI証券', to:'まだ決めていない', acct:'tax', fund:3, stock:0, unit:0, gain:100, gainUnknown:false, card:5, auth:0, spread:0, wd:0};
+
+function $(id){ return document.getElementById(id); }
+function fmt(n){ return new Intl.NumberFormat('ja-JP').format(Math.round(n)); }
+function man1(yen){ return (Math.round(yen / 1000) / 10).toFixed(1); }
+
+/* ---------- タップ生成 ---------- */
+function makeTaps(id, items, getter, setter){
+  var box = $(id); box.innerHTML = '';
+  items.forEach(function(it){
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = it.label; b.dataset.v = String(it.value);
+    b.setAttribute('aria-pressed', String(getter() === it.value));
+    b.addEventListener('click', function(){
+      setter(it.value);
+      Array.prototype.forEach.call(box.children, function(c){ c.setAttribute('aria-pressed', String(c === b)); });
+      render();
+    });
+    box.appendChild(b);
+  });
+}
+function strItems(arr){ return arr.map(function(x){ return {label:x, value:x}; }); }
+
+makeTaps('t-from', strItems(COMPANIES), function(){ return S.from; }, function(v){ S.from = v; });
+makeTaps('t-to', strItems(['まだ決めていない'].concat(COMPANIES, [MUFG_MS])), function(){ return S.to; }, function(v){ S.to = v; });
+makeTaps('t-acct', [{label:'課税口座（特定・一般）', value:'tax'},{label:'NISA口座', value:'nisa'}], function(){ return S.acct; }, function(v){ S.acct = v; });
+makeTaps('t-units', [{label:'1単元',value:0},{label:'5単元',value:1},{label:'10単元',value:2},{label:'20単元以上',value:3}], function(){ return S.unit; }, function(v){ S.unit = v; });
+var AUTH_L = ['ID・パスワードのみ','SMS・メール等の追加認証あり','パスキー（FIDO）設定済み'];
+var SPREAD_L = ['1社に集中','2社に分散','3社以上に分散'];
+var WD_L = ['確認したことがない','本人名義の登録口座のみ＋通知あり','出金先を1口座に固定し、ログイン・出金通知もON'];
+function idxItems(a){ return a.map(function(l,i){ return {label:l, value:i}; }); }
+makeTaps('t-auth', idxItems(AUTH_L), function(){ return S.auth; }, function(v){ S.auth = v; });
+makeTaps('t-spread', idxItems(SPREAD_L), function(){ return S.spread; }, function(v){ S.spread = v; });
+makeTaps('t-wd', idxItems(WD_L), function(){ return S.wd; }, function(v){ S.wd = v; });
+
+function bindRange(id, vid, key){
+  $(id).addEventListener('input', function(e){ S[key] = Number(e.target.value); $(vid).textContent = S[key]; render(); });
+}
+bindRange('s-fund','v-fund','fund'); bindRange('s-stock','v-stock','stock');
+bindRange('s-gain','v-gain','gain'); bindRange('s-card','v-card','card');
+$('c-gain').addEventListener('change', function(e){ S.gainUnknown = e.target.checked; $('s-gain').disabled = S.gainUnknown; render(); });
+
+function li(text, cls){ var e = document.createElement('li'); e.textContent = text; if (cls) e.className = cls; return e; }
+
+/* ---------- モジュールA ---------- */
+function renderA(){
+  var r = calcExit(S), nisa = S.acct === 'nisa';
+  $('f-units').classList.toggle('hidden', S.from !== '野村証券');
+  $('nisaWarn').hidden = !nisa;
+  $('a-F').textContent = fmt(r.F);
+  $('a-split').textContent = fmt(r.Ff) + '円／' + fmt(r.Fs) + '円';
+  $('a-tcap').textContent = nisa ? '課税口座へ払い出して売却した場合の税額の目安' : '売却して現金で移した場合の税額';
+  $('a-T').textContent = fmt(r.T) + '円';
+  $('a-tnote').textContent = S.gainUnknown ? '含み益が不明／含み損のため0円として扱っています' : '含み益' + fmt(S.gain) + '万円 × 20.315%';
+  $('a-G').textContent = r.F > 0 ? '約' + man1(r.G) + '万円' : '分岐なし';
+  $('a-sub').textContent = '全部売って現金で移すと、含み益' + (S.gainUnknown ? '（不明）' : fmt(S.gain) + '万円') + 'への税金は約' + fmt(r.T) + '円。' + (r.F > 0 ? '分岐点は含み益 約' + man1(r.G) + '万円 です。' : '移管コストが0円のため、分岐点はありません。');
+
+  var v = '', vn = '';
+  var holdings = S.fund + S.stock;
+  if (holdings === 0){
+    v = '銘柄数を入力すると、出庫コストと分岐点が出ます。';
+  } else if (r.F === 0){
+    v = '移管コストは0円です。売却して税金を払う理由はありません。';
+  } else if (S.gainUnknown){
+    v = '含み益が約' + man1(r.G) + '万円を超えると、移管の方が安くなります。';
+    vn = '含み益が分からない場合は、証券会社の損益画面で確認してください。';
+  } else if (S.gain * 10000 > r.G){
+    v = '移管の方が安いです。差額は約' + fmt(r.T - r.F) + '円（税額' + fmt(r.T) + '円 − 出庫手数料' + fmt(r.F) + '円）。';
+    vn = '移管なら含み益はそのまま引き継がれ、売るまで税金はかかりません。';
+  } else if (S.gain * 10000 < r.G){
+    v = '売却して現金で移す方が安いです。差額は約' + fmt(r.F - r.T) + '円（出庫手数料' + fmt(r.F) + '円 − 税額' + fmt(r.T) + '円）。';
+    vn = 'ただし、売却から買い直しまでの価格変動は織り込んでいません。また、売却で確定した税金は戻りません。';
+  } else {
+    v = '移管と売却は、ほぼ同額です。';
+  }
+  $('a-verdict').textContent = v; $('a-vnote').textContent = vn;
+
+  var ul = $('a-notes'); ul.innerHTML = '';
+  if (S.from === '野村証券' && S.fund > 0) ul.appendChild(li('野村証券の投信出庫手数料は一次情報で未確認のため、合計に含めていません。', 'hl'));
+  if (S.from === 'DMM株' && S.fund > 0) ul.appendChild(li('DMM株では投資信託を取り扱っていません。', 'hl'));
+  if (S.from === '楽天証券') ul.appendChild(li('楽天証券の投信出庫は通常3,300円ですが、2026年11月18日受付分より「当面の間」無料です。'));
+  if (S.from === '三菱UFJ eスマート証券' && S.to === MUFG_MS) ul.appendChild(li('三菱UFJモルガン・スタンレー証券への移管は、投信の出庫手数料が無料です（eスマート公式）。', 'hl'));
+  if (S.to === '松井証券') ul.appendChild(li('移管先が松井証券の場合、移管元に支払った出庫手数料を全額負担するサービスがあります（国内証券会社からの移管・円貨払い・書類提出等の条件あり。負担を受けた株式・投信を1年以内に出庫すると負担額相当を徴収）。', 'hl'));
+  if (S.to === 'SBI証券') ul.appendChild(li('移管先がSBI証券の場合、「投信お引越しプログラム」で移管元の出庫手数料と同額が後日入金される制度があります（対象外のケースあり。条件はSBI証券公式で確認）。', 'hl'));
+  if (S.to !== 'まだ決めていない' && S.to === S.from) ul.appendChild(li('移管元と移管先が同じ会社になっています。選択を確認してください。', 'hl'));
+  if (nisa) ul.appendChild(li('NISA口座は、課税口座への払出し（非課税メリットの喪失）を挟む前提で、課税口座の移管として計算しています。'));
+  ul.appendChild(li('移管なら含み益はそのまま引き継がれます（取得価額を引き継ぐため、売るまで税金はかかりません）。売却は税金がその場で確定します。'));
+  ul.appendChild(li('手続き中の期間は、対象銘柄の取引ができない会社があります。金額だけでなく所要期間も、移管先・移管元で確認してください。'));
+  return r;
+}
+
+/* ---------- モジュールB ---------- */
+function renderB(F){
+  var p = calcPoint(S.card);
+  $('b-p1').textContent = fmt(p.p1) + '円/年'; $('b-p2').textContent = fmt(p.p2) + '円/年';
+  $('b-f1').style.width = (p.p2 > 0 ? p.p1 / p.p2 * 100 : 0) + '%';
+  $('b-f2').style.width = (p.p2 > 0 ? 100 : 0) + '%';
+  $('b-D').textContent = fmt(p.D);
+  var link = $('b-link');
+  if (p.D > 0 && F > 0){
+    link.textContent = 'あなたの移管コスト' + fmt(F) + '円は、この年間差額の約' + (F / p.D).toFixed(1) + '年分です。';
+    link.classList.remove('hidden');
+  } else { link.textContent = ''; link.classList.add('hidden'); }
+  $('b-tier').classList.toggle('hidden', S.card <= 5);
+}
+
+/* ---------- モジュールC ---------- */
+var CO_NOTE = {
+ 'SBI証券':'パスキー（FIDO）は2025年10月25日導入。公式の注意喚起では、デバイス認証・FIDOを設定していないと、不正取引の補償対象外となる場合があります。出金先は本人名義の1口座のみです。',
+ '楽天証券':'絵文字認証は2025年6月1日から必須。出金時はSMS／音声のワンタイムキーが必須です（2025年10月26日〜）。',
+ 'マネックス証券':'約款（第30条・第32条）に、追加認証とパスキーの両方を設定していない場合は補償しないと明記されています。パスキー必須化は2026年6月30日です。',
+ '三菱UFJ eスマート証券':'約款は免責のみで補償条項はなく、補償は2025年の個別方針で対応されています。パスキーは2026年4月26日導入、ログイン必須化は2026年10月22日。出金先は最大3口座まで登録できます。',
+ '野村証券':'ワンタイムパスワード必須化は2025年6月28日。パスキー必須化は2026年6月27日。2025年方針では原状回復が基本ですが、管理状況により減額・不補償となる場合があります。',
+ '松井証券':'約款に独立の補償条項はなく、補償は2025年方針（損害額の1/2＋手数料全額返金）によります。パスキーは2026年3月28日に全チャネル導入、2026年6月から登録を順次必須化。パスキー未登録時の補償に関する注意書きが公式案内にあります。',
+ 'DMM株':'補償方針の専用ページはなく、約款上は認証が一致した取引は原則として本人責任です。パスキー必須化の方針はありますが期日は未確定で、設定後は取り消せません。'
+};
+var GRADES = {
+ 6:['S','守りの設定は一通り揃っています。この状態を維持し、定期的に設定を見直しましょう。'],
+ 5:['A','あと1項目で完成形です。'],
+ 4:['B','土台はあります。足りない項目を埋めて、底上げしましょう。'],
+ 3:['C','土台が不足しています。まず認証から整えるのがおすすめです。'],
+ 2:['D','守りが薄い状態です。不正アクセスがあった場合に、補償の対象外となり得る条件があります。認証設定を最優先にしてください。'],
+ 1:['D','守りが薄い状態です。不正アクセスがあった場合に、補償の対象外となり得る条件があります。認証設定を最優先にしてください。'],
+ 0:['D','守りが薄い状態です。不正アクセスがあった場合に、補償の対象外となり得る条件があります。認証設定を最優先にしてください。']
+};
+function gaps(){
+  var g = [];
+  if (S.auth < 2) g.push('ログイン認証');
+  if (S.spread < 2) g.push('口座の分散');
+  if (S.wd < 2) g.push('出金先・通知');
+  return g;
+}
+function renderC(){
+  var pts = calcScore(S), g = GRADES[pts], gp = gaps();
+  $('c-pts').textContent = pts;
+  var el = $('c-grade'); el.textContent = g[0]; el.classList.toggle('low', pts <= 3);
+  var d = g[1];
+  if (gp.length && pts < 6) d += '（見直し：' + gp.join('・') + '）';
+  $('c-desc').textContent = d;
+  var items = $('c-items'); items.innerHTML = '';
+  [['ログイン認証',S.auth,AUTH_L],['口座の分散',S.spread,SPREAD_L],['出金先・通知',S.wd,WD_L]].forEach(function(x){
+    var row = document.createElement('div'); row.className = 'item' + (x[1] < 2 ? ' gap' : '');
+    var l = document.createElement('span'); l.textContent = x[0] + '：' + x[2][x[1]];
+    var b = document.createElement('b'); b.textContent = x[1] + '/2';
+    row.appendChild(l); row.appendChild(b); items.appendChild(row);
+  });
+  $('c-ct').textContent = S.from + ' の根拠メモ（一次確認済み）';
+  $('c-cn').textContent = CO_NOTE[S.from];
+}
+
+/* ---------- モジュールD ---------- */
+function renderD(){
+  var steps = [];
+  if (S.auth < 2) steps.push(['パスキー（FIDO）を設定する', S.from === 'DMM株' ? 'DMM株は設定後に取り消せません。公式の案内を確認してから進めてください。' : S.from + 'の対応状況・手順は公式ページで確認してください（上の根拠メモ参照）。']);
+  if (S.spread < 2) steps.push(['サブ口座を用意し、メインと役割を分ける', '開設・初回ログインは時間がある日に。メインとは別の認証情報で管理します。']);
+  if (S.wd < 2) steps.push(['出金先口座を確認し、ログイン・出金通知をONにする', '登録済みの出金先が自分名義のものだけか、見直します。']);
+  var generic = [
+    ['設定の定期確認をする', '認証・出金先・通知の設定を、四半期ごとなど決めた頃に見直します。'],
+    ['移管の手順と所要期間を、移管元・移管先の公式で事前確認する', '手続き中は取引できない会社があります。'],
+    ['特定口座年間取引報告書など、取得価額が分かる書類の置き場所を確認する', '移管後も取得価額が引き継がれているかの確認に使います。']
+  ];
+  var gi = 0;
+  if (steps.length === 0) { steps.push(generic[0]); gi = 1; }
+  while (steps.length < 3) {
+    if (gi >= generic.length) gi = 0;
+    var cand = generic[gi++];
+    if (!steps.some(function(s){ return s[0] === cand[0]; })) steps.push(cand);
+  }
+  steps = steps.slice(0, 3);
+  var ol = $('d-steps'); ol.innerHTML = '';
+  steps.forEach(function(s){
+    var e = document.createElement('li'); var w = document.createElement('div');
+    w.appendChild(document.createTextNode(s[0]));
+    var sm = document.createElement('small'); sm.textContent = s[1]; w.appendChild(sm);
+    e.appendChild(w); ol.appendChild(e);
+  });
+}
+
+function render(){ var r = renderA(); renderB(r.F); renderC(); renderD(); }
+render();
+})();
+</script>
+</body>
+</html>

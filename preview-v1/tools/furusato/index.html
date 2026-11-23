@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>ふるさと納税シミュレーター｜お金を考えすぎる会社員</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<script>
+(function(){try{fetch("https://abacus.jasoncameron.dev/hit/gcVy0cgAVBBTSG5K/b_RZbqb_WucrAxAJ",{mode:"no-cors",keepalive:true}).catch(function(){});}catch(e){try{var i=new Image();i.src="https://abacus.jasoncameron.dev/hit/gcVy0cgAVBBTSG5K/b_RZbqb_WucrAxAJ";}catch(_){}}})();
+</script>
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#F3F0E8;
+    --paper-soft:#ECE7D8;
+    --card:#FCFBF4;
+    --ink:#232624;
+    --ink-soft:rgba(35,38,36,.68);
+    --ink-faint:rgba(35,38,36,.45);
+    --line:rgba(35,38,36,.16);
+    --petrol:#315F5B;
+    --petrol-deep:#22423F;
+    --petrol-tint:rgba(49,95,91,.10);
+    --terra:#B55B46;
+    --terra-tint:#F8E9E2;
+    --gold:#C08A2D;
+    --shadow:0 2px 0 rgba(35,38,36,.85);
+  }  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0;
+    background-color:var(--paper);
+    background-image:radial-gradient(var(--line) .7px, transparent .8px);
+    background-size:18px 18px;
+    color:var(--ink);
+    font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;
+    font-size:15px;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{ max-width:880px; margin:0 auto; padding:20px 16px 40px; }
+  h1,h2,.hand{ font-family:"Klee One","BIZ UDPGothic",sans-serif; }
+  button,select,input{ font-family:inherit; }
+  button,[role="button"],select,summary{ min-height:2.25rem; }
+
+  /* ---------- ヘッダー ---------- */
+  .top{ text-align:center; padding:10px 4px 4px; }
+  .top .seal{
+    display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.04em;
+    color:var(--petrol); background:var(--petrol-tint);
+    border:1.5px solid var(--petrol); padding:3px 12px;
+    border-radius:225px 12px 255px 12px/12px 255px 12px 225px;
+    transform:rotate(-.6deg);
+  }
+  .top h1{ font-size:27px; font-weight:600; line-height:1.45; margin:12px 0 6px; letter-spacing:.01em; }
+  .top h1 .accent{ color:var(--petrol); }
+  .top p{ margin:0 auto; max-width:560px; font-size:13px; color:var(--ink-soft); line-height:1.8; }
+  @media (min-width:640px){ .top h1{ font-size:33px; } }
+
+  /* ---------- 手描きボックス ---------- */
+  .box{
+    background:var(--card);
+    border:2px solid var(--ink);
+    border-radius:255px 14px 225px 14px/14px 225px 14px 255px;
+    box-shadow:var(--shadow);
+    padding:20px 18px;
+    margin-top:22px;
+  }
+  @media (min-width:640px){ .box{ padding:26px 28px; } }
+  .box h2{ font-size:19px; font-weight:600; margin:0 0 4px; display:flex; align-items:center; gap:9px; }
+  .box h2 .dot{ width:11px; height:11px; border-radius:50%; background:var(--terra); flex:none; }
+  .box h2 .dot.petrol{ background:var(--petrol); }
+  .box .sub{ font-size:12.5px; color:var(--ink-soft); margin:0 0 6px; }
+
+  /* ---------- ヒーロー（上限額） ---------- */
+  .hero{
+    background:var(--petrol); color:#F7F4EA;
+    border:2px solid var(--petrol-deep);
+    border-radius:14px 255px 14px 225px/225px 14px 255px 14px;
+    box-shadow:0 3px 0 rgba(34,66,63,.55);
+    padding:24px 20px 20px; margin-top:20px; position:relative; overflow:hidden;
+  }  .hero .ring{ position:absolute; border:1.5px solid rgba(251,247,234,.13); border-radius:50%; pointer-events:none; }
+  .hero-label{ font-size:12.5px; font-weight:700; letter-spacing:.06em; opacity:.85; margin:0; }
+  .hero-amount{ display:flex; align-items:baseline; gap:8px; margin:2px 0 0; flex-wrap:wrap; }
+  .hero-amount .num{
+    font-family:"Klee One",sans-serif; font-weight:600;
+    font-size:56px; line-height:1.15; letter-spacing:.01em;
+  }
+  @media (min-width:640px){ .hero-amount .num{ font-size:72px; } }
+  .hero-amount .yen{ font-size:20px; font-weight:700; }
+  .hero-meta{ display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin-top:8px; font-size:12.5px; }
+  .hero-meta .pill{
+    display:inline-block; padding:2px 11px; border-radius:999px;
+    background:rgba(251,247,234,.16); font-weight:700; font-size:11.5px;
+  }
+  .hero-meta .safe b{ font-size:14px; }
+  .diffrow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; margin-top:14px; font-size:12px; }
+  .diffbadge{
+    display:inline-block; font-weight:700; font-size:12px; padding:2px 10px; border-radius:6px;
+    background:var(--terra); color:#F7F4EA;
+  }
+  .diffbadge.flat{ background:rgba(251,247,234,.22); color:#F7F4EA; }
+  .diffbadge.plus{ background:#F7F4EA; color:var(--petrol-deep); }
+  .diffrow .old{ opacity:.78; }
+
+  /* 折りたたみ（共通） */
+  details.fold{ margin-top:12px; }
+  details.fold > summary{
+    cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; font-weight:700; padding:6px 2px; user-select:none;
+  }
+  details.fold > summary::-webkit-details-marker{ display:none; }
+  details.fold > summary .chev{ display:inline-block; transition:transform .18s ease; font-size:11px; }
+  details.fold[open ] > summary .chev{ transform:rotate(90deg); }
+  details.fold .fold-body{ font-size:12.5px; line-height:1.85; }
+  .hero details.fold > summary{ color:#F7F4EA; opacity:.92; }
+  .hero .fold-body{ color:rgba(251,247,234,.85); max-width:640px; }
+  .hero .fold-body p{ margin:4px 0 8px; }
+
+  /* ---------- 条件入力 ---------- */
+  .field{ margin-top:16px; }
+  .field-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .field label,.field .flabel{ font-size:14.5px; font-weight:700; }
+  .income-edit{ display:flex; align-items:baseline; gap:5px; }
+  .income-edit input{
+    width:110px; text-align:right; font-size:24px; font-weight:700; color:var(--petrol);
+    background:var(--paper-soft); border:2px solid var(--ink); border-radius:12px 3px 12px 3px;
+    padding:4px 10px;
+  }
+  .income-edit input:focus{ outline:3px solid var(--petrol-tint); border-color:var(--petrol); }
+  .income-edit .unit{ font-weight:700; font-size:14px; }
+  input[type="range"]{
+    -webkit-appearance:none; appearance:none; width:100%; height:38px; background:transparent; cursor:pointer; margin:2px 0 0;
+  }
+  input[type="range"]::-webkit-slider-runnable-track{ height:8px; border-radius:99px; background:var(--paper-soft); border:1.5px solid var(--line); }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:27px; height:27px; margin-top:-11px;
+    border-radius:50%; background:var(--petrol); border:3px solid var(--card);
+    box-shadow:0 1px 5px rgba(0,0,0,.3);
+  }
+  input[type="range"]::-moz-range-track{ height:8px; border-radius:99px; background:var(--paper-soft); border:1.5px solid var(--line); }
+  input[type="range"]::-moz-range-thumb{ width:21px; height:21px; border-radius:50%; background:var(--petrol); border:3px solid var(--card); box-shadow:0 1px 5px rgba(0,0,0,.3); }
+  .scale{ display:flex; justify-content:space-between; font-size:11px; color:var(--ink-faint); margin-top:-2px; }
+  select{
+    width:100%; margin-top:6px; padding:10px 12px; font-size:14px; font-weight:700; color:var(--ink);
+    background:var(--paper-soft); border:2px solid var(--ink); border-radius:3px 12px 3px 12px;
+  }
+  select:focus{ outline:3px solid var(--petrol-tint); border-color:var(--petrol); }
+  .mode-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:20px; padding-top:16px; border-top:1.5px dashed var(--line); flex-wrap:wrap; }
+  .mode-row .mode-label{ font-size:13px; font-weight:700; }
+  .mode-row .mode-label small{ display:block; font-weight:400; font-size:11.5px; color:var(--ink-soft); }
+  .toggle-btn{
+    font-size:13px; font-weight:700; padding:8px 18px; cursor:pointer;
+    color:var(--petrol); background:var(--card); border:2px solid var(--petrol);
+    border-radius:225px 12px 255px 12px/12px 255px 12px 225px;
+  }
+  .toggle-btn[aria-expanded="true"]{ background:var(--petrol); color:#F7F4EA; }
+    .detail-panel{ margin-top:14px; background:var(--paper-soft); border:1.5px dashed var(--line); border-radius:12px; padding:14px; }
+  .detail-panel h3{ font-family:"Klee One",sans-serif; font-size:14px; margin:0 0 4px; font-weight:600; }
+  .dgrid{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:10px; }
+  @media (min-width:640px){ .dgrid{ grid-template-columns:1fr 1fr; } }
+  .ditem label{ display:block; font-size:12.5px; font-weight:700; margin-bottom:4px; }
+  .ditem .row{ display:flex; align-items:center; gap:6px; }
+  .ditem input{
+    flex:1; min-width:0; text-align:right; font-size:15px; font-weight:700; color:var(--ink);
+    background:var(--card); border:1.5px solid var(--ink); border-radius:8px; padding:7px 10px;
+  }
+  .ditem input:disabled{ opacity:.55; }
+  .ditem .unit{ font-size:12px; font-weight:700; flex:none; }
+  .ditem .hint{ font-size:11px; color:var(--ink-soft); margin-top:3px; line-height:1.6; }
+  .checkline{ display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700; color:var(--petrol); cursor:pointer; padding:6px 0; }
+  .checkline input{ width:20px; height:20px; accent-color:var(--petrol); }
+  .reset-btn{ font-size:11.5px; font-weight:700; color:var(--terra); background:none; border:none; text-decoration:underline; cursor:pointer; padding:6px 2px; }
+
+  /* ---------- グラフ ---------- */
+  .chart-box{
+    background:var(--paper-soft); border:1.5px solid var(--line);
+    border-radius:14px 4px 14px 4px; padding:10px 6px 4px; margin-top:10px;
+  }
+  #chart{ width:100%; height:auto; display:block; }
+  .quick{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px; }
+  .quick .q{
+    text-align:center; padding:12px 6px 10px; background:var(--paper-soft);
+    border:1.5px solid var(--line); border-radius:4px 14px 4px 14px;
+  }
+  .quick .q.now{ background:var(--terra-tint); border:2px solid var(--terra); }
+  .quick .q p{ margin:0; }
+  .quick .q .cap{ font-size:11px; font-weight:700; color:var(--ink-soft); line-height:1.5; }
+  .quick .q.now .cap{ color:var(--terra); }
+  .quick .q .amt{ font-family:"Klee One",sans-serif; font-weight:600; font-size:17px; margin-top:3px; white-space:nowrap; }
+  @media (min-width:640px){ .quick .q .amt{ font-size:24px; } }
+  .quick .q.now .amt{ color:var(--terra); }
+  .quick .q .amt.petrol{ color:var(--petrol); }
+
+  /* ---------- 実質利益 ---------- */
+  .rate-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+  .rate-head .val{ font-family:"Klee One",sans-serif; font-size:24px; font-weight:600; color:var(--petrol); }
+  .presets{ display:flex; gap:8px; margin-top:2px; }
+  .presets button{
+    flex:1; font-size:12px; font-weight:700; padding:8px 6px; cursor:pointer;
+    background:var(--card); color:var(--ink); border:1.5px solid var(--ink); border-radius:10px 3px 10px 3px;
+  }
+  .presets button:hover{ background:var(--petrol); color:#F7F4EA; border-color:var(--petrol); }
+  .steps{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:16px; }
+  @media (min-width:640px){ .steps{ grid-template-columns:repeat(3,1fr); } }
+  .step{ background:var(--paper-soft); border:1.5px solid var(--line); border-radius:4px 14px 4px 14px; padding:13px 14px; }
+  .step .cap{ font-size:11.5px; font-weight:700; color:var(--ink-soft); margin:0; }
+  .step .amt{ font-family:"Klee One",sans-serif; font-size:23px; font-weight:600; margin:2px 0 0; }
+  .step .note{ font-size:11px; color:var(--ink-soft); margin:2px 0 0; }
+  .step.net{ background:var(--terra-tint); border:2px solid var(--terra); }
+  .step.net .cap,.step.net .amt,.step.net .note{ color:var(--terra); }
+  .decision{
+    margin-top:18px; background:var(--ink); color:var(--paper);
+    border-radius:14px 4px 14px 4px; padding:18px;
+  }
+  .decision .dlabel{ font-size:11.5px; font-weight:700; color:var(--gold); letter-spacing:.05em; margin:0 0 6px; }
+  .decision .dtext{ font-size:15.5px; font-weight:700; line-height:1.85; margin:0; }
+  .decision .dnote{ font-size:12px; opacity:.75; line-height:1.8; margin:10px 0 0; }
+  .copy-btn{
+    margin-top:14px; width:100%; font-size:13.5px; font-weight:700; cursor:pointer;
+    background:var(--petrol); color:#F7F4EA; border:none; padding:12px 18px;
+    border-radius:225px 12px 255px 12px/12px 255px 12px 225px;
+  }
+  @media (min-width:640px){ .copy-btn{ width:auto; } }
+  
+  /* ---------- 手続きの窓口（アフィリエイト導線） ---------- */
+  .portal .ptext{ font-size:13.5px; line-height:1.85; color:var(--ink-soft); margin:6px 0 0; }
+  .portal-btn{
+    display:flex; flex-direction:column; gap:1px; text-decoration:none;
+    margin-top:14px; padding:13px 16px; color:var(--ink); background:var(--paper-soft);
+    border:2px solid var(--ink); border-radius:12px 3px 12px 3px;
+    box-shadow:0 2px 0 rgba(35,38,36,.7); transition:transform .12s ease, background .12s ease;
+  }
+  .portal-btn:hover{ transform:translateY(-1px); background:var(--petrol-tint); }
+  .portal-btn .pt{ font-family:"Klee One",sans-serif; font-size:16.5px; font-weight:600; color:var(--petrol); display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .portal-btn .pt .arr{ font-size:14px; color:var(--terra); }
+  .portal-btn .pd{ font-size:11.5px; color:var(--ink-soft); line-height:1.6; }
+  .portal .pr-note{ font-size:11.5px; color:var(--ink-faint); margin:12px 0 0; }
+
+  /* ---------- 注記（折りたたみ） ---------- */
+  .notes{ margin-top:26px; }
+  .notes details.fold{
+    background:var(--card); border:1.5px solid var(--line); border-radius:10px;
+    padding:4px 16px; margin-top:10px;
+  }
+  .notes details.fold > summary{ font-size:13.5px; padding:10px 2px; width:100%; }
+  .notes .fold-body{ padding:0 2px 12px; color:var(--ink-soft); }
+  .notes .fold-body p{ margin:6px 0; }
+  .notes .fold-body ul{ margin:6px 0; padding-left:20px; }
+  .notes .fold-body li{ margin:4px 0; }
+  .notes .formula{
+    background:var(--paper-soft); border:1.5px dashed var(--line); border-radius:8px;
+    padding:10px 12px; font-weight:700; color:var(--ink); font-size:12.5px; line-height:1.9;
+  }
+  footer{ margin-top:30px; text-align:center; font-size:12px; color:var(--ink-soft); }
+  footer .brand{ font-family:"Klee One",sans-serif; font-size:14px; color:var(--ink); font-weight:600; }
+  footer a{ color:var(--petrol); font-weight:700; text-decoration:underline; text-underline-offset:3px; }
+
+  /* ---------- 詳細スライダー ---------- */
+  .ditem input[type="range"]{ height:26px; margin:0; }
+  .ditem input[type="range"]::-webkit-slider-thumb{ width:21px; height:21px; margin-top:-8px; }
+  .ditem input[type="range"]::-moz-range-thumb{ width:15px; height:15px; }
+  .ditem input[type="range"]:disabled{ opacity:.45; cursor:default; }
+  .dscale{ display:flex; justify-content:space-between; font-size:10px; color:var(--ink-faint); margin-top:-3px; }
+
+  /* ---------- 作った人・リンク ---------- */
+  .creator-links{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:14px; }
+  @media (min-width:640px){ .creator-links{ grid-template-columns:1fr 1fr; } }
+  .link-btn{
+    display:flex; flex-direction:column; gap:1px; text-decoration:none;
+    padding:13px 16px; color:var(--ink); background:var(--paper-soft);
+    border:2px solid var(--ink); border-radius:12px 3px 12px 3px;
+    box-shadow:0 2px 0 rgba(35,38,36,.7); transition:transform .12s ease, background .12s ease;
+  }
+  .link-btn:hover{ transform:translateY(-1px); background:var(--petrol-tint); }
+  .link-btn .lt{ font-family:"Klee One",sans-serif; font-size:16.5px; font-weight:600; color:var(--petrol); display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .link-btn .lt .arr{ font-size:14px; color:var(--terra); }
+  .link-btn .lh{ font-size:12px; color:var(--ink-soft); font-weight:700; }
+  .link-btn .ld{ font-size:11.5px; color:var(--ink-soft); line-height:1.6; }
+  .creator-note{ font-size:12px; color:var(--ink-soft); line-height:1.8; margin:12px 0 0; }
+
+  /* トースト */
+  #toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:60;
+    background:var(--ink); color:var(--paper); font-size:13px; font-weight:700;
+    padding:11px 20px; border-radius:999px; box-shadow:0 4px 14px rgba(0,0,0,.25);
+    opacity:0; pointer-events:none; transition:opacity .25s ease; white-space:nowrap;
+  }
+  #toast.show{ opacity:1; }
+  .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="toast" role="status"><span id="toastMessage">コピーしました</span></div>
+
+<main class="wrap">
+
+  <header class="top">
+    <span class="seal">2026年（令和8年）税制改正対応</span>
+    <h1>ふるさと納税<span class="accent">「上限＆実質利益」</span>シミュレーター</h1>
+    <p>自己負担2,000円に収まる寄附上限の目安と、年収のブレ幅・返礼品の実質価値まで並べて見る計算機です。</p>
+  </header>
+
+  <!-- 1. 上限額（主役） -->
+  <section class="hero" aria-label="寄附上限の目安">
+    <div class="ring" style="width:190px;height:190px;top:-70px;right:-50px;"></div>
+    <div class="ring" style="width:120px;height:120px;bottom:-50px;left:-30px;"></div>
+    <p class="hero-label">自己負担2,000円に収まる寄附上限の目安</p>
+    <div class="hero-amount">
+      <span class="num" id="limitAmount">57,700</span><span class="yen">円</span>
+    </div>
+    <div class="hero-meta">
+      <span class="pill" id="taxPill">所得税率 5% 適用</span>
+      <span class="safe">年収が50万円下振れしても安全なライン：<b id="safeLine">49,900円</b></span>
+    </div>
+    <div class="diffrow">
+      <span class="diffbadge" id="diffBadge">改正前より −3,500円</span>
+      <span class="old" id="diffOld">改正前（令和7年分）: 61,200円</span>
+    </div>
+    <details class="fold" id="whyFold">
+      <summary><span class="chev">▶</span>なぜ改正前と差が出る？</summary>
+      <div class="fold-body">
+        <p id="whyText">所得税率の区分が1段階下がった年収帯では、計算式の分母が変わり、上限がわずかに下がります。</p>
+        <p>上限の計算ベースは個人住民税です。2026年改正で引き上げられたのは所得税の基礎控除（最大104万円）で、住民税の基礎控除は43万円のまま据え置き。「基礎控除が増えた＝ふるさと納税の枠も増える」とはならないのが、この改正の落とし穴です。</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2. 条件入力（シンプル） -->
+  <section class="box" aria-label="条件入力">
+    <h2><span class="dot petrol"></span>条件を変える</h2>
+
+    <div class="field">
+      <div class="field-head">
+        <label for="incomeInput">今年の額面年収（見込み）</label>
+        <div class="income-edit">
+          <input id="incomeInput" type="number" min="0" max="3000" step="10" value="500" inputmode="numeric" />
+          <span class="unit">万円</span>
+        </div>
+      </div>
+      <input id="incomeSlider" type="range" min="100" max="1500" step="10" value="500" aria-label="額面年収スライダー" />
+      <div class="scale"><span>100万</span><span>500万</span><span>1,000万</span><span>1,500万</span></div>
+    </div>
+
+    <div class="field">
+      <label for="familySelect">家族構成（税法上の扶養）</label>
+      <select id="familySelect">
+        <option value="single">独身 または 共働き（配偶者控除なし）</option>
+        <option value="married">夫婦（配偶者控除あり）</option>
+        <option value="married_child_high">夫婦＋子1人（16〜18歳）</option>
+        <option value="married_child_uni">夫婦＋子1人（19〜22歳）</option>
+        <option value="married_child_two">夫婦＋子2人（16〜18歳 ＋ 19〜22歳）</option>
+      </select>
+    </div>
+
+    <div class="mode-row">
+      <span class="mode-label">詳細モード<small>iDeCo・医療費・住宅ローンなどの控除を入れる</small></span>
+      <button type="button" class="toggle-btn" id="detailToggle" aria-expanded="false" aria-controls="detailPanel">詳細を開く</button>
+    </div>
+
+    <div class="detail-panel" id="detailPanel" hidden>
+      <h3>各種控除の入力（年額）</h3>
+      <div class="dgrid">
+        <div class="ditem" style="grid-column:1/-1;">
+          <label>社会保険料控除（健康保険・厚生年金など）</label>
+          <label class="checkline"><input type="checkbox" id="autoSocialCheck" checked />自動概算を使う（約<span id="autoSocialRate">14.8</span>%）</label>
+          <div class="row">
+            <input id="socialInput" type="number" min="0" max="500" step="1" value="74" disabled inputmode="numeric" />
+            <span class="unit">万円 / 年</span>
+          </div>
+          <input id="socialSlider" type="range" min="0" max="200" step="1" value="74" disabled aria-label="社会保険料控除スライダー" />
+          <div class="dscale"><span>0万</span><span>100万</span><span>200万</span></div>
+          <p class="hint">自動概算を外すと、スライダーでも実額を動かせます。</p>
+        </div>
+        <div class="ditem">
+          <label for="idecoInput">iDeCo・小規模企業共済</label>
+          <div class="row"><input id="idecoInput" type="number" min="0" max="100" step="0.1" value="0" inputmode="decimal" /><span class="unit">万円</span></div>
+          <input id="idecoSlider" type="range" min="0" max="84" step="0.5" value="0" aria-label="iDeCo・小規模企業共済スライダー" />
+          <div class="dscale"><span>0万</span><span>42万</span><span>84万</span></div>
+          <p class="hint">会社員は年14.4〜27.6万円が目安</p>
+        </div>
+        <div class="ditem">
+          <label for="medicalInput">医療費控除額</label>
+          <div class="row"><input id="medicalInput" type="number" min="0" max="300" step="1" value="0" inputmode="numeric" /><span class="unit">万円</span></div>
+          <input id="medicalSlider" type="range" min="0" max="100" step="1" value="0" aria-label="医療費控除額スライダー" />
+          <div class="dscale"><span>0万</span><span>50万</span><span>100万</span></div>
+          <p class="hint">年間医療費 − 保険補填 − 10万円</p>
+        </div>
+        <div class="ditem">
+          <label for="lifeInsInput">生命保険料控除額</label>
+          <div class="row"><input id="lifeInsInput" type="number" min="0" max="12" step="0.5" value="0" inputmode="decimal" /><span class="unit">万円</span></div>
+          <input id="lifeInsSlider" type="range" min="0" max="12" step="0.5" value="0" aria-label="生命保険料控除額スライダー" />
+          <div class="dscale"><span>0万</span><span>6万</span><span>12万</span></div>
+          <p class="hint">支払額ではなく控除額（所得税の上限12万円）</p>
+        </div>
+        <div class="ditem">
+          <label for="quakeInsInput">地震保険料控除額</label>
+          <div class="row"><input id="quakeInsInput" type="number" min="0" max="5" step="0.5" value="0" inputmode="decimal" /><span class="unit">万円</span></div>
+          <input id="quakeInsSlider" type="range" min="0" max="5" step="0.5" value="0" aria-label="地震保険料控除額スライダー" />
+          <div class="dscale"><span>0万</span><span>2.5万</span><span>5万</span></div>
+          <p class="hint">所得税の上限5万円</p>
+        </div>
+        <div class="ditem" style="grid-column:1/-1;">
+          <label for="housingInput">住宅ローン控除額（年末残高×0.7%など）</label>
+          <div class="row"><input id="housingInput" type="number" min="0" max="60" step="1" value="0" inputmode="numeric" /><span class="unit">万円 / 年</span></div>
+          <input id="housingSlider" type="range" min="0" max="40" step="1" value="0" aria-label="住宅ローン控除額スライダー" />
+          <div class="dscale"><span>0万</span><span>20万</span><span>40万</span></div>
+          <p class="hint">所得税から引ききれず住民税（上限9.75万円）まで及ぶ分があると、ふるさと納税の上限枠はその分下がります。</p>
+        </div>
+      </div>
+      <button type="button" class="reset-btn" id="resetDetail">詳細入力をリセット</button>
+    </div>
+  </section>
+
+  <!-- 3. ブレ幅グラフ（大きく） -->
+  <section class="box" aria-label="年収のブレ幅グラフ">
+    <h2><span class="dot"></span>年収のブレで、上限はこう動く</h2>
+    <p class="sub">予測年収の前後±100万円。残業代や冬のボーナスで着地年収がズレたときの上限の推移です。</p>
+    <div class="chart-box">
+      <svg id="chart" viewBox="0 0 640 480" role="img" aria-label="予測年収の前後100万円における寄附上限の推移グラフ"></svg>
+    </div>
+    <div class="quick">
+      <div class="q">
+        <p class="cap">下振れ安全ライン<br>（<span id="lowInc">450</span>万円）</p>
+        <p class="amt" id="lowAmt">49,900円</p>
+      </div>
+      <div class="q now">
+        <p class="cap">現在の予測着地<br>（<span id="midInc">500</span>万円）</p>
+        <p class="amt" id="midAmt">57,700円</p>
+      </div>
+      <div class="q">
+        <p class="cap">上振れ時の上限<br>（<span id="highInc">550</span>万円）</p>
+        <p class="amt petrol" id="highAmt">69,500円</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 実質利益 -->
+  <section class="box" aria-label="費用対効果と実質利益">
+    <h2><span class="dot petrol"></span>返礼品の価値と「正味のプラス」</h2>
+    <p class="sub">返礼品の実質価値（原価率）から、自己負担2,000円を差し引いた正味のリターンです。</p>
+
+    <div class="field" style="margin-top:10px;">
+      <div class="rate-head">
+        <label for="costRateSlider">返礼品の実質価値（原価率の目安）</label>
+        <span class="val"><span id="costRateVal">20</span>%</span>
+      </div>
+      <input id="costRateSlider" type="range" min="15" max="30" step="1" value="20" aria-label="返礼品の原価率スライダー" />
+      <div class="presets">
+        <button type="button" id="preset20">20%（シビアな実質原価）</button>
+        <button type="button" id="preset30">30%（制度上の調達上限）</button>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <p class="cap">① 受け取る返礼品の価値</p>
+        <p class="amt" id="giftVal">11,540円</p>
+        <p class="note">寄附額 × <span id="costRateSub">20</span>% 換算</p>
+      </div>
+      <div class="step">
+        <p class="cap">② 制度上の自己負担</p>
+        <p class="amt">−2,000円</p>
+        <p class="note">控除されない確定の持ち出し</p>
+      </div>
+      <div class="step net">
+        <p class="cap">③ 正味のプラス</p>
+        <p class="amt" id="netVal">+9,540円</p>
+        <p class="note" id="netSub">寄附額に対する実質プラス率 +16.5%</p>
+      </div>
+    </div>
+
+    <div class="decision">
+      <p class="dlabel">最後の判断基準</p>
+      <p class="dtext" id="decisionText">いま手元から出ていく現金「57,700円」をそのまま口座に残すか、来年の住民税を前払いして「正味 +9,540円分の食費・日用品の浮き」を取りに行くか——どちらを選びますか？</p>
+      <p class="dnote">ふるさと納税は「節税」ではなく「来年の税金の先払い＋返礼品による生活費の現物補填」です。年末のキャッシュフローに余裕があるならプラスを取りに行き、手元現金を厚くしたい年は無理に上限まで使い切らないのも合理的な選択です。</p>
+      <button type="button" class="copy-btn" id="copyBtn">この試算メモをコピーする</button>
+    </div>
+  </section>
+
+  <!-- 手続きを進めると決めた方向けの窓口 -->
+  <section class="box portal" aria-label="手続きを進めると決めた方向けの窓口">
+    <h2><span class="dot petrol"></span>手続きを進めると決めた方向けの窓口</h2>
+    <p class="ptext">どの窓口を使っても控除上限額と自己負担2,000円のルールは同じです。普段使っているIDや、欲しい日用品・食材があるサイトを選べば問題ありません。</p>
+    <a class="portal-btn" href="https://hb.afl.rakuten.co.jp/hgc/598bc912.584f60ee.598bc913.c36bcf0e/?pc=https%3A%2F%2Fevent.rakuten.co.jp%2Ffurusato%2F&link_type=text&ut=eyJwYWdlIjoidXJsIiwidHlwZSI6InRleHQiLCJjb2wiOjF9" target="_blank" rel="noopener sponsored">
+      <span class="pt">楽天ふるさと納税で返礼品を見る <span class="arr" aria-hidden="true">↗</span></span>
+      <span class="pd">いつもの楽天IDでそのまま手続き</span>
+    </a>
+    <p class="pr-note">※本ページにはアフィリエイトリンク（広告）が含まれます。</p>
+  </section>
+
+  <!-- 5. 注記・根拠（すべて初期状態で畳む） -->
+  <div class="notes">
+    <details class="fold">
+      <summary><span class="chev">▶</span>計算の前提・根拠</summary>
+      <div class="fold-body">
+        <p class="formula">寄附上限 ＝ 住民税所得割 × 20% ÷（90% − 所得税率 × 1.021）＋ 2,000円<br>（100円未満切り捨て／所得税率は復興特別所得税込みで計算）</p>
+        <ul>
+          <li>2026年（令和8年）分：給与所得控除の最低保障74万円。所得税の基礎控除は合計所得に応じて最大104万円（489万円以下）／67万円（655万円以下）／62万円（2,350万円以下）の段階制。</li>
+          <li>改正前（令和7年分）：給与所得控除の最低保障65万円、所得税の基礎控除58万円で計算しています。</li>
+          <li>個人住民税：基礎控除43万円（両年とも据え置き）、所得割10%、調整控除あり。調整控除の人的控除差額は、基礎控除分5万円＋家族構成分の合計で計算しています。</li>
+          <li>社会保険料は年収帯別の料率による自動概算（詳細モードで実額に変更可能）。</li>
+          <li>制度の根拠：総務省「ふるさと納税ポータルサイト」の控除上限の考え方、財務省「令和8年度税制改正大綱」、国税庁の給与所得控除・基礎控除の資料に基づく。</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="fold">
+      <summary><span class="chev">▶</span>試算の前提・注意点</summary>
+      <div class="fold-body">
+        <ul>
+          <li>給与所得のみのモデル試算です。事業所得・株式の譲渡所得・退職所得などがある場合は、実際の上限と異なります。</li>
+          <li>15歳以下の子ども（年少扶養）は税額控除に影響しないため、家族構成では数えていません。</li>
+          <li>医療費控除や住宅ローン控除と併用すると上限が下がる場合があります（詳細モードで反映できます）。</li>
+          <li>年収は「見込み」で計算しています。着地年収が下振れると上限も下がるため、年末に寄附する場合は安全ライン側で見るのが無難です。</li>
+          <li>正確な控除額は、翌年の住民税決定通知書で確定します。この試算は目安としてご利用ください。</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="fold">
+      <summary><span class="chev">▶</span>「改正で枠が増える」という誤解について</summary>
+      <div class="fold-body">
+        <p>2026年改正で引き上げられたのは所得税の基礎控除（最大104万円）であり、上限額の計算ベースとなる個人住民税の基礎控除は43万円のまま据え置きです。そのため上限枠は増えないどころか、所得税率の区分が1段階下がった年収帯（例：独身・年収500万円で10%→5%）では、かえって上限が下がります。大手ポータルのシミュレーターがこの差を見せないのは、「1円でも多く寄附させる」設計だから——このツールはその差を最初から並べて見せるために作りました。</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- 作った人（作成者の Threads / note へ直接リンク） -->
+  <section class="box" aria-label="作った人へのリンク">
+    <h2><span class="dot petrol"></span>作った人</h2>
+    <p class="sub">このツールを計算・公開しているのは「お金を考えすぎる会社員」です。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin:6px 0 0;">年金・社会保険・税金・NISAの「ややこしい構造」を、一次情報と数字を並べて整理しています。日々の計算メモは Threads、検算の過程や前提をまとめた長文は note に置いています。</p>
+    <div class="creator-links">
+      <a class="link-btn" href="https://www.threads.net/@okane.kangaesugi" target="_blank" rel="noopener">
+        <span class="lt">Threads で見る <span class="arr" aria-hidden="true">↗</span></span>
+        <span class="lh">@okane.kangaesugi</span>
+        <span class="ld">毎日の計算メモ・制度の損得ラインはこちら</span>
+      </a>
+      <a class="link-btn" href="https://note.com/okane_kangaesugi" target="_blank" rel="noopener">
+        <span class="lt">note で読む <span class="arr" aria-hidden="true">↗</span></span>
+        <span class="lh">note.com/okane_kangaesugi</span>
+        <span class="ld">シミュレーターの前提・検算・解説の長文はこちら</span>
+      </a>
+    </div>
+    <p class="creator-note">リンクをタップすると、それぞれのアプリ／サイトで作成者のページが直接開きます。</p>
+  </section>
+
+  <footer>
+    <p class="brand">並べて初めて見える。｜ お金を考えすぎる会社員</p>
+    <p>Threads：<a href="https://www.threads.net/@okane.kangaesugi" target="_blank" rel="noopener">@okane.kangaesugi</a> ／ note：<a href="https://note.com/okane_kangaesugi" target="_blank" rel="noopener">okane_kangaesugi</a></p>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+"use strict";
+var state = {
+incomeMan: 500,
+family: 'single',
+detail: false,
+autoSocial: true,
+socialMan: 74,
+idecoMan: 0, medicalMan: 0, lifeInsMan: 0, quakeInsMan: 0, housingMan: 0,
+costRate: 20
+};
+var FAMILY_LABEL = {
+single: '独身 または 共働き（配偶者控除なし）',
+married: '夫婦（配偶者控除あり）',
+married_child_high: '夫婦＋子1人（16〜18歳）',
+married_child_uni: '夫婦＋子1人（19〜22歳）',
+married_child_two: '夫婦＋子2人（16〜18歳 ＋ 19〜22歳）'
+};
+var FAM = {
+single: { it: 0, rt: 0, diff: 0},
+married: { it: 380000, rt: 330000, diff: 50000},
+married_child_high:{ it: 760000, rt: 660000, diff: 100000},
+married_child_uni: { it: 1010000, rt: 780000, diff: 230000},
+married_child_two: { it: 1390000, rt: 1110000, diff: 280000}
+};
+function $(id){ return document.getElementById(id);}
+function fmt(n){ return new Intl.NumberFormat('ja-JP').format(Math.round(n));}
+
+/* ---------- 税制エンジン（2026年分＝令和8年改正／改正前＝令和7年分） ---------- */
+function estimateSocialMan(incomeMan){
+var rate = 0.148;
+if (incomeMan <= 200) rate = 0.142;
+else if (incomeMan <= 650) rate = 0.148;
+else if (incomeMan <= 850) rate = 0.142;
+else if (incomeMan <= 1100) rate = 0.128;
+else rate = 0.108;
+return Math.round(incomeMan * rate);
+}
+function salaryIncome(y, year){
+if (y <= 0) return 0;
+if (year === '2026'){
+if (y <= 2200000) return Math.max(0, y - 740000);
+if (y <= 3600000) return Math.floor(y * 0.7 - 80000);
+} else {
+if (y <= 1900000) return Math.max(0, y - 650000);
+if (y <= 3600000) return Math.floor(y * 0.7 - 80000);
+}
+if (y <= 6600000) return Math.floor(y * 0.8 - 440000);
+if (y <= 8500000) return Math.floor(y * 0.9 - 1100000);
+return y - 1950000;
+}
+function basicIT(total, year){
+if (year === '2026'){
+if (total <= 4890000) return 1040000;
+if (total <= 6550000) return 670000;
+if (total <= 23500000) return 620000;
+} else {
+if (total <= 23500000) return 580000;
+}
+if (total <= 24000000) return 480000;
+if (total <= 24500000) return 320000;
+if (total <= 25000000) return 160000;
+return 0;
+}
+function taxBracket(t){
+if (t <= 1950000) return { rate: 0.05, deduction: 0};
+if (t <= 3300000) return { rate: 0.10, deduction: 97500};
+if (t <= 6950000) return { rate: 0.20, deduction: 427500};
+if (t <= 9000000) return { rate: 0.23, deduction: 636000};
+if (t <= 18000000) return { rate: 0.33, deduction: 1536000};
+if (t <= 40000000) return { rate: 0.40, deduction: 2796000};
+return { rate: 0.45, deduction: 4796000};
+}
+function compute(incomeMan, year){
+var y = Math.max(0, incomeMan) * 10000;
+var sal = salaryIncome(y, year);
+var social = (state.detail &&!state.autoSocial)? state.socialMan * 10000: estimateSocialMan(incomeMan) * 10000;
+var fam = FAM[state.family];
+var ideco = state.detail? state.idecoMan * 10000: 0;
+var medical = state.detail? state.medicalMan * 10000: 0;
+var lifeIT = state.detail? Math.min(state.lifeInsMan * 10000, 120000): 0;
+var lifeRT = state.detail? Math.min(state.lifeInsMan * 10000, 70000): 0;
+var quakeIT = state.detail? Math.min(state.quakeInsMan * 10000, 50000): 0;
+var quakeRT = state.detail? Math.min(state.quakeInsMan * 10000, 25000): 0;
+var housing = state.detail? state.housingMan * 10000: 0;
+var bIT = basicIT(sal, year);
+var bRT = sal <= 24000000? 430000: (sal <= 24500000? 290000: (sal <= 25000000? 150000: 0));
+var taxableIT = Math.max(0, Math.floor((sal - social - bIT - fam.it - ideco - medical - lifeIT - quakeIT) / 1000) * 1000);
+var taxableRT = Math.max(0, Math.floor((sal - social - bRT - fam.rt - ideco - medical - lifeRT - quakeRT) / 1000) * 1000);
+var br = taxBracket(taxableIT);
+if (taxableRT <= 0) return { limit: 0, rate: br.rate, residentTax: 0};
+var itBefore = Math.max(0, Math.floor((taxableIT * br.rate - br.deduction) * 1.021));
+var personalDiff = 50000 + fam.diff;
+var adj;
+if (taxableRT <= 2000000) adj = Math.floor(Math.min(personalDiff, taxableRT) * 0.05);
+else adj = Math.max(2500, Math.floor((personalDiff - (taxableRT - 2000000)) * 0.05));
+var rt = Math.max(0, Math.floor(taxableRT * 0.10 - adj));
+if (housing > itBefore) rt = Math.max(0, rt - Math.min(97500, housing - itBefore));
+if (rt <= 0) return { limit: 0, rate: br.rate, residentTax: 0};
+var raw = (rt * 0.20) / (0.90 - br.rate * 1.021) + 2000;
+var limit = raw <= 2000? 0: Math.floor(raw / 100) * 100;
+return { limit: limit, rate: br.rate, residentTax: rt};
+}
+
+/* ---------- 大型SVGグラフ ---------- */
+function smoothPath(pts){
+if (pts.length < 3) return 'M ' + pts.map(function(p){ return p[0].toFixed(1) + ',' + p[1].toFixed(1);}).join(' L ');
+var d = 'M ' + pts[0][0].toFixed(1) + ',' + pts[0][1].toFixed(1);
+for (var i = 0; i < pts.length - 1; i++){
+var p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)];
+var c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+var c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+d += ' C ' + c1x.toFixed(1) + ',' + c1y.toFixed(1) + ' ' + c2x.toFixed(1) + ',' + c2y.toFixed(1) + ' ' + p2[0].toFixed(1) + ',' + p2[1].toFixed(1);
+}
+return d;
+}
+function renderChart(centerMan, currentLimit){
+var svg = $('chart');
+var W = 640, H = 480, padL = 66, padR = 22, padT = 40, padB = 48;
+var plotW = W - padL - padR, plotH = H - padT - padB;
+var minMan = Math.max(50, centerMan - 100), maxMan = centerMan + 100;
+var pts = [], maxLimit = 0, m, r;
+for (m = minMan; m <= maxMan; m += 5){
+r = compute(m, '2026');
+pts.push({ inc: m, lim: r.limit});
+if (r.limit > maxLimit) maxLimit = r.limit;
+}
+var yMax = Math.max(40000, Math.ceil((maxLimit * 1.15) / 40000) * 40000);
+function X(inc){ return padL + ((inc - minMan) / (maxMan - minMan)) * plotW;}
+function Y(v){ return padT + plotH - (v / yMax) * plotH;}
+var s = '';
+s += '<defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1">'
++ '<stop offset="0%" stop-color="#315F5B" stop-opacity="0.25"/>'
++ '<stop offset="100%" stop-color="#315F5B" stop-opacity="0.02"/></linearGradient></defs>';
+var i, val, y;
+for (i = 0; i <= 4; i++){
+val = yMax * i / 4; y = Y(val);
+s += '<line x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + y.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.18" stroke-dasharray="5 5"/>';
+s += '<text x="' + (padL - 10) + '" y="' + (y + 5).toFixed(1) + '" text-anchor="end" font-size="15" fill="currentColor" fill-opacity="0.6">' + (val / 10000) + '万</text>';
+}
+s += '<text x="' + padL + '" y="20" font-size="13" fill="currentColor" fill-opacity="0.55">上限額（円）</text>';
+var xy = pts.map(function(p){ return [X(p.inc), Y(p.lim)];});
+var line = smoothPath(xy);
+s += '<path d="' + line + ' L ' + X(maxMan).toFixed(1) + ',' + (padT + plotH) + ' L ' + X(minMan).toFixed(1) + ',' + (padT + plotH) + ' Z" fill="url(#area)"/>';
+s += '<path d="' + line + '" fill="none" stroke="#315F5B" stroke-width="4" stroke-linecap="round"/>';
+var ticks = [minMan, centerMan, maxMan];
+ticks.forEach(function(inc){
+var isC = inc === centerMan;
+s += '<text x="' + X(inc).toFixed(1) + '" y="' + (H - 14) + '" text-anchor="middle" font-size="15" font-weight="' + (isC? '700': '400') + '" fill="' + (isC? '#B55B46': 'currentColor') + '" fill-opacity="' + (isC? '1': '0.6') + '">' + fmt(inc) + '万' + (isC? '（予測）': '') + '</text>';
+});
+var cx = X(centerMan), cy = Y(currentLimit);
+s += '<line x1="' + cx.toFixed(1) + '" y1="' + padT + '" x2="' + cx.toFixed(1) + '" y2="' + (padT + plotH) + '" stroke="#B55B46" stroke-width="1.8" stroke-dasharray="4 4" stroke-opacity="0.6"/>';
+s += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="16" fill="none" stroke="#B55B46" stroke-width="2.6" stroke-opacity="0.9" transform="rotate(-8 ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')"/>';
+s += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="6" fill="#B55B46" stroke="#FCFBF4" stroke-width="2.5"/>';
+var label = fmt(currentLimit) + '円';
+var bw = Math.max(120, label.length * 11 + 26), bx = Math.min(W - padR - bw, Math.max(padL, cx - bw / 2));
+var by = Math.max(6, cy - 52);
+s += '<g><rect x="' + bx.toFixed(1) + '" y="' + by.toFixed(1) + '" width="' + bw + '" height="32" rx="8" fill="#B55B46"/>'
++ '<text x="' + (bx + bw / 2).toFixed(1) + '" y="' + (by + 22).toFixed(1) + '" text-anchor="middle" font-size="16" font-weight="700" fill="#F7F4EA">' + label + '</text></g>';
+svg.innerHTML = s;
+}
+
+/* ---------- 画面更新 ---------- */
+function updateAll(){
+if (state.autoSocial){
+state.socialMan = estimateSocialMan(state.incomeMan);
+$('socialInput').value = state.socialMan;
+var ss = $('socialSlider'); if (ss) ss.value = Math.min(200, state.socialMan);
+$('autoSocialRate').textContent = state.incomeMan > 0? (state.socialMan / state.incomeMan * 100).toFixed(1): '0.0';
+}
+var cur = compute(state.incomeMan, '2026');
+var old = compute(state.incomeMan, '2025');
+var limit = cur.limit, diff = limit - old.limit;
+
+$('limitAmount').textContent = fmt(limit);
+$('taxPill').textContent = limit > 0? ('所得税率 ' + Math.round(cur.rate * 100) + '% 適用'): '課税所得なし（上限0円）';
+
+var lowInc = Math.max(50, state.incomeMan - 50), highInc = state.incomeMan + 50;
+var lowLim = compute(lowInc, '2026').limit, highLim = compute(highInc, '2026').limit;
+$('safeLine').textContent = fmt(lowLim) + '円';
+$('lowInc').textContent = fmt(lowInc); $('midInc').textContent = fmt(state.incomeMan); $('highInc').textContent = fmt(highInc);
+$('lowAmt').textContent = fmt(lowLim) + '円';
+$('midAmt').textContent = fmt(limit) + '円';
+$('highAmt').textContent = fmt(highLim) + '円';
+
+var badge = $('diffBadge');
+if (diff < 0){ badge.textContent = '改正前より ' + fmt(diff) + '円'; badge.className = 'diffbadge';}
+else if (diff > 0){ badge.textContent = '改正前より +' + fmt(diff) + '円'; badge.className = 'diffbadge plus';}
+else { badge.textContent = '改正前と同額'; badge.className = 'diffbadge flat';}
+$('diffOld').textContent = '改正前（令和7年分）: ' + fmt(old.limit) + '円';
+
+var why = $('whyText');
+if (diff < 0){
+why.textContent = 'あなたの条件では、2026年分は所得税率が ' + Math.round(old.rate * 100) + '% → ' + Math.round(cur.rate * 100) + '% に下がった（または控除構成が変わった）影響で、計算式の分母が大きくなり、上限が ' + fmt(-diff) + '円 下がっています。所得税そのものは減っているので、損をしているわけではありません。';
+} else if (diff > 0){
+why.textContent = 'あなたの条件では、給与所得控除・人的控除のバランスにより、改正前より上限が ' + fmt(diff) + '円 広がっています。';
+} else {
+why.textContent = 'あなたの年収帯では、所得税率の区分も住民税の計算も改正前と変わらないため、上限は同額です。基礎控除の引き上げは所得税だけの話で、住民税ベースの上限には波及しません。';
+}
+
+renderChart(state.incomeMan, limit);
+
+var gift = Math.floor(limit * state.costRate / 100);
+var net = limit > 0? gift - 2000: 0;
+$('costRateVal').textContent = state.costRate;
+$('costRateSub').textContent = state.costRate;
+$('giftVal').textContent = fmt(gift) + '円';
+var dtext = $('decisionText');
+if (limit === 0){
+$('netVal').textContent = '0円';
+$('netSub').textContent = '控除対象外';
+dtext.textContent = '現在の条件では住民税の所得割が発生しないため、ふるさと納税をしても全額が純粋な寄附（自己負担）になります。';
+} else if (net <= 0){
+$('netVal').textContent = fmt(net) + '円';
+$('netSub').textContent = '返礼品の価値が自己負担2,000円を下回ります';
+dtext.textContent = '上限目安 ' + fmt(limit) + '円・原価率' + state.costRate + '%では、返礼品の価値（' + fmt(gift) + '円）より自己負担2,000円の方が大きくなります。自治体を純粋に応援したい場合以外は、見送るのが合理的です。';
+} else {
+$('netVal').textContent = '+' + fmt(net) + '円';
+$('netSub').textContent = '寄附額に対する実質プラス率 +' + (net / limit * 100).toFixed(1) + '%';
+dtext.textContent = 'いま手元から出ていく現金「' + fmt(limit) + '円」をそのまま口座に残すか、来年の住民税を前払いして「正味 +' + fmt(net) + '円分の食費・日用品の浮き」を取りに行くか——どちらを選びますか？';
+}
+}
+
+/* ---------- トースト＆コピー ---------- */
+var toastTimer = null;
+function showToast(msg){
+$('toastMessage').textContent = msg;
+var t = $('toast');
+t.classList.add('show');
+clearTimeout(toastTimer);
+toastTimer = setTimeout(function(){ t.classList.remove('show');}, 2400);
+}
+function copySummary(){
+var cur = compute(state.incomeMan, '2026');
+var old = compute(state.incomeMan, '2025');
+var lowLim = compute(Math.max(50, state.incomeMan - 50), '2026').limit;
+var gift = Math.floor(cur.limit * state.costRate / 100);
+var net = cur.limit > 0? gift - 2000: 0;
+var text = [
+'',
+'・額面年収（見込み）：' + fmt(state.incomeMan) + '万円',
+'・家族構成：' + FAMILY_LABEL[state.family],
+'・寄附上限の目安：' + fmt(cur.limit) + '円',
+'・改正前（令和7年分）: ' + fmt(old.limit) + '円（差 ' + (cur.limit - old.limit > 0? '+': '') + fmt(cur.limit - old.limit) + '円）',
+'・下振れ安全ライン（年収−50万円）：' + fmt(lowLim) + '円',
+'・正味のプラス（原価率' + state.costRate + '%換算）：' + (net >= 0? '+': '') + fmt(net) + '円',
+'※お金を考えすぎる会社員'
+].join('\n');
+function done(){ showToast('試算メモをコピーしました');}
+if (navigator.clipboard && navigator.clipboard.writeText){
+navigator.clipboard.writeText(text).then(done, function(){ fallback();});
+} else { fallback();}
+function fallback(){
+var ta = document.createElement('textarea');
+ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+document.body.appendChild(ta); ta.select();
+try { document.execCommand('copy'); done();}
+catch (e) { showToast('コピーに失敗しました');}
+document.body.removeChild(ta);
+}
+}
+
+/* ---------- イベント ---------- */
+function num(v, fallback){ var n = Number(v); return isNaN(n)? fallback: n;}
+$('incomeInput').addEventListener('input', function(e){
+var v = Math.max(0, Math.min(3000, num(e.target.value, 0)));
+state.incomeMan = v;
+$('incomeSlider').value = Math.min(1500, Math.max(100, v || 100));
+updateAll();
+});
+$('incomeSlider').addEventListener('input', function(e){
+state.incomeMan = num(e.target.value, 500);
+$('incomeInput').value = state.incomeMan;
+updateAll();
+});
+$('familySelect').addEventListener('change', function(e){ state.family = e.target.value; updateAll();});
+$('detailToggle').addEventListener('click', function(){
+state.detail =!state.detail;
+$('detailPanel').hidden =!state.detail;
+this.setAttribute('aria-expanded', state.detail? 'true': 'false');
+this.textContent = state.detail? '詳細を閉じる': '詳細を開く';
+updateAll();
+});
+$('autoSocialCheck').addEventListener('change', function(e){
+state.autoSocial = e.target.checked;
+$('socialInput').disabled = state.autoSocial;
+var ss = $('socialSlider'); if (ss) ss.disabled = state.autoSocial;
+updateAll();
+});
+$('socialInput').addEventListener('input', function(e){ state.socialMan = Math.max(0, num(e.target.value, 0)); updateAll();});
+$('idecoInput').addEventListener('input', function(e){ state.idecoMan = Math.max(0, num(e.target.value, 0)); updateAll();});
+$('medicalInput').addEventListener('input', function(e){ state.medicalMan = Math.max(0, num(e.target.value, 0)); updateAll();});
+$('lifeInsInput').addEventListener('input', function(e){ state.lifeInsMan = Math.max(0, num(e.target.value, 0)); updateAll();});
+$('quakeInsInput').addEventListener('input', function(e){ state.quakeInsMan = Math.max(0, num(e.target.value, 0)); updateAll();});
+$('housingInput').addEventListener('input', function(e){ state.housingMan = Math.max(0, num(e.target.value, 0)); updateAll();});
+$('resetDetail').addEventListener('click', function(){
+state.autoSocial = true; state.idecoMan = 0; state.medicalMan = 0;
+state.lifeInsMan = 0; state.quakeInsMan = 0; state.housingMan = 0;
+$('autoSocialCheck').checked = true; $('socialInput').disabled = true;
+var ss = $('socialSlider'); if (ss) ss.disabled = true;
+$('idecoInput').value = 0; $('medicalInput').value = 0; $('lifeInsInput').value = 0;
+$('quakeInsInput').value = 0; $('housingInput').value = 0;
+['idecoSlider','medicalSlider','lifeInsSlider','quakeInsSlider','housingSlider'].forEach(function(id){ var el = $(id); if (el) el.value = 0;});
+updateAll(); showToast('詳細入力をリセットしました');
+});
+$('costRateSlider').addEventListener('input', function(e){ state.costRate = num(e.target.value, 20); updateAll();});
+$('preset20').addEventListener('click', function(){ state.costRate = 20; $('costRateSlider').value = 20; updateAll();});
+$('preset30').addEventListener('click', function(){ state.costRate = 30; $('costRateSlider').value = 30; updateAll();});
+$('copyBtn').addEventListener('click', copySummary);
+
+/* ---------- 詳細入力のスライダー連動（数値欄と双方向に同期） ---------- */
+function bindDetailSlider(sliderId, inputId, setState, max){
+var slider = $(sliderId), input = $(inputId);
+if (!slider || !input) return;
+slider.addEventListener('input', function(e){
+var v = Math.max(0, num(e.target.value, 0));
+setState(v); input.value = v; updateAll();
+});
+input.addEventListener('input', function(e){
+var v = Math.max(0, num(e.target.value, 0));
+slider.value = Math.min(max, v);
+});
+}
+bindDetailSlider('socialSlider', 'socialInput', function(v){ state.socialMan = v;}, 200);
+bindDetailSlider('idecoSlider', 'idecoInput', function(v){ state.idecoMan = v;}, 84);
+bindDetailSlider('medicalSlider', 'medicalInput', function(v){ state.medicalMan = v;}, 100);
+bindDetailSlider('lifeInsSlider', 'lifeInsInput', function(v){ state.lifeInsMan = v;}, 12);
+bindDetailSlider('quakeInsSlider', 'quakeInsInput', function(v){ state.quakeInsMan = v;}, 5);
+bindDetailSlider('housingSlider', 'housingInput', function(v){ state.housingMan = v;}, 40);
+
+updateAll();
+})();
+</script>
+</body>
+</html>
