@@ -69,9 +69,9 @@ table{border-collapse:collapse;width:100%;font-size:14.5px}
 th,td{border-bottom:1px dashed rgba(35,38,36,.5);padding:7px 6px;text-align:right}
 th:first-child,td:first-child{text-align:left}
 th{font-family:"Klee One",cursive;font-weight:600}
-.gsvg{display:block;width:100%;max-width:680px;height:auto;margin:10px auto 0;background:var(--paper-soft);border:1.5px solid var(--line);border-radius:14px 4px 14px 4px}
-.gsvg text{font-family:"BIZ UDPGothic",sans-serif;font-size:16px;fill:var(--ink)}
-.gsvg .hd{font-family:"Klee One",cursive;font-weight:600;font-size:17px}
+.gsvg{display:block;width:100%;max-width:100%;height:auto;margin:10px auto 0;background:var(--paper-soft);border:1.5px solid var(--line);border-radius:14px 4px 14px 4px}
+.gsvg text{font-family:"BIZ UDPGothic",sans-serif;font-size:17px;fill:var(--ink)}
+.gsvg .hd{font-family:"Klee One",cursive;font-weight:600;font-size:18px}
 .notes{font-size:13.5px;line-height:1.85;padding-left:1.2em}
 .notes li{margin:5px 0}
 .warn{border:2px dashed var(--brick);border-radius:12px 4px 10px 5px/5px 10px 4px 12px;padding:10px 14px;font-size:13.5px;margin-top:12px;background:var(--terra-tint)}
@@ -319,7 +319,7 @@ var PensionCore=(function(){
     if(!D){
       $('chart').innerHTML=h+'<p class="mini">この条件では手取り概算を描けません（課税所得が速算表の範囲外）。額面に切り替えてください。</p>';bindChart();return;
     }
-    var W=560,H=380,L=80,R=44,T=34,B=44, iw=W-L-R, ih=H-T-B, x0=60, x1=100, mx=1;
+    var W=620,H=580,L=84,R=48,T=38,B=52, iw=W-L-R, ih=H-T-B, x0=60, x1=100, mx=1;
     D.forEach(function(d){d.tot.forEach(function(q){if(q[1]>mx)mx=q[1]})});
     var step=Math.pow(10,Math.floor(Math.log(mx/4)/Math.LN10)), cand=[1,2,2.5,5,10], best=step;
     for(var i=0;i<cand.length;i++){if(cand[i]*step*4>=mx*1.02||i===cand.length-1){best=cand[i]*step;break}}
