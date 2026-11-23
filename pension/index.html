@@ -2,67 +2,91 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>年金 受給開始タイミング 試算ツール｜お金を考えすぎる会社員</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#F3F0E8;--ink:#232624;--petrol:#315F5B;--brick:#B55B46;--petrol2:#8fb0ac;}
+:root{color-scheme:light;--paper:#F3F0E8;--paper-soft:#ECE7D8;--card:#FCFBF4;--ink:#232624;--ink-soft:rgba(35,38,36,.68);--ink-faint:rgba(35,38,36,.45);--line:rgba(35,38,36,.16);--petrol:#315F5B;--petrol-deep:#22423F;--petrol-tint:rgba(49,95,91,.10);--petrol2:#8fb0ac;--brick:#B55B46;--terra-tint:#F8E9E2;--shadow:0 2px 0 rgba(35,38,36,.85)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:"BIZ UDPGothic",sans-serif;line-height:1.7;padding:16px}
-.wrap{max-width:760px;margin:0 auto}
-h1,h2,h3,.hand{font-family:"Klee One",cursive;font-weight:600}
-h1{font-size:1.6rem;margin:8px 0 4px;color:var(--petrol);transform:rotate(-.4deg)}
-h2{font-size:1.2rem;margin:0 0 10px}
-.lead{margin:0 0 16px;font-size:.95rem}
-.box{border:2px solid var(--ink);border-radius:255px 18px 225px 18px/18px 225px 18px 255px;padding:16px 18px;margin:16px 0;background:#faf8f2}
-.box:nth-of-type(odd){transform:rotate(.4deg)}
-.box:nth-of-type(even){transform:rotate(-.4deg)}
-label,.lab{display:block;font-weight:700;margin:12px 0 4px}
-select,input[type=number]{font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--ink);border-radius:12px 4px 10px 5px/5px 10px 4px 12px;padding:6px 10px;max-width:100%}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background-color:var(--paper);background-image:radial-gradient(var(--line) .7px,transparent .8px);background-size:18px 18px;color:var(--ink);font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:20px 16px 40px}
+h1,h2,h3,.hand{font-family:"Klee One","BIZ UDPGothic",sans-serif;font-weight:600}
+button,select,input{font-family:inherit}
+.top{text-align:center;padding:10px 4px 4px}
+.top .seal{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:var(--petrol);background:var(--petrol-tint);border:1.5px solid var(--petrol);padding:3px 12px;border-radius:225px 12px 255px 12px/12px 255px 12px 225px;transform:rotate(-.6deg)}
+.top h1{font-size:27px;font-weight:600;line-height:1.45;margin:12px 0 6px;letter-spacing:.01em}
+.top h1 .accent{color:var(--petrol)}
+.top p{margin:0 auto;max-width:560px;font-size:13px;color:var(--ink-soft);line-height:1.8}
+@media(min-width:640px){.top h1{font-size:33px}}
+.hero{background:var(--petrol);color:#F7F4EA;border:2px solid var(--petrol-deep);border-radius:14px 255px 14px 225px/225px 14px 255px 14px;box-shadow:0 3px 0 rgba(34,66,63,.55);padding:24px 20px 20px;margin-top:20px}
+.hero-label{font-size:12.5px;font-weight:700;letter-spacing:.06em;opacity:.85;margin:0}
+.hero-amount{margin:2px 0 0}
+.hero-amount .num{font-family:"Klee One",sans-serif;font-weight:600;font-size:52px;line-height:1.15;letter-spacing:.01em}
+@media(min-width:640px){.hero-amount .num{font-size:68px}}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-top:10px}
+.hero-meta .pill{display:inline-block;padding:2px 11px;border-radius:999px;background:rgba(251,247,234,.16);font-weight:700;font-size:12.5px}
+.hero-note{font-size:12px;opacity:.85;margin:10px 0 0;line-height:1.7}
+.box{background:var(--card);border:2px solid var(--ink);border-radius:255px 14px 225px 14px/14px 225px 14px 255px;box-shadow:var(--shadow);padding:20px 18px;margin-top:22px}
+@media(min-width:640px){.box{padding:26px 28px}}
+.box h2{font-size:19px;font-weight:600;margin:0 0 10px;display:flex;align-items:center;gap:9px}
+.box h2::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--brick);flex:none}
+.box h3{font-size:16px}
+label,.lab{display:block;font-weight:700;font-size:14.5px;margin:16px 0 4px}
+select,input[type=number]{font-size:16px;color:var(--ink);background:var(--paper-soft);border:2px solid var(--ink);border-radius:12px 3px 12px 3px;padding:9px 12px;max-width:100%}
+select:focus,input[type=number]:focus{outline:3px solid var(--petrol-tint);border-color:var(--petrol)}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-button{font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;padding:6px 14px;cursor:pointer}
-button[aria-pressed=true]{background:var(--petrol);color:#fff;border-color:var(--petrol)}
-input[type=range]{accent-color:var(--petrol);width:min(420px,100%)}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.card{border:2px solid var(--petrol);border-radius:20px 6px 18px 8px/8px 18px 6px 20px;padding:12px 14px;background:var(--paper)}
-.card:nth-child(odd){transform:rotate(-.5deg)}.card:nth-child(even){transform:rotate(.5deg)}
-.card h3{margin:0 0 6px;font-size:1.05rem;color:var(--petrol)}
-dl{margin:0}dt{font-size:.8rem;margin-top:6px}dd{margin:0;font-size:1.2rem;font-weight:700}
+button{font-size:14px;font-weight:700;color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:225px 12px 255px 12px/12px 255px 12px 225px;padding:8px 16px;min-height:2.5rem;cursor:pointer}
+button[aria-pressed=true]{background:var(--petrol);color:#F7F4EA;border-color:var(--petrol)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:38px;background:transparent;cursor:pointer;margin:2px 0 0}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:99px;background:var(--paper-soft);border:1.5px solid var(--line)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:27px;height:27px;margin-top:-11px;border-radius:50%;background:var(--petrol);border:3px solid var(--card);box-shadow:0 1px 5px rgba(0,0,0,.3)}
+input[type=range]::-moz-range-track{height:8px;border-radius:99px;background:var(--paper-soft);border:1.5px solid var(--line)}
+input[type=range]::-moz-range-thumb{width:21px;height:21px;border-radius:50%;background:var(--petrol);border:3px solid var(--card);box-shadow:0 1px 5px rgba(0,0,0,.3)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.card{border:1.5px solid var(--line);border-radius:4px 14px 4px 14px;padding:16px;background:var(--paper-soft)}
+.card h3{margin:0 0 6px;font-size:16px;color:var(--petrol)}
+dl{margin:0}dt{font-size:12.5px;color:var(--ink-soft);margin-top:8px}dd{margin:0;font-size:23px;font-weight:700;font-family:"Klee One",sans-serif;line-height:1.3}
 .em{color:var(--brick)}
-.mini{font-size:.82rem}
+.mini{font-size:12.5px;color:var(--ink-soft);line-height:1.7}
 .hide{display:none}
-.bars{display:grid;gap:7px;margin-top:8px}
-.brow{display:grid;grid-template-columns:3.2em 1fr;gap:8px;align-items:center;padding:2px 4px;border-radius:8px 3px 7px 4px/4px 7px 3px 8px}
-.brow.sel{outline:2px solid var(--ink);background:rgba(49,95,91,.08)}
-.brow .nm{font-weight:700;text-align:right;font-size:.9rem}
-.bpair{display:grid;gap:3px}
-.bl{display:flex;align-items:center;gap:6px;min-height:14px}
-.bar{height:11px;border:2px solid var(--ink);border-radius:5px 2px 4px 3px/3px 4px 2px 5px;background:var(--petrol);min-width:2px}
+.bars{display:grid;gap:9px;margin-top:10px}
+.brow{display:grid;grid-template-columns:3.2em 1fr;gap:8px;align-items:center;padding:4px 6px;border-radius:8px 3px 7px 4px/4px 7px 3px 8px}
+.brow.sel{outline:2px solid var(--ink);background:var(--petrol-tint)}
+.brow .nm{font-weight:700;text-align:right;font-size:15px}
+.bpair{display:grid;gap:4px}
+.bl{display:flex;align-items:center;gap:7px;min-height:16px}
+.bar{height:14px;border:2px solid var(--ink);border-radius:5px 2px 4px 3px/3px 4px 2px 5px;background:var(--petrol);min-width:2px}
 .bar.net{background:var(--petrol2)}
-.bl span{font-size:.78rem;white-space:nowrap}
-.tag{font-family:"Klee One",cursive;font-weight:600;color:var(--brick);font-size:.78rem}
-.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.8rem;margin-top:10px}
+.bl span{font-size:13.5px;white-space:nowrap}
+.tag{font-family:"Klee One",cursive;font-weight:600;color:var(--brick);font-size:12.5px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12.5px;margin-top:12px}
 .legend i{display:inline-block;width:14px;height:14px;border:2px solid var(--ink);vertical-align:-2px;margin-right:4px;border-radius:3px 1px 3px 2px}
 .legend i.sw{width:24px;height:0;border:0;border-top:3px solid var(--ink);vertical-align:middle;margin-right:5px;border-radius:0}
-table{border-collapse:collapse;width:100%;font-size:.88rem}
-th,td{border-bottom:1px dashed rgba(35,38,36,.5);padding:5px 6px;text-align:right}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border-bottom:1px dashed rgba(35,38,36,.5);padding:7px 6px;text-align:right}
 th:first-child,td:first-child{text-align:left}
 th{font-family:"Klee One",cursive;font-weight:600}
-.gsvg{display:block;width:100%;max-width:640px;height:auto;margin:4px auto 0}
-.gsvg text{font-family:"BIZ UDPGothic",sans-serif;font-size:13px;fill:var(--ink)}
-.gsvg .hd{font-family:"Klee One",cursive;font-weight:600;font-size:14px}
-.notes{font-size:.85rem;padding-left:1.2em}
-.notes li{margin:4px 0}
-.warn{border:2px dashed var(--brick);border-radius:12px 4px 10px 5px/5px 10px 4px 12px;padding:8px 12px;font-size:.85rem;margin-top:10px}
-@media(max-width:480px){h1{font-size:1.3rem}body{padding:10px}.box{padding:14px 12px}}
+.gsvg{display:block;width:100%;max-width:680px;height:auto;margin:10px auto 0;background:var(--paper-soft);border:1.5px solid var(--line);border-radius:14px 4px 14px 4px}
+.gsvg text{font-family:"BIZ UDPGothic",sans-serif;font-size:16px;fill:var(--ink)}
+.gsvg .hd{font-family:"Klee One",cursive;font-weight:600;font-size:17px}
+.notes{font-size:13.5px;line-height:1.85;padding-left:1.2em}
+.notes li{margin:5px 0}
+.warn{border:2px dashed var(--brick);border-radius:12px 4px 10px 5px/5px 10px 4px 12px;padding:10px 14px;font-size:13.5px;margin-top:12px;background:var(--terra-tint)}
+@media(max-width:480px){.hero-amount .num{font-size:44px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>年金 受給開始タイミング 試算ツール</h1>
-  <p class="lead">繰上げ・繰下げで、生涯にもらえる年金がどう変わるかを、額面と手取り概算で比べます。受け取った年金を運用した場合も試せます。</p>
+  <header class="top">
+    <span class="seal">お金を考えすぎる会社員｜検証ツール</span>
+    <h1>年金 受給開始タイミング<br><span class="accent">試算ツール</span></h1>
+    <p>繰上げ・繰下げで、生涯にもらえる年金がどう変わるかを、額面と手取り概算で比べます。受け取った年金を運用した場合も試せます。</p>
+  </header>
+
+  <section class="hero" id="hero" aria-live="polite"></section>
 
   <section class="box" id="chart" aria-live="polite"></section>
 
@@ -319,7 +343,7 @@ var PensionCore=(function(){
     if(st.death>=x0&&st.death<=x1){
       var dx=X(st.death).toFixed(1);
       sv+='<path d="M'+dx+' '+T+' L'+dx+' '+(T+ih)+'" stroke="#232624" stroke-width="1.5" stroke-dasharray="2 4" fill="none" opacity=".7"/>';
-      sv+='<text x="'+dx+'" y="'+(T+ih+36)+'" text-anchor="middle" style="font-size:12px">想定寿命'+st.death+'歳</text>';
+      sv+='<text x="'+dx+'" y="'+(T+ih+36)+'" text-anchor="middle" style="font-size:15px">想定寿命'+st.death+'歳</text>';
     }
     // 面：遅い開始から先に描き、早い開始を手前に
     D.slice().reverse().forEach(function(d){
@@ -330,7 +354,7 @@ var PensionCore=(function(){
       if(inv)sv+='<path d="'+line(d.pri)+'" fill="none" stroke="'+d.c+'" stroke-width="1.5" stroke-dasharray="5 3"/>';
       sv+='<path d="'+line(d.tot)+'" fill="none" stroke="'+d.c+'" stroke-width="'+(d.s===st.age?4:2.8)+'"/>';
       var e=d.tot[d.tot.length-1];
-      sv+='<text class="hd" x="'+(X(100)+4).toFixed(1)+'" y="'+(Y(e[1])+4).toFixed(1)+'" style="fill:'+d.c+';font-size:12px">'+d.s+'歳</text>';
+      sv+='<text class="hd" x="'+(X(100)+4).toFixed(1)+'" y="'+(Y(e[1])+4).toFixed(1)+'" style="fill:'+d.c+';font-size:15px">'+d.s+'歳</text>';
     });
     // 損益分岐マーカー
     var marks=[],txts=[];
@@ -345,11 +369,11 @@ var PensionCore=(function(){
     // ラベルは各マーカーの左上（曲線の上の空き領域）に右寄せで段差配置
     marks.sort(function(p,q){return q.y-p.y});
     marks.forEach(function(mk,i){
-      var lx=mk.x-12, ly=mk.y-14-i*19;
+      var lx=mk.x-12, ly=mk.y-16-i*24;
       if(ly<T-4)ly=T-4;
       sv+='<path d="M'+mk.x.toFixed(1)+' '+mk.y.toFixed(1)+' L'+(lx+3).toFixed(1)+' '+(ly+3).toFixed(1)+'" stroke="#B55B46" stroke-width="1.2" fill="none"/>';
       sv+='<circle cx="'+mk.x.toFixed(1)+'" cy="'+mk.y.toFixed(1)+'" r="6" fill="#B55B46" stroke="#F3F0E8" stroke-width="2"/>';
-      sv+='<text class="hd" x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="end" style="fill:#B55B46;font-size:13px;paint-order:stroke;stroke:#faf8f2;stroke-width:4px"><tspan style="font-size:11px">'+mk.pr[0]+'vs'+mk.pr[1]+'　</tspan>'+mk.txt+'</text>';
+      sv+='<text class="hd" x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="end" style="fill:#B55B46;font-size:16px;paint-order:stroke;stroke:#ECE7D8;stroke-width:4px"><tspan style="font-size:13px">'+mk.pr[0]+'vs'+mk.pr[1]+'　</tspan>'+mk.txt+'</text>';
     });
     sv+='</svg>';
     h+=sv;
@@ -390,7 +414,20 @@ var PensionCore=(function(){
     if(b)b.onchange=function(){st.p2=+this.value;renderBe()};
   }
 
-  function render(){readInputs();renderChart();renderPick();renderCompare();renderBe()}
+    function renderHero(){
+    var s=st.age, el=$('hero');
+    if(st.death<=s){
+      el.innerHTML='<p class="hero-label">'+s+'歳から受給開始</p><p class="hero-note">想定寿命（'+st.death+'歳）が受給開始の年齢以下のため、生涯受給総額は表示されません。想定寿命を上げると計算できます。</p>';
+      return;
+    }
+    var g=tot(s,false), n=tot(s,true);
+    var h='<p class="hero-label">'+s+'歳から受け取って、'+st.death+'歳まで生きた場合の'+(st.rate>0?'受給総額＋運用益':'生涯受給総額')+'（額面）</p>';
+    h+='<div class="hero-amount"><span class="num">'+man(g)+'</span></div>';
+    h+='<div class="hero-meta"><span class="pill">手取り概算 '+(n===null?'計算範囲外':man(n))+'</span><span class="pill">年額 '+yen(st.base*C.factor(s))+'</span>'+(st.rate>0?'<span class="pill">運用 年利'+(st.rate*100).toFixed(1).replace(/\.0$/,'')+'%込み</span>':'<span class="pill">運用なし</span>')+'</div>';
+    h+='<p class="hero-note">手取りは社会保険料（国保・介護等）を含まない概算です。条件を変えると、その場で計算し直します。</p>';
+    el.innerHTML=h;
+  }
+  function render(){readInputs();renderHero();renderChart();renderPick();renderCompare();renderBe()}
   function setPress(box,attr,val){[].forEach.call(box.querySelectorAll('button'),function(b){b.setAttribute('aria-pressed',String(+b.getAttribute(attr)===+val))})}
   [].forEach.call($('presets').querySelectorAll('button'),function(b){b.onclick=function(){
     var v=+b.dataset.v;$('base').value=(v/10000).toString();setPress($('presets'),'data-v',v);render();
