@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>計算の前提 ｜ お金を考えすぎる会社員</title>
+<meta name="description" content="このサイトの数字が何を数え、何を数えていないか。モデル・仮定・未算入項目・検証状態をまとめます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="site-header">
+  <a class="brand" href="../">お金を考えすぎる会社員</a>
+  <nav aria-label="主なページ">
+    <a href="../stories/">物語</a>
+    <a href="../tools/">道具箱</a>
+    <a href="../methodology/" aria-current="page">計算の前提</a>
+    <a href="../about/">このサイトについて</a>
+  </nav>
+</header>
+<main id="main">
+  <h1>計算の前提 ― 数字の数え方</h1>
+
+  <h2>住宅モデル v1（物語ページ）</h2>
+  <ul>
+    <li>数えているもの：30歳から各年齢までに払った<strong>累計現金支出</strong>（円で計算し、表示は万円）。純資産でも、家の価値でもありません。</li>
+    <li>賃貸：家賃 月75,000円（標準）。上昇シナリオでは10年ごとに+5,000円。</li>
+    <li>持家：65歳まで月75,000円（返済51,250円＋所有費23,750円）、65歳以降は所有費23,750円のみ。</li>
+    <li>年齢は「その年齢に到達した時点」。30歳=0年、85歳=55年間分。</li>
+    <li>数えていないもの：住宅購入価格そのもの、土地・建物の価値と売却額、固定資産税の増減、修繕費、引っ越し費用、投資に回した場合の運用益、インフレによる貨幣価値の変化。</li>
+    <li>検証：独立した別計算（Node／Python）で境界値を確認。65歳=賃貸・持家とも3,150万円、85歳=賃貸4,950万円・持家3,720万円・差1,230万円（標準）。上昇シナリオ85歳=賃貸5,700万円・差1,980万円。最終確認 2026-11-23。</li>
+  </ul>
+
+  <h2>道具箱の4シミュレーター</h2>
+  <ul>
+    <li><strong>年金</strong>：繰上げ −0.4%/月、繰下げ +0.7%/月（日本年金機構の公開ルール）。損益分岐は累計受給額ベース。</li>
+    <li><strong>こどもNISA</strong>：制度前提は公開資料ベース。非課税の効果を複利で表示。</li>
+    <li><strong>ふるさと納税</strong>：上限目安は総務省の計算式に準拠。</li>
+    <li><strong>証券（移管）</strong>：各社の公表手数料表（2026年11月確認）に基づく出庫手数料の比較。</li>
+  </ul>
+  <p>いずれも計算コードは独立レビュー（Codex）で検算済みです（2026-11-23）。制度が変わったら、過去版を無言で書き換えず、版を分けて差し替えます。</p>
+  <p class="note">このサイトの数字は一般的なモデル計算です。個別の家計への助言ではありません。</p>
+  <p><a href="../stories/">住宅の物語へ</a> ／ <a href="../">トップへ戻る</a></p>
+</main>
+<footer class="site-footer">
+  <p>お金を考えすぎる会社員 ― 数字は一次情報で確かめ、仮定は仮定として書きます。</p>
+</footer>
+</body>
+</html>
