@@ -90,6 +90,9 @@ details.fold[open]>summary .chev{transform:rotate(90deg)}
 .insight-list li{margin:7px 0}
 #ageQuick button{font-size:16.5px;padding:10px 22px}
 #adv{margin-top:8px;border-top:1px dashed rgba(35,38,36,.3)}
+
+.hero-be{grid-template-columns:1.3fr .95fr .95fr;column-gap:10px;row-gap:6px;align-items:baseline}
+.hb-head{font-size:12px;opacity:.8}
 </style>
 </head>
 <body>
@@ -106,6 +109,17 @@ details.fold[open]>summary .chev{transform:rotate(90deg)}
       <button type="button" data-a="60" aria-pressed="false">60歳から</button>
       <button type="button" data-a="65" aria-pressed="true">65歳から</button>
       <button type="button" data-a="70" aria-pressed="false">70歳から</button>
+    </div>
+    <div class="lab">運用益（受け取った年金を運用した場合）</div>
+    <div class="row" id="modeRow">
+      <button type="button" data-m="off" aria-pressed="true">含まない</button>
+      <button type="button" data-m="on" aria-pressed="false">含む</button>
+    </div>
+    <div class="row hide" id="rates" style="margin-top:8px">
+      <button type="button" data-r="3" aria-pressed="true">3%</button>
+      <button type="button" data-r="5" aria-pressed="false">5%</button>
+      <button type="button" data-r="10" aria-pressed="false">10%</button>
+      <span>任意 <input type="number" id="rate" min="0" max="20" step="0.1" value="3" style="width:5.5em"> %</span>
     </div>
     <div style="margin-top:12px"><button type="button" id="advBtn" aria-expanded="false">細かく設定する（1歳刻み・年金額・想定寿命）</button></div>
     <div id="adv" class="hide">
@@ -132,28 +146,15 @@ details.fold[open]>summary .chev{transform:rotate(90deg)}
 
   <section class="box" id="insight" aria-live="polite"></section>
 
-  <section class="box">
-    <h2>受け取った年金を運用したら</h2>
-    <p class="mini" style="margin-top:0">受け取った年金を毎月そのまま運用に回した場合です。利回りを選ぶと、総額・損益分岐・グラフが連動して変わります。</p>
-    <div class="row" id="rates">
-      <button type="button" data-r="0" aria-pressed="false">運用なし</button>
-      <button type="button" data-r="3" aria-pressed="true">3%</button>
-      <button type="button" data-r="5" aria-pressed="false">5%</button>
-      <button type="button" data-r="10" aria-pressed="false">10%</button>
-      <span>任意 <input type="number" id="rate" min="0" max="20" step="0.1" value="3" style="width:5.5em"> %</span>
-    </div>
-    <p id="rateEffect" style="margin:10px 0 0"></p>
-  </section>
-
   <section class="box" id="chart" aria-live="polite"></section>
   <section class="box" id="compare" aria-live="polite"></section>
   <section class="box" id="be" aria-live="polite"></section>
 
   <section class="box">
-      <h2>④ もう一つの物差し｜健康寿命</h2>
-      <p>損益分岐は「総額が逆転する年齢」です。運用なし・額面の場合、どの開始年齢の組み合わせでも81歳前後に現れます。もう一つ、別の物差しがあります。<b>健康寿命</b>——健康上の問題で日常生活が制限されない期間の平均——は、令和4年値で<b>男性72.57歳・女性75.45歳</b>です（厚生労働省）。上のグラフに縦の点線で重ねてあります。</p>
-      <p style="margin-bottom:0">分岐点（81歳前後）と健康寿命（72〜75歳）の間には、数年の開きがあります。総額の多い少ないと、「元気に自分で使える期間に受け取るかどうか」は別の話です。このツールはどちらが良いかを決めるものではありません。2つの物差しを同じグラフに並べて、自分の場合はどうかを考えるためのものです。</p>
-    </section>
+        <h2>④ もう一つの物差し｜健康寿命</h2>
+        <p>損益分岐は「総額が逆転する年齢」です。運用なし・額面の場合、どの開始年齢の組み合わせでも81歳前後に現れます。もう一つ、別の物差しがあります。<b>健康寿命</b>——健康上の問題で日常生活が制限されない期間の平均——は、令和4年値で<b>男性72.57歳・女性75.45歳</b>です（厚生労働省）。上のグラフに縦の点線で重ねてあります。</p>
+        <p style="margin-bottom:0">分岐点（81歳前後）と健康寿命（72〜75歳）の間には、数年の開きがあります。総額の多い少ないと、「元気に自分で使える期間に受け取るかどうか」は別の話です。このツールはどちらが良いかを決めるものではありません。2つの物差しを同じグラフに並べて、自分の場合はどうかを考えるためのものです。</p>
+      </section>
 
   <details class="fold box">
     <summary>前提・注記（計算の細かい条件）<span class="chev">▶</span></summary>
@@ -254,13 +255,15 @@ var PensionCore=(function(){
 (function(){
   var C=PensionCore;
   var $=function(id){return document.getElementById(id)};
-  var st={base:C.BASE_A,age:65,rate:0.03,death:85,basis:'gross',p1:60,p2:70};
+  var st={base:C.BASE_A,age:65,rate:0,death:85,basis:'gross',p1:60,p2:70};
+  var inv=false, rateSel=0.03;
   var yen=function(v){return Math.round(v).toLocaleString('ja-JP')+'円'};
   var man=function(v){return (Math.round(v/1e3)/10).toLocaleString('ja-JP',{minimumFractionDigits:1,maximumFractionDigits:1})+'万円'};
   var signMan=function(v){return (v>=0?'+':'−')+man(Math.abs(v))};
   var pct=function(f){var d=Math.round((f-1)*1000)/10;return (d>=0?'+':'−')+Math.abs(d)+'%'};
   // 損益分岐：範囲外(税計算不能)は {na:true}、逆転せずは {v:null}
-  var beOf=function(s1,s2,net){try{return {v:C.be(st.base,s1,s2,net,st.rate)}}catch(e){if(e.message==='OUT_OF_RANGE')return {na:true};throw e}};
+  var beR=function(s1,s2,net,r){try{return {v:C.be(st.base,s1,s2,net,r)}}catch(e){if(e.message==='OUT_OF_RANGE')return {na:true};throw e}};
+  var beOf=function(s1,s2,net){return beR(s1,s2,net,st.rate)};
   var beTxt=function(o){return o.na?'—（計算範囲外）':C.fmtAge(o.v)};
   var tot=function(s,net){return C.safe(function(){return C.total(st.base,s,st.death,net,st.rate)})};
   var totAt=function(s,T,net,r){return C.safe(function(){return C.total(st.base,s,T,net,r)})};
@@ -270,7 +273,8 @@ var PensionCore=(function(){
     var b=parseFloat($('base').value);
     if(isFinite(b)&&b>=0){st.base=Math.round(Math.min(b,2000)*10000)}else{msgs.push('年金額は0以上の数値を入れてください。')}
     var r=parseFloat($('rate').value);
-    if(isFinite(r)&&r>=0){st.rate=Math.min(r,20)/100}else{msgs.push('利回りは0以上の数値を入れてください。')}
+    if(isFinite(r)&&r>=0){rateSel=Math.min(r,20)/100}else{msgs.push('利回りは0以上の数値を入れてください。')}
+    st.rate=inv?rateSel:0;
     var d=parseInt($('death').value,10);
     if(isFinite(d)&&d>=60&&d<=110){st.death=d}else{msgs.push('想定寿命は60〜110歳で入れてください。')}
     st.age=+$('age').value;
@@ -288,18 +292,21 @@ var PensionCore=(function(){
       return;
     }
     var g=tot(s,false), n=tot(s,true);
-    var h='<p class="hero-label">'+s+'歳から受け取って、'+st.death+'歳まで生きた場合の'+(st.rate>0?'受給総額＋運用益':'生涯受給総額')+'（額面）</p>';
+    var h='<p class="hero-label">'+s+'歳から受け取って、'+st.death+'歳まで生きた場合の'+(inv?'受給総額＋運用益（年利'+(rateSel*100).toFixed(1).replace(/\.0$/,'')+'%）':'生涯受給総額（運用なし）')+'・額面</p>';
     h+='<div class="hero-amount"><span class="num">'+man(g)+'</span></div>';
-    h+='<div class="hero-meta"><span class="pill">手取り概算 '+(n===null?'計算範囲外':man(n))+'</span><span class="pill">年額 '+yen(st.base*C.factor(s))+'</span>'+(st.rate>0?'<span class="pill">運用 年利'+(st.rate*100).toFixed(1).replace(/\.0$/,'')+'%込み</span>':'<span class="pill">運用なし</span>')+'</div>';
-    // 65歳・70歳開始との損益分岐
-    var lines=[];
+    h+='<div class="hero-meta"><span class="pill">手取り概算 '+(n===null?'計算範囲外':man(n))+'</span><span class="pill">年額 '+yen(st.base*C.factor(s))+'</span></div>';
+    // 損益分岐のオーバービュー：運用なし／運用あり の2列
+    var rl=(rateSel*100).toFixed(1).replace(/\.0$/,'');
+    var rows=['<span class="hb-head"></span><span class="hb-head">運用なし</span><span class="hb-head">運用あり'+rl+'%</span>'];
     [60,65,70].forEach(function(o){
       if(o===s)return;
-      if(o>s){lines.push('<div><span style="opacity:.85">'+o+'歳開始が追いつく年齢：</span><b>'+beTxt(beOf(s,o,false))+'</b></div>')}
-      else{lines.push('<div><span style="opacity:.85">'+s+'歳開始が'+o+'歳開始に追いつく年齢：</span><b>'+beTxt(beOf(o,s,false))+'</b></div>')}
+      var lab, b0, bR;
+      if(o>s){lab=o+'歳開始が追いつく';b0=beR(s,o,false,0);bR=beR(s,o,false,rateSel)}
+      else{lab=s+'歳開始が'+o+'歳開始に追いつく';b0=beR(o,s,false,0);bR=beR(o,s,false,rateSel)}
+      rows.push('<span>'+lab+'</span><b>'+beTxt(b0)+'</b><b>'+beTxt(bR)+'</b>');
     });
-    h+='<div class="hero-be">'+lines.join('')+'</div>';
-    h+='<p class="hero-note">損益分岐は額面ベース（運用条件は現在の設定）。手取りは社会保険料（国保・介護等）を含まない概算です。</p>';
+    h+='<div class="hero-be">'+rows.join('')+'</div>';
+    h+='<p class="hero-note">損益分岐は額面ベース。手取りは社会保険料（国保・介護等）を含まない概算です。</p>';
     el.innerHTML=h;
   }
 
@@ -309,10 +316,10 @@ var PensionCore=(function(){
     var hs=[60,65,70].map(function(s){return {s:s,v:totAt(s,75,false,0)}});
     var hb=hs.reduce(function(a,b){return b.v>a.v?b:a});
     lis.push('健康寿命までの総額で比べると、<b>75歳時点（運用なし）では'+hb.s+'歳開始が最大</b>（'+man(hb.v)+'）です。健康寿命の目安は男性72.57歳・女性75.45歳——総額の損益分岐より手前にあります。');
-    // 損益分岐と健康寿命の位置関係（現在の条件・額面）
-    var b1=beOf(60,65,false), b2=beOf(65,70,false);
+    // 損益分岐と健康寿命の位置関係（運用なし・額面）
+    var b1=beR(60,65,false,0), b2=beR(65,70,false,0);
     var rel=function(o){return o.na?'計算範囲外':(o.v===null?'100歳まで逆転しない':(C.fmtAge(o.v)+'（健康寿命の目安より'+(o.v<=72.57?'手前':(o.v<=75.45?'の範囲内':'先'))+'）'))};
-    lis.push('損益分岐は、60歳→65歳開始が <b>'+rel(b1)+'</b>、65歳→70歳開始が <b>'+rel(b2)+'</b>。');
+    lis.push('損益分岐（運用なし）は、60歳→65歳開始が <b>'+rel(b1)+'</b>、65歳→70歳開始が <b>'+rel(b2)+'</b>。運用益を入れると分岐はさらに後ろへ動きます。');
     // 想定寿命までの最大（現在の条件）
     if(st.death>70){
       var ds=[60,65,70].map(function(s){return {s:s,v:tot(s,false)}});
@@ -320,17 +327,6 @@ var PensionCore=(function(){
       lis.push('想定寿命（'+st.death+'歳）まで生きた場合の総額では、現在の条件で<b>'+db.s+'歳開始が最大</b>（'+man(db.v)+'）です。');
     }
     $('insight').innerHTML='<h2>ここからの示唆</h2><ul class="insight-list">'+lis.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><p class="mini" style="margin-bottom:0">数字はモデルの試算です。どちらが良いかを決めるものではなく、物差しを並べたものです。</p>';
-  }
-
-  function renderRateEffect(){
-    var s=st.age, el=$('rateEffect');
-    if(st.death<=s){el.textContent='';return}
-    var withR=tot(s,false), noR=totAt(s,st.death,false,0);
-    if(st.rate>0){
-      el.innerHTML='年利'+(st.rate*100).toFixed(1).replace(/\.0$/,'')+'%で運用した場合、'+s+'歳開始の総額は <b>'+man(withR)+'</b>（運用なし '+man(noR)+'、差 '+signMan(withR-noR)+'）。';
-    }else{
-      el.innerHTML='現在は運用なし。総額は <b>'+man(noR)+'</b> です。';
-    }
   }
 
   function renderPick(){
@@ -509,10 +505,15 @@ var PensionCore=(function(){
     if(b)b.onchange=function(){st.p2=+this.value;renderBe()};
   }
 
-  function render(){readInputs();renderHero();renderInsight();renderRateEffect();renderPick();renderCompare();renderChart();renderBe()}
+  function render(){readInputs();renderHero();renderInsight();renderPick();renderCompare();renderChart();renderBe()}
   function setPress(box,attr,val){[].forEach.call(box.querySelectorAll('button'),function(b){b.setAttribute('aria-pressed',String(+b.getAttribute(attr)===+val))})}
   [].forEach.call($('ageQuick').querySelectorAll('button'),function(b){b.onclick=function(){
     $('age').value=b.dataset.a;render();
+  }});
+  [].forEach.call($('modeRow').querySelectorAll('button'),function(b){b.onclick=function(){
+    inv=b.dataset.m==='on';
+    [].forEach.call($('modeRow').querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',String((x.dataset.m==='on')===inv))});
+    $('rates').classList.toggle('hide',!inv);render();
   }});
   $('advBtn').onclick=function(){
     var adv=$('adv'), open=adv.classList.toggle('hide')===false;
