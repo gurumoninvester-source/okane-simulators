@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>年収と手取りシミュレーター（令和7年分）｜お金を考えすぎる会社員</title>
+<meta name="description" content="年収から社会保険料・所得税・住民税を引いた手取りを、一次資料で確認した令和7年分のルールで試算します。過去実績ではなく、将来の予測でもありません。">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://okanekangaesugi.com/tools/income/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="年収と手取りシミュレーター（令和7年分）｜お金を考えすぎる会社員">
+<meta property="og:url" content="https://okanekangaesugi.com/tools/income/">
+<meta property="og:image" content="https://okanekangaesugi.com/assets/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f0e8;color:#292e29;font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;line-height:1.65}main{max-width:1000px;margin:auto;padding:22px}h1{font-family:"Klee One","BIZ UDPGothic",sans-serif;font-size:clamp(25px,4vw,40px);line-height:1.25}h2{font-family:"Klee One","BIZ UDPGothic",sans-serif}h2{font-size:20px}small,p{color:#535950}.paper{background:#fffdf6;border:1px solid #c9c7bb;border-radius:12px;padding:18px;margin:14px 0}.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}label{display:block;font-weight:600}input[type=range]{width:100%;height:44px;accent-color:#315F5B}output{font-variant-numeric:tabular-nums}.values{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.values div{padding:10px;border-top:2px solid #42664f}.values strong{display:block;font-size:clamp(17px,3vw,29px);overflow-wrap:anywhere}.loss{color:#B55B46}.controls button,button{min-height:44px;padding:8px 14px;border:1px solid #888d83;background:#fffdf6;border-radius:7px;color:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #a96550;outline-offset:3px}svg{width:100%;height:auto;display:block}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:right;padding:8px 4px;border-bottom:1px solid #d6d4cb}th:first-child,td:first-child{text-align:left}a{color:#315F5B}@media(max-width:480px){main{padding:12px}.paper{padding:12px}.values{grid-template-columns:1fr}.controls{grid-template-columns:1fr}table{font-size:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+header.site{max-width:1000px;margin:auto;padding:14px 22px 0;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}header.site .brand{font-family:"Klee One",sans-serif;font-weight:600}header.site nav a{margin-left:14px;color:#315F5B}footer.site{max-width:1000px;margin:auto;padding:0 22px 26px;color:#535950;font-size:.85rem}</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "年収と手取りシミュレーター（令和7年分）", "url": "https://okanekangaesugi.com/tools/income/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "isAccessibleForFree": true, "inLanguage": "ja", "description": "年収から社会保険料・所得税・住民税を引いた手取りを、一次資料で確認した令和7年分のルールで試算します。過去実績ではなく、将来の予測でもありません。"}</script>
+<style>main:fullscreen{background:#F3F0E8;overflow:auto;padding:14px}.fsbtn{font-family:inherit;border:2px solid #232624;background:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;margin:8px 0}</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../../">お金を考えすぎる会社員</a>
+  <nav aria-label="主なページ"><a href="../../stories/">物語</a><a href="../">道具箱</a><a href="../../methodology/">計算の前提</a><a href="../../about/">このサイトについて</a></nav>
+</header>
+<main>
+<small>お金を考えすぎる会社員｜令和7年分のルールで試算</small>
+<h1>年収500万円。<br>手取りは、いくら残る？</h1>
+<button type="button" class="fsbtn" id="fsBtn">全画面で使う</button>
+<p>年収を動かすと、社会保険料と税金がどう変わり、手取りがいくらになるかが見えます。年齢で介護保険料の有無も変わります。</p>
+<section class="paper controls" aria-label="試算条件">
+  <div><label for="gross">年収（額面） <output id="grossText"></output></label><input id="gross" type="range" min="2000000" max="15000000" step="100000" value="5000000"></div>
+  <div><label for="ageband">年齢</label>
+    <select id="ageband"><option value="35">39歳以下</option><option value="45" selected>40〜64歳</option><option value="66">65歳以上</option></select></div>
+  <div><button id="reset" type="button">初期条件に戻す</button></div>
+</section>
+<section class="paper">
+  <h2>手取り</h2>
+  <div id="stackBar" style="display:flex;height:26px;border:2px solid #232624;border-radius:8px;overflow:hidden;margin:8px 0" role="img" aria-label="年収の内訳バー">
+    <div id="sbNet" style="background:#315F5B"></div><div id="sbIns" style="background:#C79A3B"></div><div id="sbTax" style="background:#B55B46"></div>
+  </div>
+  <p style="font-size:.8rem;margin:2px 0 8px"><span style="color:#315F5B">■</span> 手取り　<span style="color:#C79A3B">■</span> 社会保険料　<span style="color:#B55B46">■</span> 所得税＋住民税</p>
+  <div class="values" aria-live="polite">
+    <div>手取り（年）<strong id="takeHome"></strong></div>
+    <div>月平均<strong id="monthly"></strong></div>
+    <div>手取り率<strong id="rate"></strong></div>
+  </div>
+  <table><caption>差し引かれる内訳（円・年額）</caption>
+  <thead><tr><th scope="col">項目</th><th scope="col">金額</th></tr></thead><tbody id="rows"></tbody></table>
+</section>
+<section class="paper">
+  <h2>年収を変えると（同じ年齢のまま）</h2>
+  <table><caption>年収別の手取り比較（円）</caption>
+  <thead><tr><th scope="col">年収</th><th scope="col">社会保険料</th><th scope="col">所得税</th><th scope="col">住民税</th><th scope="col">手取り</th></tr></thead>
+  <tbody id="cmp"></tbody></table>
+  <p>住民税は「前年の年収」にかかる税金です。上の住民税は、前年も同じ年収だった場合の金額です。住民税は翌年の6月から翌々年の5月にかけて給与から引かれます。転職や退職で前年の年収が違うと、その年の住民税はここから変わります（前年に課税される所得がなかった人は、働き始めた最初の年は住民税がかかりません）。</p>
+</section>
+<section class="paper">
+  <h2>計算の前提</h2>
+  <p>会社員・給与のみ・単身（扶養なし）・東京都（協会けんぽ）の場合の概算です。賞与は年収に含め、12等分して計算します。社会保険料は、標準報酬月額の等級表への当てはめをせず、月額そのもの（健康保険は上限139万円・厚生年金は上限65万円で丸め）を使います。給与所得控除は速算式を使います。住民税の調整控除は基礎控除の差（5万円）だけで計算します。</p>
+  <p>使うルールの中心部分は一次資料で確認しました（住民税の基礎控除・調整控除と社会保険料の上限額は、公的資料に基づく二次確認の段階です）：<a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1410.htm">国税庁「給与所得控除」</a>、<a href="https://www.nta.go.jp/users/gensen/2025kiso/index.htm">国税庁「令和7年度税制改正（基礎控除の見直し等）」</a>、<a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2260.htm">国税庁「所得税の税率」</a>、<a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r07/index.html">協会けんぽ「令和7年度の保険料率」</a>、<a href="https://www.mhlw.go.jp/content/001401966.pdf">厚生労働省「令和7年度 雇用保険料率のご案内」</a>、<a href="https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_06.html">総務省「個人住民税」</a>。令和8年分は、社会保険料率の一次確認が取れ次第、追加します。</p>
+</section>
+<section class="paper related"><h2>ほかの道具へ</h2><p><a href="../../stories/">物語（住宅編）</a> ／ <a href="../pension/">年金</a> ／ <a href="../kodomo-nisa/">こどもNISA</a> ／ <a href="../furusato/">ふるさと納税</a> ／ <a href="../securities/">証券口座</a> ／ <a href="../investment/">積立投資</a> ／ <a href="../household/">家事・育児</a> ／ <a href="../regional/">地域の物価比較</a> ／ <a href="../../products/">資産管理の道具（商品）</a></p></section>
+</main>
+<footer>© 2026 お金を考えすぎる会社員</footer>
+<script type="module">
+// DEV-011 手取りモデル（令和7年分・令和7年度料率）
+// 根拠: runtime/income_rules.csv（一次資料で検証済みの範囲のみ）
+// 前提: 会社員・給与のみ・単身（扶養なし）・東京（協会けんぽ）・賞与は年収に含め12等分する概算
+// 簡略化（画面でも開示）: 標準報酬月額は等級表に当てはめず月額を上限・下限で丸めて使用。
+// 給与所得控除は速算式を使用（660万円未満の別表第五との差は概算の範囲）。
+
+const RULES_2025 = {
+  salaryDeduction(gross) {
+    if (gross <= 1_900_000) return 650_000;
+    if (gross <= 3_600_000) return Math.floor(gross * 0.30) + 80_000;
+    if (gross <= 6_600_000) return Math.floor(gross * 0.20) + 440_000;
+    if (gross <= 8_500_000) return Math.floor(gross * 0.10) + 1_100_000;
+    return 1_950_000;
+  },
+  basicDeduction(totalIncome) { // 令和7・8年分
+    if (totalIncome <= 1_320_000) return 950_000;
+    if (totalIncome <= 3_360_000) return 880_000;
+    if (totalIncome <= 4_890_000) return 680_000;
+    if (totalIncome <= 6_550_000) return 630_000;
+    if (totalIncome <= 23_500_000) return 580_000;
+    throw new Error('合計所得2,350万円超は本モデルの対象外');
+  },
+  incomeTaxRate: [ // [上限, 税率, 速算控除]
+    [1_949_000, 0.05, 0], [3_299_000, 0.10, 97_500], [6_949_000, 0.20, 427_500],
+    [8_999_000, 0.23, 636_000], [17_999_000, 0.33, 1_536_000], [39_999_000, 0.40, 2_796_000],
+    [Infinity, 0.45, 4_796_000],
+  ],
+  residentBasicDeduction: 430_000,
+  residentRate: 0.10,
+  residentFlat: 5_000, // 均等割4,000 + 森林環境税1,000
+  healthRate: 0.0991, careRate: 0.0159, pensionRate: 0.183, employmentRate: 0.0055,
+  healthCap: 1_390_000, healthFloor: 58_000, pensionCap: 650_000, pensionFloor: 88_000,
+};
+
+const roundPremium = (x) => Math.floor(x + 0.5); // 50銭超切上げ・以下切捨てに近似
+const floor1000 = (x) => Math.floor(x / 1000) * 1000;
+const floor100 = (x) => Math.floor(x / 100) * 100;
+
+function computeTakeHome({ gross, age }) {
+  if (!Number.isInteger(gross) || gross < 1_000_000 || gross > 20_000_000) throw new Error('年収は100万〜2,000万円');
+  if (!Number.isInteger(age) || age < 18 || age > 69) throw new Error('年齢は18〜69歳');
+  const R = RULES_2025;
+  const monthly = gross / 12;
+  const stdHealth = Math.min(Math.max(monthly, R.healthFloor), R.healthCap);
+  const stdPension = Math.min(Math.max(monthly, R.pensionFloor), R.pensionCap);
+  const health = roundPremium(stdHealth * R.healthRate / 2) * 12;
+  const care = (age >= 40 && age <= 64) ? roundPremium(stdHealth * R.careRate / 2) * 12 : 0;
+  const pension = roundPremium(stdPension * R.pensionRate / 2) * 12;
+  const employment = roundPremium(monthly * R.employmentRate) * 12;
+  const insurance = health + care + pension + employment;
+
+  const salaryIncome = gross - R.salaryDeduction(gross);
+  // 所得税
+  const basic = R.basicDeduction(salaryIncome);
+  const taxableIT = Math.max(0, floor1000(salaryIncome - insurance - basic));
+  const row = R.incomeTaxRate.find(([cap]) => taxableIT <= cap);
+  const incomeTax = taxableIT === 0 ? 0 : floor100(Math.max(0, (taxableIT * row[1] - row[2]) * 1.021));
+  // 住民税（前年も同じ年収だった場合の年額。時差は画面で明記）
+  const taxableRT = Math.max(0, floor1000(salaryIncome - insurance - R.residentBasicDeduction));
+  let adjustment = 0;
+  if (taxableRT > 0) {
+    adjustment = taxableRT <= 2_000_000
+      ? Math.min(50_000, taxableRT) * 0.05
+      : Math.max((50_000 - (taxableRT - 2_000_000)) * 0.05, 2_500); // 200万円超は最低2,500円（基礎控除の差がある場合）
+    adjustment = Math.floor(adjustment);
+  }
+  const residentTax = taxableRT === 0 ? 0 : Math.max(0, floor100(taxableRT * R.residentRate - adjustment)) + R.residentFlat;
+  const takeHome = gross - insurance - incomeTax - residentTax;
+  return { gross, health, care, pension, employment, insurance, salaryIncome, incomeTax, residentTax, takeHome,
+           takeHomeRate: gross ? takeHome / gross : 0, monthlyTakeHome: Math.round(takeHome / 12) };
+}
+
+const yen = (n) => n.toLocaleString('ja-JP') + '円';
+const el = (id) => document.getElementById(id);
+function draw() {
+  const gross = Number(el('gross').value);
+  const age = Number(el('ageband').value);
+  el('grossText').textContent = (gross / 10000).toLocaleString('ja-JP') + '万円';
+  const r = computeTakeHome({ gross, age });
+  el('takeHome').textContent = yen(r.takeHome);
+  const taxSum = r.incomeTax + r.residentTax;
+  el('sbNet').style.width = (r.takeHome / gross * 100) + '%';
+  el('sbIns').style.width = (r.insurance / gross * 100) + '%';
+  el('sbTax').style.width = (taxSum / gross * 100) + '%';
+  el('monthly').textContent = yen(r.monthlyTakeHome);
+  el('rate').textContent = (r.takeHomeRate * 100).toFixed(1) + '%';
+  const items = [['健康保険料', r.health], ['介護保険料', r.care], ['厚生年金保険料', r.pension], ['雇用保険料', r.employment], ['所得税（復興特別所得税を含む）', r.incomeTax], ['住民税（前年も同じ年収の場合）', r.residentTax]];
+  el('rows').innerHTML = items.map(([k, v]) => '<tr><th scope="row">' + k + '</th><td>' + v.toLocaleString('ja-JP') + '</td></tr>').join('');
+  el('cmp').innerHTML = [3_000_000, 4_000_000, 5_000_000, 6_000_000, 8_000_000, 10_000_000].map((g) => {
+    const x = computeTakeHome({ gross: g, age });
+    const mark = g === gross ? '（いまの年収）' : '';
+    return '<tr><th scope="row">' + (g / 10000) + '万円' + mark + '</th><td>' + x.insurance.toLocaleString('ja-JP') + '</td><td>' + x.incomeTax.toLocaleString('ja-JP') + '</td><td>' + x.residentTax.toLocaleString('ja-JP') + '</td><td>' + x.takeHome.toLocaleString('ja-JP') + '</td></tr>';
+  }).join('');
+}
+['gross', 'ageband'].forEach((id) => el(id).addEventListener('input', draw));
+el('reset').addEventListener('click', () => { el('gross').value = 5000000; el('ageband').value = '45'; draw(); });
+draw();
+</script>
+<script>document.getElementById('fsBtn').addEventListener('click',function(){var m=document.querySelector('main');if(document.fullscreenElement){document.exitFullscreen();}else if(m&&m.requestFullscreen){m.requestFullscreen();}});</script>
+</body>
+</html>

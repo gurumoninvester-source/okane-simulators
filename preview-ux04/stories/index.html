@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>住宅の物語 ｜ お金を考えすぎる会社員</title>
+<meta name="description" content="30歳から85歳まで、賃貸と持家の累計現金支出を歩いて比べる体験ページ。年齢を動かして、差が生まれる理由まで見られます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+:root{--accent:#B55B46;--green:#315F5B}
+.stage{border:2px solid var(--ink);border-radius:14px;background:#FBF8F0;padding:14px 14px 8px;box-shadow:3px 3px 0 rgba(35,38,36,.15)}
+.lane{display:flex;align-items:flex-end;gap:10px;margin:10px 0}
+.lane .tag{writing-mode:vertical-rl;font-family:"Klee One",cursive;font-size:.95rem;min-width:1.4em}
+.lane.dim{opacity:.25}
+.track{position:relative;flex:1;height:64px;border-bottom:2px dashed rgba(35,38,36,.4)}
+.walker{position:absolute;bottom:2px;left:0%;transform:translateX(-50%);text-align:center;transition:left .18s linear}
+.walker .age-bubble{font-family:"Klee One",cursive;font-size:.72rem;background:#fff;border:1.5px solid var(--ink);border-radius:10px;padding:0 6px;white-space:nowrap}
+.walker svg{display:block;margin:0 auto}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes swingA{from{transform:rotate(13deg)}to{transform:rotate(-13deg)}}
+@keyframes swingB{from{transform:rotate(-13deg)}to{transform:rotate(13deg)}}
+.legA,.legB,.armA,.armB{transform-box:fill-box}
+.legA,.armB{transform-origin:100% 0%}
+.legB,.armA{transform-origin:0% 0%}
+.walking .legA,.walking .armB{animation:swingA .28s ease-in-out infinite alternate}
+.walking .legB,.walking .armA{animation:swingB .28s ease-in-out infinite alternate}
+.walking svg{animation:bob .28s infinite}
+.bars{margin:14px 0 4px}
+.bar-row{display:flex;align-items:center;gap:8px;margin:6px 0}
+.bar-row .bl{width:3.2em;font-size:.85rem;text-align:right}
+.bar{height:20px;display:flex;gap:2px}
+.seg{flex:1 1 0;border:1.5px solid rgba(35,38,36,.28);border-radius:3px;background:rgba(255,255,255,.4)}
+.seg.onR{background:var(--accent);border-color:var(--accent)}
+.seg.onO{background:var(--green);border-color:var(--green)}
+.bar-note{font-size:.78rem;color:var(--ink);opacity:.75;margin:2px 0 0}
+.bar.rent{background:var(--accent)}
+.bar.own{background:var(--green)}
+.bar-row.dim{opacity:.25}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}
+.controls button{font-family:inherit;font-size:1rem;border:2px solid var(--ink);background:#fff;border-radius:10px;padding:8px 16px;cursor:pointer;box-shadow:2px 2px 0 rgba(35,38,36,.2)}
+.controls button:active{transform:translate(1px,1px);box-shadow:none}
+.controls button[aria-pressed="true"]{background:var(--green);color:#fff}
+input[type=range]{flex:1;min-width:140px;accent-color:var(--green);height:36px}
+.agebox{font-size:1.5rem;font-weight:700;min-width:4.2em;text-align:center}
+.gauges{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.gauge{border:2px solid var(--ink);border-radius:12px;background:#fff;padding:10px;text-align:center}
+.gauge .g-label{font-size:.82rem;color:#555}
+.gauge .g-value{font-size:1.45rem;font-weight:700}
+.gauge .g-value small{font-size:.8rem}
+.thought{font-family:"Klee One",cursive;font-size:1.05rem;text-align:center;min-height:1.6em;margin:4px 0 0}
+.custombox{border:2px dashed rgba(35,38,36,.45);border-radius:12px;padding:10px 14px;margin:10px 0;display:none}
+.custombox.open{display:block}
+.custombox label{display:flex;align-items:center;gap:10px;font-size:.92rem;margin:6px 0}
+.custombox output{font-weight:700;min-width:6.5em;text-align:right}
+table.miles{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0}
+table.miles th,table.miles td{border:1px solid rgba(35,38,36,.35);padding:5px 8px;text-align:right;background:#fff}
+table.miles th{text-align:center;background:#EFEAD9;color:var(--ink)}
+table.miles td:first-child,table.miles th:first-child{text-align:center}
+details{margin:12px 0}
+summary{cursor:pointer;font-weight:700;padding:6px 0}
+.jump{display:flex;gap:6px;flex-wrap:wrap}
+.jump button{padding:6px 12px;font-size:.92rem}
+@media (max-width:640px){.gauges{grid-template-columns:1fr 1fr 1fr;gap:6px}.gauge .g-value{font-size:1.1rem}.agebox{font-size:1.25rem}}
+@media (prefers-reduced-motion: reduce){.walker,.bar{transition:none}.walking svg,.walking .legA,.walking .legB,.walking .armA,.walking .armB{animation:none}}
+button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+
+.chapter{display:flex;gap:14px;align-items:flex-start;margin:6px 0 2px}
+.big-age{font-size:3.2rem;font-weight:700;line-height:1;color:var(--green);white-space:nowrap}
+.big-age small{font-size:1.4rem}
+.chapter h2{font-size:1.25rem;margin:2px 0 4px;font-family:"Klee One",cursive}
+.chapter p{margin:0;font-size:.92rem}
+.scene-no{font-size:.8rem;letter-spacing:.08em;text-align:right;opacity:.75;white-space:nowrap}
+.life{border-top:1.5px solid rgba(35,38,36,.25);margin-top:10px}
+.life-row{display:flex;gap:10px;align-items:center;padding:10px 2px;border-bottom:1.5px dashed rgba(35,38,36,.25);flex-wrap:wrap}
+.life-row.dim{opacity:.25}
+.life-row .who{font-family:"Klee One",cursive;font-size:.95rem;min-width:2.6em}
+.monthly{min-width:8.5em}
+.monthly .m-label{font-size:.78rem;opacity:.8}
+.monthly .m-value{font-size:1.3rem;font-weight:700}
+.monthly .m-sub{font-size:.78rem;opacity:.8}
+.boxgrid{display:flex;flex-wrap:wrap;gap:3px;max-width:190px}
+.boxgrid i{width:14px;height:14px;border-radius:3px;display:block}
+.boxgrid i.r{background:var(--accent)}
+.boxgrid i.o{background:var(--green)}
+.boxgrid i.e{background:rgba(255,255,255,.4);border:1.5px solid rgba(35,38,36,.28);box-sizing:border-box}
+.box-note{font-size:.75rem;opacity:.75}
+.stamp{display:inline-block;border:2px solid var(--accent);color:var(--accent);border-radius:6px;padding:0 6px;font-weight:700;transform:rotate(-8deg);font-size:.85rem;margin-left:6px}
+.chart-wrap{margin:12px 0 2px}
+.chart-wrap h3{font-size:.95rem;margin:0 0 4px;font-family:"Klee One",cursive}
+.fs-btn{margin-left:auto}
+.stage-wrap:fullscreen{background:#F3F0E8;overflow:auto;padding:16px}
+.chapters{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.chapters button{font-family:inherit;border:2px solid var(--ink);background:#fff;border-radius:10px;padding:8px 10px;cursor:pointer;text-align:center;line-height:1.25}
+.chapters button b{display:block;font-size:1rem}
+.chapters button span{font-size:.75rem;opacity:.8}
+.chapters button[aria-current="true"]{background:#EFEAD9;border-color:var(--green)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+<meta property="og:title" content="住宅の物語 ｜ お金を考えすぎる会社員">
+<meta property="og:description" content="30歳から85歳まで、賃貸と持家の累計現金支出を歩いて比べる体験ページ。年齢を動かして、差が生まれる理由まで見られます。">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://okanekangaesugi.com/stories/">
+<meta property="og:url" content="https://okanekangaesugi.com/stories/">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://okanekangaesugi.com/assets/ogp.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="site-header">
+  <a class="brand" href="../">お金を考えすぎる会社員</a>
+  <nav aria-label="主なページ">
+    <a href="../stories/" aria-current="page">物語</a>
+    <a href="../tools/">道具箱</a>
+    <a href="../methodology/">計算の前提</a>
+    <a href="../about/">このサイトについて</a>
+  </nav>
+</header>
+<main id="main">
+  <h1>住宅の物語 ― 賃貸と持家、30歳から85歳まで歩く</h1>
+  <p>30歳。家を買う？ 賃貸を続ける？　年齢を進めると、二人の累計現金支出がどう積み上がるかが見えます。</p>
+  <p>この物語の動画版（Instagram・公開中）：<a href="https://www.instagram.com/reel/Df5xKEXDuIB/" rel="noopener">住宅編のリールを見る</a></p>
+
+  <div class="controls" role="group" aria-label="家賃の条件">
+    <span>条件：</span>
+    <button type="button" id="presetFixed" aria-pressed="true">家賃はずっと同じ</button>
+    <button type="button" id="presetRise" aria-pressed="false">家賃が10年ごとに+5,000円</button>
+    <button type="button" id="presetCustom" aria-pressed="false">自分で設定（仮定）</button>
+  </div>
+  <div class="custombox" id="customBox">
+    <label>家賃（月額）<input type="range" id="rentRange" min="50000" max="120000" step="5000" value="75000" aria-label="家賃の月額"><output id="rentOut">75,000円</output></label>
+    <label>10年ごとの上昇<input type="range" id="riseRange" min="0" max="10000" step="1000" value="0" aria-label="10年ごとの家賃上昇額"><output id="riseOut">0円</output></label>
+    <p class="note">自分で設定した場合は「仮定」のモデルです。持家側の月額（返済＋所有費）も同じ初月の金額にそろえて計算します。</p>
+  </div>
+
+  <div class="stage-wrap" id="stageWrap">
+  <div class="stage" aria-label="二人の人生の舞台">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div class="chapter">
+        <div class="big-age"><span id="bigAge">30</span><small>歳</small></div>
+        <div><h2 id="chapterTitle">30歳。賃貸と持家、どちらで暮らす？</h2><p id="chapterSub">二人の月額は同じ。ここから55年が始まる。</p></div>
+      </div>
+      <div>
+        <div class="scene-no" id="sceneNo">第1場面</div>
+        <button type="button" id="fsBtn" class="fs-btn" style="font-family:inherit;border:2px solid var(--ink);background:#fff;border-radius:10px;padding:6px 12px;cursor:pointer;margin-top:6px">全画面</button>
+      </div>
+    </div>
+    <div class="life" aria-label="二人の生活と支出">
+      <div class="life-row" id="lifeRent">
+        <span class="who" style="color:var(--accent)">賃貸</span>
+        <svg width="52" height="44" viewBox="0 0 52 44" aria-hidden="true"><rect x="8" y="6" width="36" height="34" fill="none" stroke="#232624" stroke-width="2.2"/><path d="M15 14 h8 M29 14 h8 M15 24 h8 M29 24 h8 M15 34 h8 M29 34 h8" stroke="#232624" stroke-width="2.2"/></svg>
+        <span class="walker" id="walkerRent" style="position:static;transform:none">
+          <svg width="30" height="46" viewBox="0 0 34 52" aria-hidden="true"><circle cx="17" cy="8" r="6" fill="none" stroke="#232624" stroke-width="2.4"/><path d="M17 14 L17 30" stroke="#232624" stroke-width="2.4" stroke-linecap="round"/><path class="armA" d="M17 20 L7 26" stroke="#232624" stroke-width="2.4" stroke-linecap="round" fill="none"/><path class="armB" d="M17 20 L27 24" stroke="#232624" stroke-width="2.4" stroke-linecap="round" fill="none"/><path class="legA" d="M17 30 L10 46" stroke="#232624" stroke-width="2.4" stroke-linecap="round" fill="none"/><path class="legB" d="M17 30 L25 44" stroke="#232624" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>
+        </span>
+        <div class="monthly"><div class="m-label">月の支出</div><div class="m-value" id="mRent">75,000円</div><div class="m-sub">家賃</div></div>
+        <div><div class="boxgrid" id="gridRent" aria-hidden="true"></div><div class="box-note">1箱＝250万円</div></div>
+      </div>
+      <div class="life-row" id="lifeOwn">
+        <span class="who" style="color:var(--green)">持家</span>
+        <svg width="52" height="44" viewBox="0 0 52 44" aria-hidden="true"><path d="M6 22 L26 6 L46 22" fill="none" stroke="#232624" stroke-width="2.2"/><rect x="12" y="22" width="28" height="18" fill="none" stroke="#232624" stroke-width="2.2"/><rect x="22" y="30" width="8" height="10" fill="none" stroke="#232624" stroke-width="2"/></svg>
+        <span class="walker" id="walkerOwn" style="position:static;transform:none">
+          <svg width="30" height="46" viewBox="0 0 34 52" aria-hidden="true"><circle cx="17" cy="8" r="6" fill="none" stroke="#232624" stroke-width="2.4"/><path d="M17 14 L17 30" stroke="#232624" stroke-width="2.4" stroke-linecap="round"/><path class="armA" d="M17 20 L7 24" stroke="#232624" stroke-width="2.4" stroke-linecap="round" fill="none"/><path class="armB" d="M17 20 L27 26" stroke="#232624" stroke-width="2.4" stroke-linecap="round" fill="none"/><path class="legA" d="M17 30 L10 44" stroke="#232624" stroke-width="2.4" stroke-linecap="round" fill="none"/><path class="legB" d="M17 30 L25 46" stroke="#232624" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>
+        </span>
+        <div class="monthly"><div class="m-label">月の支出</div><div class="m-value" id="mOwn">75,000円</div><div class="m-sub" id="mOwnSub">返済＋所有費</div></div>
+        <div><div class="boxgrid" id="gridOwn" aria-hidden="true"></div><div class="box-note">1箱＝250万円</div></div>
+        <span class="stamp" id="stampPaid" hidden>完済</span>
+      </div>
+      <p class="box-note">箱は累計現金支出を250万円単位で表した概念表示です（端数は省略）。資産ではありません。</p>
+    </div>
+    <div class="chart-wrap">
+      <h3>積み上がった現金支出（万円）</h3>
+      <svg id="chart" viewBox="0 0 320 180" width="100%" role="img" aria-label="年齢ごとの累計現金支出のグラフ"></svg>
+    </div>
+  </div>
+  </div>
+
+  <div class="controls">
+    <button type="button" id="playBtn">▶ 歩く</button>
+    <button type="button" id="minusBtn" aria-label="1歳戻る">−1歳</button>
+    <input type="range" id="ageRange" min="30" max="85" step="1" value="30" aria-label="年齢">
+    <button type="button" id="plusBtn" aria-label="1歳進む">＋1歳</button>
+    <span class="agebox"><span id="ageNow">30</span>歳</span>
+  </div>
+  <div class="chapters" role="group" aria-label="場面ジャンプ">
+    <button type="button" data-ch="30"><b>30歳</b><span>選択</span></button>
+    <button type="button" data-ch="40"><b>40歳</b><span>10年後</span></button>
+    <button type="button" data-ch="50"><b>50歳</b><span>20年後</span></button>
+    <button type="button" data-ch="65"><b>65歳</b><span>完済</span></button>
+    <button type="button" data-ch="75"><b>75歳</b><span>完済後</span></button>
+    <button type="button" data-ch="85"><b>85歳</b><span>振り返り</span></button>
+  </div>
+  <div class="controls jump" role="group" aria-label="表示切替">
+    <button type="button" id="focusBoth" aria-pressed="true">両方見る</button>
+    <button type="button" id="focusRent" aria-pressed="false">賃貸だけ</button>
+    <button type="button" id="focusOwn" aria-pressed="false">持家だけ</button>
+  </div>
+
+  <div class="gauges" role="group" aria-label="累計現金支出">
+    <div class="gauge"><div class="g-label">賃貸の累計</div><div class="g-value"><span id="gRent">0</span><small> 万円</small></div></div>
+    <div class="gauge"><div class="g-label">持家の累計</div><div class="g-value"><span id="gOwn">0</span><small> 万円</small></div></div>
+    <div class="gauge"><div class="g-label">差（賃貸 − 持家）</div><div class="g-value"><span id="gDiff">0</span><small> 万円</small></div></div>
+  </div>
+  <p id="diffDir" aria-live="polite">同じ累計支出です</p>
+  <p class="sr-only" id="srStatus" aria-live="polite"></p>
+
+  <details>
+    <summary>差の理由を開く</summary>
+    <p id="whyText"></p>
+    <p id="whyCost"></p>
+  </details>
+
+  <details>
+    <summary>表で見る（年齢ごとの累計）</summary>
+    <table class="miles">
+      <thead><tr><th scope="col">年齢</th><th scope="col">賃貸（万円）</th><th scope="col">持家（万円）</th><th scope="col">差（万円）</th></tr></thead>
+      <tbody id="milesBody"></tbody>
+    </table>
+  </details>
+
+  <section aria-labelledby="notes-h">
+    <h2 id="notes-h">この比較の前提</h2>
+    <ul>
+      <li>比べているのは30〜85歳の<strong>累計現金支出</strong>です。純資産の比較ではありません。</li>
+      <li>標準モデル：家賃 月75,000円。持家は65歳まで「返済51,250円＋所有費23,750円＝月75,000円」、65歳以降は所有費23,750円だけが続きます。</li>
+      <li>住宅の購入価格そのもの、土地・建物の残る価値、売却額、固定資産税の増減、修繕費、投資に回した場合の運用益は、この累計には<strong>含まれていません</strong>。</li>
+      <li>「どちらが得か」を決める表ではありません。条件を変えたら差がどう動くかを見るためのものです。前提の詳細と出典は<a href="../methodology/">計算の前提</a>にまとめています。</li>
+    </ul>
+  </section>
+  <p><a href="../tools/">道具箱（年金・こどもNISA・ふるさと納税・証券）へ</a> ／ <a href="../">トップへ戻る</a></p>
+<section class="paper related"><h2>自分の条件で試す</h2><p>この物語は「賃貸と持家」の現金支出の比較でした。ほかのテーマは道具箱で試せます。 ／ <a href="../tools/income/">手取り</a> ／ <a href="../tools/investment/">積立投資</a> ／ <a href="../tools/regional/">地域の物価比較</a> ／ <a href="../tools/">道具箱の一覧</a> ／ <a href="../products/">資産管理の道具（商品）</a></p></section>
+</main>
+<footer class="site-footer">
+  <p>お金を考えすぎる会社員 ― 数字は一次情報で確かめ、仮定は仮定として書きます。</p>
+</footer>
+<script>
+(function(){
+  var OWN_COST = 23750; // 所有費（月額・固定）
+  var state = { age: 30, preset: 'fixed', rent: 75000, rise: 0 };
+  var timer = null;
+  var $ = function(id){ return document.getElementById(id); };
+  function params(){
+    if(state.preset==='fixed') return { rent: 75000, rise: 0 };
+    if(state.preset==='rise') return { rent: 75000, rise: 5000 };
+    return { rent: state.rent, rise: state.rise };
+  }
+  function cum(age, p){
+    var rent = 0, own = 0, rentFlat = 0;
+    var mortgage = p.rent - OWN_COST;
+    for(var y = 30; y < age; y++){
+      var d = Math.floor((y - 30) / 10);
+      rent += (p.rent + p.rise * d) * 12;
+      rentFlat += p.rent * 12;
+      own += (OWN_COST + (y < 65 ? mortgage : 0)) * 12;
+    }
+    return { rent: rent, own: own, riseEffect: rent - rentFlat };
+  }
+  function man(yen){ return Math.round(yen / 10000).toLocaleString('ja-JP'); }
+  function yen(n){ return n.toLocaleString('ja-JP'); }
+  function chapter(age){
+    if(age < 40) return { n: '第1場面', t: '30歳。賃貸と持家、どちらで暮らす？', s: '二人の月額は同じ。ここから55年が始まる。' };
+    if(age < 50) return { n: '第2場面', t: '40歳。10年分の支払いが積み上がった。', s: '毎月の支払いが、静かに積み上がる。' };
+    if(age < 65) return { n: '第3場面', t: '50歳。20年。差はまだ小さい。', s: '積み上がる速さは、まだ同じ。' };
+    if(age === 65) return { n: '第4場面', t: '65歳。持ち家のローンが終わった。', s: '返済が消えて、持家の月額は所有費だけになる。' };
+    if(age < 75) return { n: '第4場面', t: '完済後。持家は維持費だけが続く。', s: '終わったのはローン。維持費は続く。' };
+    if(age < 85) return { n: '第5場面', t: '75歳。二人の差が広がっていく。', s: '月々の差が、そのまま累計の差になる。' };
+    return { n: '第6場面', t: '85歳。55年間の支払いを振り返る。', s: '現金支出の差が見えた。資産価値や暮らしの優劣までは決められない。' };
+  }
+  function monthlyRent(age, p){ return p.rent + p.rise * Math.floor((age - 30) / 10); }
+  function drawGrid(id, cumYen, cls){
+    var n = Math.floor(cumYen / 2500000);
+    var el = $(id); var html = '';
+    for(var i = 0; i < n; i++) html += '<i class="' + cls + '"></i>';
+    el.innerHTML = html;
+  }
+  function drawChart(age, p){
+    var fin = cum(85, p);
+    var ymax = Math.max(30000000, Math.ceil(Math.max(fin.rent, fin.own) / 10000000) * 10000000);
+    var L = 36, R = 316, T = 10, B = 158;
+    var X = function(a){ return L + (a - 30) / 55 * (R - L); };
+    var Y = function(v){ return T + (1 - v / ymax) * (B - T); };
+    function pts(series, upto){
+      var out = [];
+      for(var a = 30; a <= upto; a++){ var c = cum(a, p); out.push(X(a).toFixed(1) + ',' + Y(series === 'r' ? c.rent : c.own).toFixed(1)); }
+      return out.join(' ');
+    }
+    var g = '';
+    [0, ymax / 2, ymax].forEach(function(v){
+      g += '<line x1="' + L + '" y1="' + Y(v) + '" x2="' + R + '" y2="' + Y(v) + '" stroke="rgba(35,38,36,.18)"/>';
+      g += '<text x="' + (L - 4) + '" y="' + (Y(v) + 4) + '" font-size="9" text-anchor="end" fill="#232624">' + man(v) + '</text>';
+    });
+    g += '<line x1="' + X(65) + '" y1="' + T + '" x2="' + X(65) + '" y2="' + B + '" stroke="#B55B46" stroke-dasharray="3 3"/>';
+    g += '<text x="' + (X(65) + 3) + '" y="' + (T + 9) + '" font-size="9" fill="#B55B46">完済</text>';
+    g += '<polyline points="' + pts('r', 85) + '" fill="none" stroke="#B55B46" stroke-width="2" opacity=".28"/>';
+    g += '<polyline points="' + pts('o', 85) + '" fill="none" stroke="#315F5B" stroke-width="2" opacity=".28"/>';
+    g += '<polyline points="' + pts('r', age) + '" fill="none" stroke="#B55B46" stroke-width="2.6"/>';
+    g += '<polyline points="' + pts('o', age) + '" fill="none" stroke="#315F5B" stroke-width="2.6"/>';
+    var c = cum(age, p);
+    g += '<circle cx="' + X(age) + '" cy="' + Y(c.rent) + '" r="3.4" fill="#B55B46"/>';
+    g += '<circle cx="' + X(age) + '" cy="' + Y(c.own) + '" r="3.4" fill="#315F5B"/>';
+    g += '<text x="' + L + '" y="' + (B + 15) + '" font-size="9" fill="#232624">30歳</text>';
+    g += '<text x="' + X(65) + '" y="' + (B + 15) + '" font-size="9" text-anchor="middle" fill="#232624">65歳</text>';
+    g += '<text x="' + R + '" y="' + (B + 15) + '" font-size="9" text-anchor="end" fill="#232624">85歳</text>';
+    g += '<text x="' + L + '" y="' + (B + 27) + '" font-size="9" fill="#B55B46">― 賃貸</text>';
+    g += '<text x="' + (L + 44) + '" y="' + (B + 27) + '" font-size="9" fill="#315F5B">― 持家</text>';
+    g += '<text x="' + (L + 88) + '" y="' + (B + 27) + '" font-size="9" fill="#232624" opacity=".65">点線は、まだ進んでいない時間</text>';
+    $('chart').innerHTML = g;
+  }
+  function render(){
+    var p = params();
+    var c = cum(state.age, p);
+    var ch = chapter(state.age);
+    $('bigAge').textContent = state.age;
+    $('chapterTitle').textContent = ch.t;
+    $('chapterSub').textContent = ch.s;
+    $('sceneNo').textContent = ch.n;
+    $('mRent').textContent = yen(monthlyRent(state.age, p)) + '円';
+    $('mOwn').textContent = yen(state.age < 65 ? p.rent : OWN_COST) + '円';
+    $('mOwnSub').textContent = state.age < 65 ? '返済＋所有費' : '所有費のみ';
+    $('stampPaid').hidden = state.age < 65;
+    drawGrid('gridRent', c.rent, 'r');
+    drawGrid('gridOwn', c.own, 'o');
+    drawChart(state.age, p);
+    document.querySelectorAll('[data-ch]').forEach(function(b){
+      var t = parseInt(b.dataset.ch, 10);
+      var cur = (t === 30 && state.age < 40) || (t === 40 && state.age >= 40 && state.age < 50) || (t === 50 && state.age >= 50 && state.age < 65) || (t === 65 && state.age >= 65 && state.age < 75) || (t === 75 && state.age >= 75 && state.age < 85) || (t === 85 && state.age === 85);
+      b.setAttribute('aria-current', String(cur));
+    });
+    $('gRent').textContent = man(c.rent);
+    $('gOwn').textContent = man(c.own);
+    var diff = c.rent - c.own;
+    $('gDiff').textContent = (diff > 0 ? '＋' : diff < 0 ? '−' : '') + man(Math.abs(diff));
+    $('diffDir').textContent = diff > 0 ? '賃貸の方が現金支出が多い' : diff < 0 ? '持ち家の方が現金支出が多い' : '同じ累計支出です';
+    $('ageNow').textContent = state.age;
+    $('ageRange').value = state.age;
+    // 差の理由
+    var postMonths = Math.max(0, state.age - 65) * 12;
+    if(state.age <= 65){
+      $('whyText').textContent = 'この設定では、持ち家の月額（返済＋所有費）を賃貸の初月の家賃と同額にそろえています。家賃上昇がある場合は、上がった分だけ賃貸の累計が先に増えます。';
+    } else {
+      $('whyText').textContent = '65歳以降、持ち家は返済が終わり所有費 ' + yen(OWN_COST) + '円だけが続きます。賃貸は家賃を払い続けます。その月差が ' + postMonths + 'か月分積み上がったものが、差の中心です。';
+    }
+    $('whyCost').textContent = c.riseEffect > 0
+      ? '家賃上昇を入れたことで増えた賃貸支出：現時点で ' + man(c.riseEffect) + '万円（上昇なしのケースとの差）。'
+      : (p.rise > 0 ? '家賃上昇の影響：この年齢までの累計では0万円（上昇は40歳以降の家賃から効いてきます）。' : '家賃上昇の影響：0万円（いまの設定では家賃は上がりません）。');
+    if(!timer){ $('srStatus').textContent = state.age + '歳時点。賃貸の累計 ' + man(c.rent) + '万円、持家の累計 ' + man(c.own) + '万円、差 ' + man(Math.abs(diff)) + '万円。'; }
+    // 表
+    var ages = [30,40,50,60,65,70,75,80,85];
+    $('milesBody').innerHTML = ages.map(function(a){
+      var m = cum(a, p);
+      return '<tr><th scope="row">' + a + '歳</th><td>' + man(m.rent) + '</td><td>' + man(m.own) + '</td><td>' + man(m.rent - m.own) + '</td></tr>';
+    }).join('');
+  }
+  function setControls(disabled){
+    ['presetFixed','presetRise','presetCustom','rentRange','riseRange'].forEach(function(id){ $(id).disabled = disabled; });
+  }
+  function stop(){
+    if(timer){ clearInterval(timer); timer = null; }
+    $('playBtn').textContent = '▶ 歩く';
+    document.querySelectorAll('.walker').forEach(function(w){ w.classList.remove('walking'); });
+    setControls(false);
+  }
+  function stopAndRender(){ stop(); render(); }
+  function play(){
+    if(timer){ stopAndRender(); return; }
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ state.age = 85; render(); return; }
+    if(state.age >= 85){ state.age = 30; render(); }
+    $('playBtn').textContent = '⏸ 止める';
+    document.querySelectorAll('.walker').forEach(function(w){ w.classList.add('walking'); });
+    setControls(true);
+    timer = setInterval(function(){
+      if(state.age >= 85){ stopAndRender(); return; }
+      state.age++; render();
+    }, 220);
+  }
+  function setPreset(name){
+    state.preset = name;
+    [['fixed','presetFixed'],['rise','presetRise'],['custom','presetCustom']].forEach(function(pair){
+      $(pair[1]).setAttribute('aria-pressed', String(pair[0] === name));
+    });
+    $('customBox').classList.toggle('open', name === 'custom');
+    render();
+  }
+  $('playBtn').addEventListener('click', play);
+  $('ageRange').addEventListener('input', function(){ var v = parseInt(this.value, 10); stop(); state.age = v; render(); });
+  $('minusBtn').addEventListener('click', function(){ stop(); state.age = Math.max(30, state.age - 1); render(); });
+  $('plusBtn').addEventListener('click', function(){ stop(); state.age = Math.min(85, state.age + 1); render(); });
+  document.querySelectorAll('[data-ch]').forEach(function(b){
+    b.addEventListener('click', function(){ stop(); state.age = parseInt(b.dataset.ch, 10); render(); });
+  });
+  $('fsBtn').addEventListener('click', function(){
+    var el = $('stageWrap');
+    if(document.fullscreenElement){ document.exitFullscreen(); }
+    else if(el.requestFullscreen){ el.requestFullscreen(); }
+  });
+  $('presetFixed').addEventListener('click', function(){ setPreset('fixed'); });
+  $('presetRise').addEventListener('click', function(){ setPreset('rise'); });
+  $('presetCustom').addEventListener('click', function(){ setPreset('custom'); });
+  $('rentRange').addEventListener('input', function(){ state.rent = parseInt(this.value, 10); $('rentOut').textContent = yen(state.rent) + '円'; render(); });
+  $('riseRange').addEventListener('input', function(){ state.rise = parseInt(this.value, 10); $('riseOut').textContent = yen(state.rise) + '円'; render(); });
+  function setFocus(f){
+    [['both','focusBoth'],['rent','focusRent'],['own','focusOwn']].forEach(function(pair){
+      $(pair[1]).setAttribute('aria-pressed', String(pair[0] === f));
+    });
+    $('lifeRent').classList.toggle('dim', f === 'own');
+    $('lifeOwn').classList.toggle('dim', f === 'rent');
+    
+  }
+  $('focusBoth').addEventListener('click', function(){ setFocus('both'); });
+  $('focusRent').addEventListener('click', function(){ setFocus('rent'); });
+  $('focusOwn').addEventListener('click', function(){ setFocus('own'); });
+  render();
+})();
+</script>
+</body>
+</html>

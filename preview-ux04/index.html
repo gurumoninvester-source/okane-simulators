@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>お金を考えすぎる会社員｜触って確かめる、お金のサイト</title>
+<meta name="description" content="年金・こどもNISA・ふるさと納税・証券口座のシミュレーターと、棒人間と歩くお金の物語。数字は触って、動かして確かめられます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/style.css">
+<style>
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+a.tile{display:block;border:2px solid var(--ink);border-radius:18px 6px 16px 8px/8px 16px 6px 18px;background:var(--paper2);padding:16px 14px;text-decoration:none;color:var(--ink);min-height:104px}
+a.tile:nth-child(odd){transform:rotate(-.5deg)}a.tile:nth-child(even){transform:rotate(.5deg)}
+a.tile .ic{font-family:"Klee One",cursive;font-size:1.6rem;line-height:1;color:var(--brick);border:1.5px solid var(--ink);border-radius:50%;display:inline-grid;place-items:center;width:40px;height:40px;background:var(--paper)}
+a.tile b{display:block;font-family:"Klee One",cursive;font-size:1.08rem;color:var(--petrol);margin:6px 0 2px}
+a.tile span{font-size:.82rem;color:#444}
+a.tile.wide{grid-column:1/-1;border-color:var(--brick)}
+a.tile.wide b{color:var(--brick)}
+@media (max-width:360px){.tiles{grid-template-columns:1fr}a.tile{min-height:0}}
+.eyebrow{font-size:.85rem;letter-spacing:.06em;color:#555;margin:10px 0 4px}
+h1{font-size:clamp(1.7rem,7.2vw,2.5rem);line-height:1.35}
+.ctas{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 6px}
+.cta{display:inline-block;border:2px solid var(--ink);border-radius:12px;padding:10px 18px;text-decoration:none;font-weight:700;color:var(--ink);background:#fff}
+.cta.primary{background:var(--petrol);color:#fff;border-color:var(--petrol)}
+.story-card{display:block;border:2px solid var(--brick);border-radius:16px;background:var(--paper2);padding:16px 14px;text-decoration:none;color:var(--ink);margin:14px 0}
+.story-card .sc-head{display:flex;justify-content:space-between;font-size:.8rem;color:#555}
+.story-card b{font-family:"Klee One",cursive;font-size:1.25rem;display:block;margin:6px 0}
+.story-card .sc-diff{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:6px}
+.story-card .sc-diff .num{font-size:1.6rem;font-weight:700}
+.story-card .sc-note{font-size:.78rem;color:#555}
+.diagram{width:100%;height:56px;display:block;margin:2px 0}
+.concept{font-size:.68rem;color:#777;letter-spacing:.06em}
+a.tile .ic{display:none}
+</style>
+<meta property="og:title" content="お金を考えすぎる会社員｜触って確かめる、お金のサイト">
+<meta property="og:description" content="年金・こどもNISA・ふるさと納税・証券口座のシミュレーターと、棒人間と歩くお金の物語。数字は触って、動かして確かめられます。">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://okanekangaesugi.com/">
+<meta property="og:url" content="https://okanekangaesugi.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://okanekangaesugi.com/assets/ogp.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "お金を考えすぎる会社員", "url": "https://okanekangaesugi.com/", "inLanguage": "ja"}</script>
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<div class="wrap">
+<header class="site-head">
+  <div class="mark">¥</div>
+  <div class="name">お金を考えすぎる会社員</div>
+  <nav><a href="./tools/">道具箱</a><a href="./stories/">物語</a><a href="./about/">このサイトについて</a></nav>
+</header>
+<main id="main">
+<p class="eyebrow">人生とお金を、数字で考える。</p>
+<h1>あの日の選択で、<br>お金はどう変わる？</h1>
+<p class="lead">家を買う。投資を始める。子どもを育てる。選択がその後の人生にどう影響するのか、自分で数字を動かして確かめる場所です。</p>
+<div class="ctas">
+  <a class="cta primary" href="./stories/">物語を体験する →</a>
+  <a class="cta" href="./tools/">計算する道具を探す</a>
+</div>
+<a class="story-card" href="./stories/">
+  <span class="sc-head"><span>物語 01／住まい</span><span>30歳 → 85歳</span></span>
+  <b>同じ月7.5万円から、二つの人生。</b>
+  <svg viewBox="0 0 300 130" width="100%" role="img" aria-label="賃貸と持家の累計現金支出のグラフ（仮定モデル）">
+    <line x1="192" y1="10" x2="192" y2="112" stroke="#B55B46" stroke-dasharray="3 3"/>
+    <text x="196" y="18" font-size="9" fill="#B55B46">完済</text>
+    <polyline points="20,112 192,49 290,13" fill="none" stroke="#B55B46" stroke-width="2.6"/>
+    <polyline points="20,112 192,49 290,38" fill="none" stroke="#315F5B" stroke-width="2.6"/>
+    <text x="238" y="10" font-size="9" fill="#B55B46">賃貸 4,950万</text>
+    <text x="232" y="56" font-size="9" fill="#315F5B">持家 3,720万</text>
+    <text x="20" y="126" font-size="9" fill="#232624">30歳</text>
+    <text x="182" y="126" font-size="9" fill="#232624">65歳</text>
+    <text x="272" y="126" font-size="9" fill="#232624">85歳</text>
+  </svg>
+  <span class="sc-diff"><span>85歳時点の累計現金支出差<br><span class="num">1,230万円</span></span><span class="cta">自分で動かす →</span></span>
+  <span class="sc-note">仮定モデル。資産価値や運用は含みません。</span>
+</a>
+<h2 style="font-family:'Klee One',cursive">いま気になるお金を、動かす。</h2>
+<p>実際の計算機へつながる、図で選べる入口。</p>
+<div class="tiles">
+  <a class="tile" href="./tools/pension/"><span class="ic">年</span><svg class="diagram" viewBox="0 0 200 64" role="img" aria-hidden="true"><path d="M10 50 H70 M70 50 V38 H130 M130 38 V24 H190" fill="none" stroke="#315F5B" stroke-width="3"/><circle cx="70" cy="50" r="4" fill="#B55B46"/><circle cx="130" cy="38" r="4" fill="#B55B46"/><circle cx="190" cy="24" r="4" fill="#B55B46"/><path d="M10 58 H190" stroke="#232624" stroke-width="1.5"/><text x="34" y="34" font-size="10" fill="#232624">60歳</text><text x="94" y="22" font-size="10" fill="#232624">65歳</text><text x="152" y="12" font-size="10" fill="#232624">70歳</text></svg><span class="concept">概念図</span><b>年金</b><span>60歳・65歳・70歳。受け取り始めをずらすと、損益分岐が動く。</span></a>
+  <a class="tile" href="./tools/kodomo-nisa/"><span class="ic">子</span><svg class="diagram" viewBox="0 0 200 64" role="img" aria-hidden="true"><rect x="14" y="40" width="26" height="16" fill="#C79A3B"/><rect x="52" y="30" width="26" height="26" fill="#C79A3B"/><rect x="90" y="18" width="26" height="38" fill="#315F5B"/><rect x="128" y="8" width="26" height="48" fill="#315F5B"/><circle cx="168" cy="18" r="6" fill="none" stroke="#232624" stroke-width="2"/><path d="M168 24 V40 M168 30 L158 36 M168 30 L178 34 M168 40 L160 54 M168 40 L177 54" stroke="#232624" stroke-width="2" fill="none"/><path d="M10 58 H190" stroke="#232624" stroke-width="1.5"/></svg><span class="concept">概念図</span><b>こどもNISA</b><span>2027年開始、年60万円まで。児童手当を回すと、18歳でいくら？</span></a>
+  <a class="tile" href="./tools/income/"><span class="ic">取</span><svg class="diagram" viewBox="0 0 200 64" role="img" aria-hidden="true"><rect x="10" y="22" width="118" height="20" fill="#315F5B"/><rect x="128" y="22" width="38" height="20" fill="#C79A3B"/><rect x="166" y="22" width="24" height="20" fill="#B55B46"/><text x="34" y="14" font-size="10" fill="#315F5B">手取り</text><text x="126" y="14" font-size="10" fill="#232624">保険</text><text x="164" y="14" font-size="10" fill="#B55B46">税金</text><text x="10" y="56" font-size="10" fill="#232624">年収の内訳</text></svg><span class="concept">概念図</span><b>手取り</b><span>年収から保険と税金を引いた残り。500万円なら手取りはいくら？</span></a>
+  <a class="tile" href="./tools/investment/"><span class="ic">積</span><svg class="diagram" viewBox="0 0 200 64" role="img" aria-hidden="true"><path d="M10 54 L190 30" stroke="#C79A3B" stroke-width="3"/><path d="M10 54 C 80 50, 140 38, 190 10" fill="none" stroke="#315F5B" stroke-width="3"/><path d="M10 58 H190" stroke="#232624" stroke-width="1.5"/><text x="120" y="58" font-size="10" fill="#C79A3B">元本</text><text x="150" y="16" font-size="10" fill="#315F5B">評価額</text></svg><span class="concept">概念図</span><b>積立投資</b><span>月3万円を35年。利回りを変えると、着地点が動く。</span></a>
+  <a class="tile" href="./tools/regional-wages/"><span class="ic">賃</span><svg class="diagram" viewBox="0 0 200 64" role="img" aria-hidden="true"><rect x="16" y="38" width="24" height="18" fill="#C79A3B"/><rect x="52" y="30" width="24" height="26" fill="#C79A3B"/><rect x="88" y="24" width="24" height="32" fill="#315F5B"/><rect x="124" y="14" width="24" height="42" fill="#315F5B"/><rect x="160" y="6" width="24" height="50" fill="#B55B46"/><path d="M10 58 H190" stroke="#232624" stroke-width="1.5"/></svg><span class="concept">概念図</span><b>地域の賃金</b><span>月給は都道府県で違う。東京418,300円、青森263,900円。</span></a>
+  <a class="tile" href="./tools/regional/"><span class="ic">物</span><svg class="diagram" viewBox="0 0 200 64" role="img" aria-hidden="true"><rect x="52" y="6" width="138" height="12" fill="#B55B46"/><rect x="52" y="26" width="104" height="12" fill="#C79A3B"/><rect x="52" y="46" width="84" height="12" fill="#315F5B"/><text x="6" y="16" font-size="10" fill="#232624">東京</text><text x="6" y="36" font-size="10" fill="#232624">全国</text><text x="6" y="56" font-size="10" fill="#232624">地方</text></svg><span class="concept">概念図</span><b>地域の物価</b><span>同じ生活の値段は、場所で変わる。2025年の指数で比べる。</span></a>
+  <a class="tile" href="./tools/household-survey/"><span class="ic">計</span><svg class="diagram" viewBox="0 0 200 64" role="img" aria-hidden="true"><rect x="16" y="10" width="72" height="44" fill="none" stroke="#232624" stroke-width="2"/><path d="M16 22 H88 M16 34 H88 M16 46 H88" stroke="#232624" stroke-width="1.2"/><rect x="112" y="10" width="72" height="44" fill="none" stroke="#315F5B" stroke-width="2"/><path d="M112 22 H184 M112 34 H184 M112 46 H184" stroke="#315F5B" stroke-width="1.2"/><text x="30" y="62" font-size="0" fill="#232624"></text></svg><span class="concept">概念図</span><b>都市別の家計</b><span>52市の勤労者世帯。収入と支出の中身を並べる。</span></a>
+  <a class="tile" href="./tools/household/"><span class="ic">家</span><svg class="diagram" viewBox="0 0 200 64" role="img" aria-hidden="true"><circle cx="36" cy="30" r="20" fill="none" stroke="#232624" stroke-width="2.5"/><path d="M36 30 V16 M36 30 L47 36" stroke="#232624" stroke-width="2.5"/><rect x="76" y="30" width="18" height="18" fill="none" stroke="#315F5B" stroke-width="2.5"/><rect x="102" y="30" width="18" height="18" fill="none" stroke="#315F5B" stroke-width="2.5"/><rect x="128" y="30" width="18" height="18" fill="#315F5B"/><text x="76" y="20" font-size="10" fill="#232624">時間 → 金額に換算</text></svg><span class="concept">概念図</span><b>家事・育児</b><span>家事と育児を時給で数えると、年いくら分の仕事か。</span></a>
+  <a class="tile" href="./tools/furusato/"><span class="ic">故</span><svg class="diagram" viewBox="0 0 200 64" role="img" aria-hidden="true"><rect x="10" y="24" width="130" height="18" fill="#315F5B"/><rect x="140" y="24" width="14" height="18" fill="#B55B46"/><rect x="154" y="24" width="36" height="18" fill="none" stroke="#232624" stroke-width="1.5" stroke-dasharray="4 3"/><text x="30" y="16" font-size="10" fill="#232624">控除の上限（目安）</text><text x="128" y="56" font-size="10" fill="#B55B46">自己負担2,000円</text></svg><span class="concept">概念図</span><b>ふるさと納税</b><span>年収から、控除の上限の目安を出す。</span></a>
+  <a class="tile" href="./tools/securities/"><span class="ic">券</span><svg class="diagram" viewBox="0 0 200 64" role="img" aria-hidden="true"><rect x="10" y="8" width="150" height="10" fill="#315F5B"/><rect x="10" y="26" width="105" height="10" fill="#C79A3B"/><rect x="10" y="44" width="66" height="10" fill="#B55B46"/><path d="M168 13 h16 M178 7 l8 6 -8 6" stroke="#232624" stroke-width="2" fill="none"/></svg><span class="concept">概念図</span><b>証券口座の出口</b><span>全部出すと、いくらかかる？口座ごとの差を比べる。</span></a>
+  <a class="tile" href="./products/"><span class="ic">品</span><b>資産管理の道具（商品）</b><span>完成品を検品中。匿名サンプルを公開しています。</span></a>
+  <a class="tile" href="https://note.com/okane_kangaesugi"><span class="ic">読</span><b>noteで深掘り</b><span>数字の根拠を、一次情報で掘る。</span></a>
+  <a class="tile" href="./methodology/"><span class="ic">式</span><b>計算の前提</b><span>数字の数え方と、数えていないもの。</span></a>
+</div>
+</main>
+<footer>
+  <a href="./tools/">道具箱</a><a href="./stories/">物語</a><a href="./about/">このサイトについて</a><a href="./privacy/">プライバシー</a>
+  <p>お金を考えすぎる会社員 ― 制度と数字を一次情報で確かめる個人メディア。各シミュレーターの前提・出典は各ページ末尾にあります。入力はブラウザの中だけで計算し、外部に送信・保存しません。</p>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+{
+  "schema": "okane.content-index.v1",
+  "generated": "2026-11-24",
+  "source": "DATA-002 topic_graph.csv + DATA-003 claim_sources.csv (verified 2026-11-24)",
+  "public_only": true,
+  "themes": [
+    {
+      "id": "housing",
+      "label": "住宅（賃貸 vs 持家）",
+      "page": {
+        "id": "PAGE-STORIES",
+        "url": "https://okanekangaesugi.com/stories/"
+      },
+      "videos": [
+        {
+          "id": "EP3",
+          "state": "published",
+          "url": "https://www.instagram.com/reel/Df5xKEXDuIB/",
+          "published": "2026-11-19"
+        }
+      ],
+      "tools": [],
+      "claims": [
+        "CLM-HOUSING-01"
+      ]
+    },
+    {
+      "id": "pension",
+      "label": "年金",
+      "page": {
+        "id": "PAGE-TOOL-PENSION",
+        "url": "https://okanekangaesugi.com/tools/pension/"
+      },
+      "videos": [],
+      "tools": [
+        {
+          "id": "TOOL-PENSION",
+          "url": "https://okanekangaesugi.com/tools/pension/"
+        }
+      ],
+      "claims": [
+        "CLM-PENSION-01",
+        "CLM-PENSION-02",
+        "CLM-PENSION-03",
+        "CLM-PENSION-04"
+      ]
+    },
+    {
+      "id": "kodomo",
+      "label": "子育て・こどもNISA",
+      "page": {
+        "id": "PAGE-TOOL-KODOMO",
+        "url": "https://okanekangaesugi.com/tools/kodomo-nisa/"
+      },
+      "videos": [],
+      "tools": [
+        {
+          "id": "TOOL-KODOMO",
+          "url": "https://okanekangaesugi.com/tools/kodomo-nisa/"
+        }
+      ],
+      "claims": [
+        "CLM-KODOMO-01",
+        "CLM-KODOMO-02"
+      ]
+    },
+    {
+      "id": "furusato",
+      "label": "ふるさと納税",
+      "page": {
+        "id": "PAGE-TOOL-FURUSATO",
+        "url": "https://okanekangaesugi.com/tools/furusato/"
+      },
+      "videos": [],
+      "tools": [
+        {
+          "id": "TOOL-FURUSATO",
+          "url": "https://okanekangaesugi.com/tools/furusato/"
+        }
+      ],
+      "claims": [
+        "CLM-FURUSATO-01"
+      ]
+    },
+    {
+      "id": "securities",
+      "label": "証券・投資",
+      "page": {
+        "id": "PAGE-TOOL-SECURITIES",
+        "url": "https://okanekangaesugi.com/tools/securities/"
+      },
+      "videos": [],
+      "tools": [
+        {
+          "id": "TOOL-SECURITIES",
+          "url": "https://okanekangaesugi.com/tools/securities/"
+        }
+      ],
+      "claims": [
+        "CLM-SEC-01",
+        "CLM-SEC-02"
+      ]
+    },
+    {
+      "id": "investment",
+      "label": "積立投資（仮定モデル）",
+      "page": {
+        "id": "PAGE-TOOL-INVESTMENT",
+        "url": "https://okanekangaesugi.com/tools/investment/"
+      },
+      "videos": [],
+      "tools": [
+        {
+          "id": "TOOL-INVESTMENT",
+          "url": "https://okanekangaesugi.com/tools/investment/"
+        }
+      ],
+      "claims": [],
+      "note": "仮定モデル（過去実績ではない）。計算は独立検算300条件で検証済み（2026-11-24）"
+    },
+    {
+      "id": "income",
+      "label": "年収と手取り（令和7年分）",
+      "page": {
+        "id": "PAGE-TOOL-INCOME",
+        "url": "https://okanekangaesugi.com/tools/income/"
+      },
+      "videos": [],
+      "tools": [
+        {
+          "id": "TOOL-INCOME",
+          "url": "https://okanekangaesugi.com/tools/income/"
+        }
+      ],
+      "claims": [],
+      "note": "根拠台帳 income_rules.csv（一次資料30件）に基づく概算モデル。住民税は前年同年収の場合として時差を明記"
+    },
+    {
+      "id": "household",
+      "label": "家事・育児の時間の換算",
+      "page": {
+        "id": "PAGE-TOOL-HOUSEHOLD",
+        "url": "https://okanekangaesugi.com/tools/household/"
+      },
+      "videos": [],
+      "tools": [
+        {
+          "id": "TOOL-HOUSEHOLD",
+          "url": "https://okanekangaesugi.com/tools/household/"
+        }
+      ],
+      "claims": [],
+      "note": "内閣府ESRIの3方法に基づく換算。時給は利用者が設定し単一の価値を断定しない（household_rules.csv）"
+    },
+    {
+      "id": "regional",
+      "label": "地域の物価比較（2025年）",
+      "page": {
+        "id": "PAGE-TOOL-REGIONAL",
+        "url": "https://okanekangaesugi.com/tools/regional/"
+      },
+      "videos": [],
+      "tools": [
+        {
+          "id": "TOOL-REGIONAL",
+          "url": "https://okanekangaesugi.com/tools/regional/"
+        },
+        {
+          "id": "TOOL-REGIONAL-WAGES",
+          "url": "https://okanekangaesugi.com/tools/regional-wages/"
+        },
+        {
+          "id": "TOOL-HOUSEHOLD-SURVEY",
+          "url": "https://okanekangaesugi.com/tools/household-survey/"
+        }
+      ],
+      "claims": [],
+      "note": "総務省統計局 小売物価統計調査（構造編）2025年の地域差指数（全47都道府県、e-Stat公式Excelから抽出・照合済み）。比較ルールは regional_rules.csv 賃金は厚労省 令和7年賃金構造基本統計調査 参考表1（全47件を原表と照合済み）。賃金と家計支出の差引はしない（RG-RULE-04） 家計は家計調査2025年 第1-1表（県庁所在市等52市・勤労者世帯、抽出済み）。世帯と個人の差引はしない"
+    }
+  ]
+}

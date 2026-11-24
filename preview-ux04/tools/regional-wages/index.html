@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>地域の賃金比較（2025年）｜お金を考えすぎる会社員</title>
+<meta name="description" content="厚生労働省「令和7年賃金構造基本統計調査」の都道府県別賃金（所定内給与額・一般労働者）で、2つの地域の賃金を比べます。過去実績ではなく、将来の予測でもありません。">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://okanekangaesugi.com/tools/regional-wages/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="地域の賃金比較（2025年）｜お金を考えすぎる会社員">
+<meta property="og:url" content="https://okanekangaesugi.com/tools/regional-wages/">
+<meta property="og:image" content="https://okanekangaesugi.com/assets/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f0e8;color:#292e29;font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;line-height:1.65}main{max-width:1000px;margin:auto;padding:22px}h1{font-family:"Klee One","BIZ UDPGothic",sans-serif;font-size:clamp(25px,4vw,40px);line-height:1.25}h2{font-family:"Klee One","BIZ UDPGothic",sans-serif}h2{font-size:20px}small,p{color:#535950}.paper{background:#fffdf6;border:1px solid #c9c7bb;border-radius:12px;padding:18px;margin:14px 0}.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}label{display:block;font-weight:600}input[type=range]{width:100%;height:44px;accent-color:#315F5B}output{font-variant-numeric:tabular-nums}.values{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.values div{padding:10px;border-top:2px solid #42664f}.values strong{display:block;font-size:clamp(17px,3vw,29px);overflow-wrap:anywhere}.loss{color:#B55B46}.controls button,button{min-height:44px;padding:8px 14px;border:1px solid #888d83;background:#fffdf6;border-radius:7px;color:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #a96550;outline-offset:3px}svg{width:100%;height:auto;display:block}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:right;padding:8px 4px;border-bottom:1px solid #d6d4cb}th:first-child,td:first-child{text-align:left}a{color:#315F5B}@media(max-width:480px){main{padding:12px}.paper{padding:12px}.values{grid-template-columns:1fr}.controls{grid-template-columns:1fr}table{font-size:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+header.site{max-width:1000px;margin:auto;padding:14px 22px 0;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}header.site .brand{font-family:"Klee One",sans-serif;font-weight:600}header.site nav a{margin-left:14px;color:#315F5B}footer.site{max-width:1000px;margin:auto;padding:0 22px 26px;color:#535950;font-size:.85rem}</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "地域の賃金比較（2025年）", "url": "https://okanekangaesugi.com/tools/regional-wages/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "isAccessibleForFree": true, "inLanguage": "ja", "description": "厚生労働省「令和7年賃金構造基本統計調査」の都道府県別賃金（所定内給与額・一般労働者）で、2つの地域の賃金を比べます。過去実績ではなく、将来の予測でもありません。"}</script>
+<style>main:fullscreen{background:#F3F0E8;overflow:auto;padding:14px}.fsbtn{font-family:inherit;border:2px solid #232624;background:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;margin:8px 0}</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../../">お金を考えすぎる会社員</a>
+  <nav aria-label="主なページ"><a href="../../stories/">物語</a><a href="../">道具箱</a><a href="../../methodology/">計算の前提</a><a href="../../about/">このサイトについて</a></nav>
+</header>
+<main>
+<small>お金を考えすぎる会社員｜賃金構造基本統計調査（令和7年）</small>
+<h1>東京と青森、<br>賃金はどれだけ違う？</h1>
+<button type="button" class="fsbtn" id="fsBtn">全画面で使う</button>
+<p>都道府県別の賃金（月額の所定内給与額）だけを比べる画面です。物価の比較は<a href="../regional/">別の画面</a>に分けています。賃金から物価や家計支出を差し引いた「残る金額」は、このサイトでは出しません（個人の賃金と世帯の支出は母集団が違うため）。</p>
+<section class="paper controls" aria-label="比較条件">
+  <div><label for="prefA">地域A</label><select id="prefA"><option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都" selected>東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div>
+  <div><label for="prefB">地域B</label><select id="prefB"><option value="北海道">北海道</option><option value="青森県" selected>青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div>
+</section>
+<section class="paper">
+  <h2>比べた結果</h2>
+  <div class="values" aria-live="polite">
+    <div><span id="labelA"></span><strong id="wageA"></strong></div>
+    <div><span id="labelB"></span><strong id="wageB"></strong></div>
+    <div>全国<strong>340,600円</strong></div>
+    <div>差<strong id="diff"></strong></div>
+  </div>
+  <div id="bars" aria-hidden="true"></div>
+  <p id="summary"></p>
+</section>
+<section class="paper">
+  <h2>全都道府県（賃金の高い順）</h2>
+  <table><caption>都道府県別賃金 2025年6月分・所定内給与額（円／月）</caption>
+  <thead><tr><th scope="col">都道府県</th><th scope="col">所定内給与額</th><th scope="col">全国との差</th></tr></thead>
+  <tbody id="all"></tbody></table>
+</section>
+<section class="paper">
+  <h2>計算の前提</h2>
+  <p>出典は厚生労働省「令和7年賃金構造基本統計調査」の参考表1（都道府県別・男女計）です。対象は一般労働者（男女計）で、常用労働者を10人以上雇用する民営事業所。金額は2025年6月分の所定内給与額で、賞与・時間外手当は含みません。税金や社会保険料を引く前の額で、手取りでも世帯収入でもありません。</p>
+  <p>全国値（340,600円）より高いのは東京都・神奈川県・愛知県・大阪府の4都府県だけです。全国値は47都道府県の単純平均ではなく、調査全体の集計値です。</p>
+  <p>この賃金は「その地域で働く個人」の統計です。物価（<a href="../regional/">地域の物価比較</a>）と並べて眺めることはできますが、賃金から家計支出を差し引く計算はしません。</p>
+</section>
+<section class="paper related"><h2>ほかの道具へ</h2><p><a href="../regional/">地域の物価比較</a> ／ <a href="../income/">手取り</a> ／ <a href="../investment/">積立投資</a> ／ <a href="../household/">家事・育児</a> ／ <a href="../">道具箱の一覧</a> ／ <a href="../../products/">資産管理の道具（商品）</a></p></section>
+</main>
+<footer>© 2026 お金を考えすぎる会社員</footer>
+<script type="module">
+const DATA = [{"pref": "北海道", "wage": 297100}, {"pref": "青森県", "wage": 263900}, {"pref": "岩手県", "wage": 275000}, {"pref": "宮城県", "wage": 313700}, {"pref": "秋田県", "wage": 275800}, {"pref": "山形県", "wage": 272200}, {"pref": "福島県", "wage": 293600}, {"pref": "茨城県", "wage": 330700}, {"pref": "栃木県", "wage": 317700}, {"pref": "群馬県", "wage": 308400}, {"pref": "埼玉県", "wage": 325400}, {"pref": "千葉県", "wage": 339100}, {"pref": "東京都", "wage": 418300}, {"pref": "神奈川県", "wage": 368600}, {"pref": "新潟県", "wage": 291800}, {"pref": "富山県", "wage": 304800}, {"pref": "石川県", "wage": 305600}, {"pref": "福井県", "wage": 301600}, {"pref": "山梨県", "wage": 317300}, {"pref": "長野県", "wage": 308900}, {"pref": "岐阜県", "wage": 311800}, {"pref": "静岡県", "wage": 314500}, {"pref": "愛知県", "wage": 341600}, {"pref": "三重県", "wage": 321100}, {"pref": "滋賀県", "wage": 327000}, {"pref": "京都府", "wage": 337400}, {"pref": "大阪府", "wage": 348900}, {"pref": "兵庫県", "wage": 334900}, {"pref": "奈良県", "wage": 321800}, {"pref": "和歌山県", "wage": 301900}, {"pref": "鳥取県", "wage": 278700}, {"pref": "島根県", "wage": 282600}, {"pref": "岡山県", "wage": 300600}, {"pref": "広島県", "wage": 320200}, {"pref": "山口県", "wage": 306700}, {"pref": "徳島県", "wage": 305900}, {"pref": "香川県", "wage": 310100}, {"pref": "愛媛県", "wage": 290800}, {"pref": "高知県", "wage": 285800}, {"pref": "福岡県", "wage": 314300}, {"pref": "佐賀県", "wage": 279700}, {"pref": "長崎県", "wage": 284600}, {"pref": "熊本県", "wage": 291000}, {"pref": "大分県", "wage": 295200}, {"pref": "宮崎県", "wage": 268300}, {"pref": "鹿児島県", "wage": 289300}, {"pref": "沖縄県", "wage": 277400}];
+const NATIONAL = 340600;
+const yen = (n) => n.toLocaleString('ja-JP') + '円';
+const el = (id) => document.getElementById(id);
+const byPref = (p) => DATA.find((r) => r.pref === p);
+function draw() {
+  const A = byPref(el('prefA').value), B = byPref(el('prefB').value);
+  el('labelA').textContent = A.pref; el('labelB').textContent = B.pref;
+  el('wageA').textContent = yen(A.wage); el('wageB').textContent = yen(B.wage);
+  const d = A.wage - B.wage;
+  el('diff').textContent = (d > 0 ? '+' : '') + yen(d).replace('円', '') + '円';
+  const max = Math.max(A.wage, B.wage, NATIONAL);
+  const bar = (label, v, color) => '<p style="margin:.4em 0">' + label + ' <span style="display:inline-block;vertical-align:middle;height:14px;background:' + color + ';width:' + Math.round(v / max * 62) + '%"></span> ' + yen(v) + '</p>';
+  el('bars').innerHTML = bar(A.pref, A.wage, '#315F5B') + bar(B.pref, B.wage, '#B55B46') + bar('全国', NATIONAL, '#8a8578');
+  el('summary').textContent = A.pref + 'と' + B.pref + 'の差は月 ' + Math.abs(d).toLocaleString('ja-JP') + '円です。棒は0から引いています。';
+}
+['prefA', 'prefB'].forEach((id) => el(id).addEventListener('input', draw));
+el('all').innerHTML = [...DATA].sort((a, b) => b.wage - a.wage).map((r) => '<tr><th scope="row">' + r.pref + '</th><td>' + r.wage.toLocaleString('ja-JP') + '</td><td>' + (r.wage - NATIONAL >= 0 ? '+' : '') + (r.wage - NATIONAL).toLocaleString('ja-JP') + '</td></tr>').join('');
+draw();
+</script>
+<script>document.getElementById('fsBtn').addEventListener('click',function(){var m=document.querySelector('main');if(document.fullscreenElement){document.exitFullscreen();}else if(m&&m.requestFullscreen){m.requestFullscreen();}});</script>
+</body>
+</html>
