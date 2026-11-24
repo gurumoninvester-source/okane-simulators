@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>地域の物価比較シミュレーター（2025年）｜お金を考えすぎる会社員</title>
+<meta name="description" content="総務省の消費者物価地域差指数（2025年・全47都道府県）で、2つの地域の物価水準と生活費の目安を比べます。指数は2025年の調査結果で、生活費への換算は目安です。">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://okanekangaesugi.com/tools/regional/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="地域の物価比較シミュレーター（2025年）｜お金を考えすぎる会社員">
+<meta property="og:url" content="https://okanekangaesugi.com/tools/regional/">
+<meta property="og:image" content="https://okanekangaesugi.com/assets/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f0e8;color:#292e29;font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;line-height:1.65}main{max-width:1000px;margin:auto;padding:22px}h1{font-family:"Klee One","BIZ UDPGothic",sans-serif;font-size:clamp(25px,4vw,40px);line-height:1.25}h2{font-family:"Klee One","BIZ UDPGothic",sans-serif}h2{font-size:20px}small,p{color:#535950}.paper{background:#fffdf6;border:1px solid #c9c7bb;border-radius:12px;padding:18px;margin:14px 0}.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}label{display:block;font-weight:600}input[type=range]{width:100%;height:44px;accent-color:#315F5B}output{font-variant-numeric:tabular-nums}.values{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.values div{padding:10px;border-top:2px solid #42664f}.values strong{display:block;font-size:clamp(17px,3vw,29px);overflow-wrap:anywhere}.loss{color:#B55B46}.controls button,button{min-height:44px;padding:8px 14px;border:1px solid #888d83;background:#fffdf6;border-radius:7px;color:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #a96550;outline-offset:3px}svg{width:100%;height:auto;display:block}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:right;padding:8px 4px;border-bottom:1px solid #d6d4cb}th:first-child,td:first-child{text-align:left}a{color:#315F5B}@media(max-width:480px){main{padding:12px}.paper{padding:12px}.values{grid-template-columns:1fr}.controls{grid-template-columns:1fr}table{font-size:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+header.site{max-width:1000px;margin:auto;padding:14px 22px 0;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}header.site .brand{font-family:"Klee One",sans-serif;font-weight:600}header.site nav a{margin-left:14px;color:#315F5B}footer.site{max-width:1000px;margin:auto;padding:0 22px 26px;color:#535950;font-size:.85rem}</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "地域の物価比較シミュレーター（2025年）", "url": "https://okanekangaesugi.com/tools/regional/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "isAccessibleForFree": true, "inLanguage": "ja", "description": "総務省の消費者物価地域差指数（2025年・全47都道府県）で、2つの地域の物価水準と生活費の目安を比べます。指数は2025年の調査結果で、生活費への換算は目安です。"}</script>
+<style>main:fullscreen{background:#F3F0E8;overflow:auto;padding:14px}.fsbtn{font-family:inherit;border:2px solid #232624;background:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;margin:8px 0}</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../../">お金を考えすぎる会社員</a>
+  <nav aria-label="主なページ"><a href="../../stories/">物語</a><a href="../">道具箱</a><a href="../../methodology/">計算の前提</a><a href="../../about/">このサイトについて</a></nav>
+</header>
+<main>
+<small>お金を考えすぎる会社員｜消費者物価地域差指数（2025年）</small>
+<h1>東京と群馬、<br>物価はどれだけ違う？</h1>
+<button type="button" class="fsbtn" id="fsBtn">全画面で使う</button>
+<p>総務省の地域差指数（全国平均＝100）で、2つの都道府県を比べます。生活費の金額を入れると、それぞれの地域での目安に換算できます。</p>
+<section class="paper controls" aria-label="試算条件">
+  <div><label for="prefA">地域A</label><select id="prefA"><option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都" selected>東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div>
+  <div><label for="prefB">地域B</label><select id="prefB"><option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県" selected>群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div>
+  <div><label for="expense">月の生活費（全国平均での金額） <output id="expenseText"></output></label><input id="expense" type="range" min="50000" max="600000" step="5000" value="200000"></div>
+  <div><label for="rent">うち家賃 <output id="rentText"></output></label><input id="rent" type="range" min="0" max="300000" step="5000" value="75000"></div>
+</section>
+<section class="paper">
+  <h2>比べた結果</h2>
+  <table><caption>指数の比較（全国平均＝100・2025年）</caption>
+  <thead><tr><th scope="col">費目</th><th scope="col" id="thA"></th><th scope="col" id="thB"></th></tr></thead><tbody id="rows"></tbody></table>
+  <div class="values" aria-live="polite">
+    <div>生活費の目安（A）<strong id="eqA"></strong></div>
+    <div>生活費の目安（B）<strong id="eqB"></strong></div>
+    <div>家賃だけの目安（A／B）<strong id="eqRent"></strong></div>
+  </div>
+  <p id="summary"></p>
+</section>
+<section class="paper">
+  <h2>全都道府県（総合指数）</h2>
+  <table><caption>消費者物価地域差指数 2025年（総合・全国平均＝100）</caption>
+  <thead><tr><th scope="col">都道府県</th><th scope="col">総合</th><th scope="col">家賃を除く総合</th><th scope="col">食料</th><th scope="col">住居</th></tr></thead>
+  <tbody id="all"></tbody></table>
+</section>
+<section class="paper">
+  <h2>計算の前提</h2>
+  <p>指数は、その地域の物価水準を全国平均＝100とした相対値です。年ごとに基準化されるため、違う年の指数どうしは比べられません（このページは2025年で統一）。「総合」には持家の帰属家賃が含まれていません。地域差がいちばん大きいのは住居なので、家賃は総合とは別に、住居の指数で換算しています。</p>
+  <p>生活費の換算は、全国平均での金額に指数を掛けた目安です。実際の支出は世帯の構成や店の選び方で変わります。また、比べるのは物価だけです。収入は地域で違うので、「その地域で得られる収入」と組にして考える必要があります（東京の給与と地方の物価を引き算しても意味がありません）。</p>
+  <p>出典：<a href="https://www.e-stat.go.jp/dbview?sid=0003441258">総務省統計局「小売物価統計調査（構造編）2025年 10大費目別消費者物価地域差指数」（e-Stat）</a>。最低賃金などの賃金データは、このページには混ぜていません。</p>
+</section>
+<section class="paper related"><h2>ほかの道具へ</h2><p><a href="../../stories/">物語（住宅編）</a> ／ <a href="../pension/">年金</a> ／ <a href="../kodomo-nisa/">こどもNISA</a> ／ <a href="../furusato/">ふるさと納税</a> ／ <a href="../securities/">証券口座</a> ／ <a href="../investment/">積立投資</a> ／ <a href="../income/">手取り</a> ／ <a href="../household/">家事・育児</a> ／ <a href="../regional-wages/">地域の賃金比較</a> ／ <a href="../../products/">資産管理の道具（商品）</a></p></section>
+</main>
+<footer>© 2026 お金を考えすぎる会社員</footer>
+<script type="module">
+const DATA = [{"pref": "北海道", "total": 102.4, "total_ex_rent": 103.2, "food": 102.5, "housing": 92.6}, {"pref": "青森県", "total": 97.9, "total_ex_rent": 98.8, "food": 97.1, "housing": 94.2}, {"pref": "岩手県", "total": 100.0, "total_ex_rent": 100.4, "food": 99.3, "housing": 97.5}, {"pref": "宮城県", "total": 100.2, "total_ex_rent": 100.4, "food": 99.6, "housing": 96.4}, {"pref": "秋田県", "total": 98.6, "total_ex_rent": 99.1, "food": 99.5, "housing": 87.5}, {"pref": "山形県", "total": 100.1, "total_ex_rent": 100.9, "food": 101.3, "housing": 93.5}, {"pref": "福島県", "total": 99.0, "total_ex_rent": 99.6, "food": 99.4, "housing": 93.3}, {"pref": "茨城県", "total": 97.5, "total_ex_rent": 98.0, "food": 97.2, "housing": 95.7}, {"pref": "栃木県", "total": 97.3, "total_ex_rent": 97.6, "food": 98.2, "housing": 86.4}, {"pref": "群馬県", "total": 96.2, "total_ex_rent": 96.7, "food": 95.5, "housing": 89.5}, {"pref": "埼玉県", "total": 100.2, "total_ex_rent": 100.0, "food": 98.1, "housing": 104.5}, {"pref": "千葉県", "total": 100.5, "total_ex_rent": 100.4, "food": 99.1, "housing": 111.8}, {"pref": "東京都", "total": 104.2, "total_ex_rent": 102.2, "food": 102.9, "housing": 129.8}, {"pref": "神奈川県", "total": 103.3, "total_ex_rent": 102.7, "food": 102.8, "housing": 110.7}, {"pref": "新潟県", "total": 97.8, "total_ex_rent": 98.0, "food": 98.1, "housing": 83.8}, {"pref": "富山県", "total": 98.7, "total_ex_rent": 99.0, "food": 101.0, "housing": 93.8}, {"pref": "石川県", "total": 99.4, "total_ex_rent": 100.1, "food": 102.4, "housing": 82.0}, {"pref": "福井県", "total": 99.3, "total_ex_rent": 99.6, "food": 102.2, "housing": 87.3}, {"pref": "山梨県", "total": 97.7, "total_ex_rent": 98.3, "food": 98.0, "housing": 94.5}, {"pref": "長野県", "total": 96.9, "total_ex_rent": 97.5, "food": 95.0, "housing": 89.4}, {"pref": "岐阜県", "total": 97.2, "total_ex_rent": 97.7, "food": 97.5, "housing": 83.4}, {"pref": "静岡県", "total": 98.2, "total_ex_rent": 98.7, "food": 97.5, "housing": 92.5}, {"pref": "愛知県", "total": 98.0, "total_ex_rent": 98.4, "food": 97.4, "housing": 94.6}, {"pref": "三重県", "total": 98.1, "total_ex_rent": 98.6, "food": 98.7, "housing": 88.9}, {"pref": "滋賀県", "total": 97.7, "total_ex_rent": 98.2, "food": 97.4, "housing": 83.3}, {"pref": "京都府", "total": 101.1, "total_ex_rent": 101.0, "food": 101.1, "housing": 102.2}, {"pref": "大阪府", "total": 99.9, "total_ex_rent": 99.8, "food": 99.1, "housing": 98.0}, {"pref": "兵庫県", "total": 99.4, "total_ex_rent": 99.6, "food": 99.8, "housing": 92.7}, {"pref": "奈良県", "total": 97.8, "total_ex_rent": 98.5, "food": 97.8, "housing": 91.5}, {"pref": "和歌山県", "total": 97.7, "total_ex_rent": 98.5, "food": 98.1, "housing": 87.4}, {"pref": "鳥取県", "total": 99.1, "total_ex_rent": 99.8, "food": 102.2, "housing": 85.8}, {"pref": "島根県", "total": 99.8, "total_ex_rent": 100.4, "food": 102.5, "housing": 89.0}, {"pref": "岡山県", "total": 97.7, "total_ex_rent": 98.3, "food": 101.1, "housing": 79.1}, {"pref": "広島県", "total": 98.8, "total_ex_rent": 99.4, "food": 101.8, "housing": 88.5}, {"pref": "山口県", "total": 99.6, "total_ex_rent": 100.2, "food": 102.6, "housing": 95.3}, {"pref": "徳島県", "total": 98.9, "total_ex_rent": 99.6, "food": 101.2, "housing": 90.7}, {"pref": "香川県", "total": 98.7, "total_ex_rent": 99.4, "food": 100.9, "housing": 85.1}, {"pref": "愛媛県", "total": 99.2, "total_ex_rent": 100.0, "food": 100.7, "housing": 86.5}, {"pref": "高知県", "total": 99.9, "total_ex_rent": 100.8, "food": 101.4, "housing": 94.8}, {"pref": "福岡県", "total": 98.5, "total_ex_rent": 99.1, "food": 99.2, "housing": 96.4}, {"pref": "佐賀県", "total": 98.5, "total_ex_rent": 99.6, "food": 99.9, "housing": 90.2}, {"pref": "長崎県", "total": 99.6, "total_ex_rent": 100.0, "food": 101.5, "housing": 95.1}, {"pref": "熊本県", "total": 99.8, "total_ex_rent": 100.8, "food": 103.3, "housing": 95.1}, {"pref": "大分県", "total": 97.4, "total_ex_rent": 98.6, "food": 99.0, "housing": 85.4}, {"pref": "宮崎県", "total": 98.0, "total_ex_rent": 98.9, "food": 98.6, "housing": 101.3}, {"pref": "鹿児島県", "total": 96.4, "total_ex_rent": 96.9, "food": 99.0, "housing": 91.1}, {"pref": "沖縄県", "total": 100.4, "total_ex_rent": 101.3, "food": 106.6, "housing": 95.4}];
+// DEV-013 地域比較モデル
+// データ: 総務省統計局 小売物価統計調査（構造編）2025年「10大費目別消費者物価地域差指数」
+// （e-Stat 公式Excel b001 から抽出。全国平均=100、持家の帰属家賃を含まない）
+function equivalent(amount, index) { return Math.round(amount * index / 100); }
+function ratio(a, b) { return a / b; }
+
+const yen = (n) => n.toLocaleString('ja-JP') + '円';
+const el = (id) => document.getElementById(id);
+const byPref = (p) => DATA.find((r) => r.pref === p);
+function draw() {
+  const A = byPref(el('prefA').value), B = byPref(el('prefB').value);
+  const expense = Number(el('expense').value), rent = Number(el('rent').value);
+  el('expenseText').textContent = yen(expense);
+  el('rentText').textContent = yen(rent);
+  el('thA').textContent = A.pref; el('thB').textContent = B.pref;
+  const cats = [['総合', 'total'], ['家賃を除く総合', 'total_ex_rent'], ['食料', 'food'], ['住居', 'housing']];
+  el('rows').innerHTML = cats.map(([label, k]) => '<tr><th scope="row">' + label + '</th><td>' + A[k].toFixed(1) + '</td><td>' + B[k].toFixed(1) + '</td></tr>').join('');
+  el('eqA').textContent = yen(equivalent(expense, A.total));
+  el('eqB').textContent = yen(equivalent(expense, B.total));
+  el('eqRent').textContent = yen(equivalent(rent, A.housing)) + ' / ' + yen(equivalent(rent, B.housing));
+  const r = ratio(A.total, B.total);
+  el('summary').textContent = '総合では ' + A.pref + ' は ' + B.pref + ' の ' + r.toFixed(2) + ' 倍の水準です。住居だけ見ると ' + ratio(A.housing, B.housing).toFixed(2) + ' 倍で、差の中心は住居にあります。';
+}
+['prefA', 'prefB', 'expense', 'rent'].forEach((id) => el(id).addEventListener('input', draw));
+el('all').innerHTML = [...DATA].sort((a, b) => b.total - a.total).map((r) => '<tr><th scope="row">' + r.pref + '</th><td>' + r.total.toFixed(1) + '</td><td>' + r.total_ex_rent.toFixed(1) + '</td><td>' + r.food.toFixed(1) + '</td><td>' + r.housing.toFixed(1) + '</td></tr>').join('');
+draw();
+</script>
+<script>document.getElementById('fsBtn').addEventListener('click',function(){var m=document.querySelector('main');if(document.fullscreenElement){document.exitFullscreen();}else if(m&&m.requestFullscreen){m.requestFullscreen();}});</script>
+<div style="position:fixed;right:8px;bottom:8px;z-index:99999;background:#232624;color:#F3F0E8;font-size:11px;padding:4px 9px;border-radius:6px;font-family:sans-serif">UX05 preview · build c4d27d3</div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Codex review #10 — PROD-001 Asset Compass Lite anonymous sample
+
+Reviewed commit `f2fdd9762a98dcc5b93f59a2c3312eec8d74c83f` using `git show HEAD`.
+
+1. **FAIL — Synthetic-only.** The page presents all 24 monthly rows (November 2024 through October 2026) as fictional. The first sentence immediately below the section heading says **これは架空のサンプルデータです。** and explicitly disclaims real individual or household assets. That sentence supplies the label in the heading area. The heading text itself says **Asset Compass Lite 匿名サンプル**. Both the chart’s `aria-label` and the table caption contain **架空のサンプル**. The rows are embedded as a literal `DATA` array, and the repository documents a build-free deployment. The reviewed commit contains no generator to verify the required fixed-arithmetic generation at build time. See `products/index.html:42–57` and `README.md:3`.
+2. **PASS — Arithmetic.** Executed the committed page script in Node with a minimal DOM stub. All 24 rows satisfied `net = cash + fund + stock + other − debt`. The script sets the displayed change from `last.net - first.net`, and the observed output was **+4,313,613円** (11,953,613 − 7,640,000). The CSV handler maps the same `DATA` array, and all 24 generated CSV data lines matched it field for field. See `products/index.html:57–76`.
+3. **PASS — No purchase path.** The commit adds no price, purchase link, payment form, or checkout. The new button downloads a CSV generated in the browser. The page still states **すべて準備中で、現在は購入できません。** and **個人の資産データそのものを販売することはありません。** See `products/index.html:33`, `:54`, and `:70–79`.
+4. **FAIL — Scope.** `git show HEAD --stat` lists three changed files. The commit modifies `products/index.html` and adds `CODEX_BRIEF9.md` and `CODEX_REVIEW9.md`.

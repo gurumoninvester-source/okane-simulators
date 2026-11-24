@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>積立投資シミュレーター｜お金を考えすぎる会社員</title>
+<meta name="description" content="毎月の積立額・期間・仮定の年利を変えて、元本と評価額の差を見る仮定モデル。マイナスの年利も試せます。過去実績ではなく、将来の予測でもありません。">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://okanekangaesugi.com/tools/investment/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="積立投資シミュレーター｜お金を考えすぎる会社員">
+<meta property="og:url" content="https://okanekangaesugi.com/tools/investment/">
+<meta property="og:image" content="https://okanekangaesugi.com/assets/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f0e8;color:#292e29;font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;line-height:1.65}main{max-width:1000px;margin:auto;padding:22px}h1{font-family:"Klee One","BIZ UDPGothic",sans-serif;font-size:clamp(25px,4vw,40px);line-height:1.25}h2{font-family:"Klee One","BIZ UDPGothic",sans-serif}h2{font-size:20px}small,p{color:#535950}.paper{background:#fffdf6;border:1px solid #c9c7bb;border-radius:12px;padding:18px;margin:14px 0}.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}label{display:block;font-weight:600}input[type=range]{width:100%;height:44px;accent-color:#315F5B}output{font-variant-numeric:tabular-nums}.values{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.values div{padding:10px;border-top:2px solid #42664f}.values strong{display:block;font-size:clamp(17px,3vw,29px);overflow-wrap:anywhere}.loss{color:#B55B46}.controls button,button{min-height:44px;padding:8px 14px;border:1px solid #888d83;background:#fffdf6;border-radius:7px;color:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #a96550;outline-offset:3px}svg{width:100%;height:auto;display:block}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:right;padding:8px 4px;border-bottom:1px solid #d6d4cb}th:first-child,td:first-child{text-align:left}a{color:#315F5B}@media(max-width:480px){main{padding:12px}.paper{padding:12px}.values{grid-template-columns:1fr}.controls{grid-template-columns:1fr}table{font-size:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+header.site{max-width:1000px;margin:auto;padding:14px 22px 0;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}header.site .brand{font-family:"Klee One",sans-serif;font-weight:600}header.site nav a{margin-left:14px;color:#315F5B}footer.site{max-width:1000px;margin:auto;padding:0 22px 26px;color:#535950;font-size:.85rem}</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "積立投資シミュレーター", "url": "https://okanekangaesugi.com/tools/investment/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "isAccessibleForFree": true, "inLanguage": "ja", "description": "毎月の積立額・期間・仮定の年利を変えて、元本と評価額の差を見る仮定モデル。マイナスの年利も試せます。過去実績ではなく、将来の予測でもありません。"}</script>
+<style>main:fullscreen{background:#F3F0E8;overflow:auto;padding:14px}.fsbtn{font-family:inherit;border:2px solid #232624;background:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;margin:8px 0}</style>
+</head>
+<body>
+<header class="site">
+  <span class="brand">お金を考えすぎる会社員</span>
+  <nav><a href="../../">トップ</a><a href="../../stories/">物語</a><a href="../">道具箱</a><a href="../../about/">このサイトについて</a></nav>
+</header>
+<main><small>お金を考えすぎる会社員｜Web実装候補・仮定モデル</small><h1>毎月3万円。<br>35年後、どうなっている？</h1>
+<button type="button" class="fsbtn" id="fsBtn">全画面で使う</button><p>将来の金額は決まっていません。条件を変えて、積み立てた金額と、運用後の評価額の違いを見てみます。</p><section class="paper controls" aria-label="試算条件"><div><label for="monthly">毎月の積立額 <output id="monthlyText"></output></label><input id="monthly" type="range" min="0" max="100000" step="1000" value="30000"></div><div><label for="years">積立期間 <output id="yearsText"></output></label><input id="years" type="range" min="0" max="60" step="1" value="35"></div><div><label for="rate">仮定の年利 <output id="rateText"></output></label><input id="rate" type="range" min="-10" max="15" step="0.5" value="4"></div><div><label for="initial">最初の元本 <output id="initialText"></output></label><input id="initial" type="range" min="0" max="10000000" step="100000" value="0"></div><div><button id="reset" type="button">初期条件に戻す</button></div></section><section class="paper"><h2>積立期間の終わり</h2><div class="values" aria-live="polite"><div>投入した元本<strong id="principal"></strong></div><div>仮定上の評価額<strong id="balance"></strong></div><div>元本との差<strong id="gain"></strong></div></div><svg id="chart" viewBox="0 0 640 300" role="img" aria-label="元本と評価額の推移"></svg><p>緑：仮定の評価額 ／ 黄土：投入した元本。横軸は積立年数。</p><table><caption>5年ごとの比較（金額は円）</caption><thead><tr><th scope="col">経過年</th><th scope="col">元本</th><th scope="col">評価額</th></tr></thead><tbody id="rows"></tbody></table></section><section class="paper"><h2>計算の前提</h2><p>毎月末に一定額を積み立てます。年利は実効年率として月利に換算し、月ごとに複利計算します。税金・手数料・物価変動は含みません。マイナスの年利も試せます。これは将来の予測でも過去実績でもありません。</p><p><a href="https://www.fsa.go.jp/policy/nisa2/tsumitate-simulator/">参考：金融庁の資産形成シミュレーション</a></p><p>レバナス等の実際の推移は、運用会社の基準価額と分配金データを取得・検証するまで掲載しません。</p></section><section class="paper related"><h2>ほかの道具へ</h2><p><a href="../../stories/">物語（住宅編）</a> ／ <a href="../pension/">年金</a> ／ <a href="../kodomo-nisa/">こどもNISA</a> ／ <a href="../furusato/">ふるさと納税</a> ／ <a href="../securities/">証券口座</a> ／ <a href="../income/">手取り</a> ／ <a href="../household/">家事・育児</a> ／ <a href="../regional/">地域の物価比較</a> ／ <a href="../../products/">資産管理の道具（商品）</a></p></section>
+</main>
+<footer class="site">
+  <p>お金を考えすぎる会社員 ― 数字は一次情報で確かめ、仮定は仮定として書きます。</p>
+</footer>
+<script>
+
+// Scenario only; no market data or financial advice. End-of-month contributions.
+function simulate({initial=0,monthly=30000,years=35,annualPercent=4}={}) {
+  for(const [v,min,max,int] of [[initial,0,100000000,true],[monthly,0,1000000,true],[years,0,60,true],[annualPercent,-50,30,false]]) if(typeof v!=='number'||!Number.isFinite(v)||v<min||v>max||(int&&!Number.isInteger(v))) throw new RangeError('input outside model domain');
+  const r=Math.expm1(Math.log1p(annualPercent/100)/12), n=years*12;
+  let balance=initial; const rows=[{month:0,principal:initial,balance:initial,gain:0}];
+  for(let m=1;m<=n;m++){balance=balance*(1+r)+monthly;const principal=initial+monthly*m;rows.push({month:m,principal,balance:Math.round(balance),gain:Math.round(balance)-principal});}
+  return rows;
+}
+const el=id=>document.getElementById(id), ids=['monthly','years','rate','initial'], money=n=>n.toLocaleString('ja-JP')+'円';
+function draw(){const [monthly,years,annualPercent,initial]=ids.map(id=>Number(el(id).value));const rows=simulate({monthly,years,annualPercent,initial}),last=rows.at(-1);el('monthlyText').textContent=money(monthly);el('yearsText').textContent=years+'年';el('rateText').textContent=annualPercent+'%';el('initialText').textContent=money(initial);for(const id of ['principal','balance','gain'])el(id).textContent=(id==='gain'&&last[id]>0?'+':'')+money(last[id]);el('gain').classList.toggle('loss',last.gain<0);let max=Math.max(1,...rows.map(r=>Math.max(r.balance,r.principal)));const line=k=>rows.map((r,i)=>(i?'L':'M')+(50+570*r.month/Math.max(1,years*12)).toFixed(2)+','+(260-225*r[k]/max).toFixed(2)).join(' ');el('chart').innerHTML=`<line x1="50" y1="260" x2="620" y2="260" stroke="#a9a99d"/><line x1="50" y1="35" x2="50" y2="260" stroke="#a9a99d"/><text x="50" y="23" font-size="17" fill="#292e29">${Math.round(max/10000).toLocaleString()}万円</text><text x="50" y="287" font-size="17">0年</text><text x="620" y="287" font-size="17" text-anchor="end">${years}年</text><path d="${line('principal')}" fill="none" stroke="#ad8751" stroke-width="4"/><path d="${line('balance')}" fill="none" stroke="#315F5B" stroke-width="4"/>`;el('rows').replaceChildren(...rows.filter(r=>r.month%60===0||r.month===years*12).map(r=>{let tr=document.createElement('tr');[r.month/12+'年',r.principal.toLocaleString(),r.balance.toLocaleString()].forEach((v,i)=>{let c=document.createElement(i?'td':'th');if(!i)c.scope='row';c.textContent=v;tr.append(c)});return tr}));}ids.forEach(id=>el(id).addEventListener('input',draw));el('reset').addEventListener('click',()=>{[30000,35,4,0].forEach((v,i)=>el(ids[i]).value=v);draw()});draw();
+
+</script>
+<script>document.getElementById('fsBtn').addEventListener('click',function(){var m=document.querySelector('main');if(document.fullscreenElement){document.exitFullscreen();}else if(m&&m.requestFullscreen){m.requestFullscreen();}});</script>
+<div style="position:fixed;right:8px;bottom:8px;z-index:99999;background:#232624;color:#F3F0E8;font-size:11px;padding:4px 9px;border-radius:6px;font-family:sans-serif">UX05 preview · build c4d27d3</div>
+</body>
+</html>

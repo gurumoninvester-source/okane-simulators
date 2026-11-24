@@ -1,0 +1,12 @@
+# Codex review #14 — product packages
+
+| Check | Result | Evidence |
+|---|---|---|
+| 1. Lite template | **FAIL** | All four required sheets exist: はじめに, 設定, 月次記録, 配当記録. All 36 cells in 月次記録`!G2:G37` implement `=SUM(Bn:En)-Fn` for their respective rows. 月次記録`!H3:H37` contains the correct current-minus-prior-row formulas, beginning with `=G3-G2`. `H2` is blank because the first month has no prior data row, so 35 of 36 rows meet the brief’s literal formula requirement. All 24 cells in 配当記録`!D2:D25` sum column C from `$C$2` through the current row. |
+| 2. Lite example | **PASS** | In the recalculated workbook, 月次記録`!G2` is **7,640,000** (November 2024), `G25` is **11,953,613** (October 2026, the last populated month), and `H25` is **+233,944**. The preceding month’s `G24` is 11,719,669. See recalculation method below. |
+| 3. Pro example | **PASS** | In the recalculated workbook, the four shares in 配分チェック`!D2:D5` sum to **1.0**. 目標進捗`!B2:B5` shows a goal of **20,000,000**, current net assets of **11,953,613**, progress of **0.59768065** (≈0.5977), and **8,046,387** remaining. See recalculation method below. |
+| 4. Honesty of claims | **PASS** | `MANIFEST.md` says sale launch, pricing, and payment await owner approval. At commit `0793721`, `products/index.html:33` says “すべて準備中で、現在は購入できません。” Neither file quotes a product price, links to a purchase flow, or claims the products are on sale. The page’s CSV download provides fictional sample data. The September-to-October 2026 deltas in `review/EXAMPLE_OUTPUT.md` match `prod002_trial/trial_record.json`, `trial24_response.md`, and the last two rows of `sample24.csv`: net assets **+233,944**, total assets **+217,944**, and liabilities **−16,000**. |
+
+The requested `soffice --headless --calc --convert-to xlsx` command produced no output files, including when run with an isolated profile and temporary input copies. For checks 2 and 3, I used LibreOfficeKit to load and export both examples as XLSX with the installed LibreOffice Calc engine (24.2.7.2). I read the resulting formula caches from the exported copies and verified that the corresponding caches in the source examples were empty. The PASS results cover the recalculated values. The requested CLI invocation did not complete the conversions.
+
+The products page also has conflicting Pro status copy. The card on line 37 says the finished product is under inspection, while lines 48–49 describe it as still in planning. The page explicitly says the products cannot currently be purchased.

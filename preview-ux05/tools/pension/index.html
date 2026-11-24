@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>年金 受給開始タイミング 試算ツール｜お金を考えすぎる会社員</title>
+<meta name="description" content="年金の受給開始年齢（60歳・65歳・70歳）による受給額と損益分岐を、令和8年度の年金額で試算します。">
+<link rel="canonical" href="https://okanekangaesugi.com/tools/pension/">
+<meta property="og:title" content="年金シミュレーター｜お金を考えすぎる会社員">
+<meta property="og:description" content="年金の受給開始年齢（60歳・65歳・70歳）による受給額と損益分岐を、令和8年度の年金額で試算します。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://okanekangaesugi.com/tools/pension/">
+<meta property="og:image" content="https://okanekangaesugi.com/assets/ogp.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--paper:#F3F0E8;--paper-soft:#ECE7D8;--card:#FCFBF4;--ink:#232624;--ink-soft:rgba(35,38,36,.68);--ink-faint:rgba(35,38,36,.45);--line:rgba(35,38,36,.16);--petrol:#315F5B;--petrol-deep:#22423F;--petrol-tint:rgba(49,95,91,.10);--petrol2:#8fb0ac;--brick:#B55B46;--terra-tint:#F8E9E2;--shadow:0 2px 0 rgba(35,38,36,.85)}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background-color:var(--paper);background-image:radial-gradient(var(--line) .7px,transparent .8px);background-size:18px 18px;color:var(--ink);font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:20px 16px 40px}
+h1,h2,h3,.hand{font-family:"Klee One","BIZ UDPGothic",sans-serif;font-weight:600}
+button,select,input{font-family:inherit}
+.top{text-align:center;padding:10px 4px 4px}
+.top .seal{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:var(--petrol);background:var(--petrol-tint);border:1.5px solid var(--petrol);padding:3px 12px;border-radius:225px 12px 255px 12px/12px 255px 12px 225px;transform:rotate(-.6deg)}
+.top h1{font-size:27px;font-weight:600;line-height:1.45;margin:12px 0 6px;letter-spacing:.01em}
+.top h1 .accent{color:var(--petrol)}
+.top p{margin:0 auto;max-width:560px;font-size:13px;color:var(--ink-soft);line-height:1.8}
+@media(min-width:640px){.top h1{font-size:33px}}
+.hero{background:var(--petrol);color:#F7F4EA;border:2px solid var(--petrol-deep);border-radius:14px 255px 14px 225px/225px 14px 255px 14px;box-shadow:0 3px 0 rgba(34,66,63,.55);padding:24px 20px 20px;margin-top:20px}
+.hero-label{font-size:12.5px;font-weight:700;letter-spacing:.06em;opacity:.85;margin:0}
+.hero-amount{margin:2px 0 0}
+.hero-amount .num{font-family:"Klee One",sans-serif;font-weight:600;font-size:52px;line-height:1.15;letter-spacing:.01em}
+@media(min-width:640px){.hero-amount .num{font-size:68px}}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-top:10px}
+.hero-meta .pill{display:inline-block;padding:2px 11px;border-radius:999px;background:rgba(251,247,234,.16);font-weight:700;font-size:12.5px}
+.hero-note{font-size:12px;opacity:.85;margin:10px 0 0;line-height:1.7}
+.box{background:var(--card);border:2px solid var(--ink);border-radius:255px 14px 225px 14px/14px 225px 14px 255px;box-shadow:var(--shadow);padding:20px 18px;margin-top:22px}
+@media(min-width:640px){.box{padding:26px 28px}}
+.box h2{font-size:19px;font-weight:600;margin:0 0 10px;display:flex;align-items:center;gap:9px}
+.box h2::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--brick);flex:none}
+.box h3{font-size:16px}
+label,.lab{display:block;font-weight:700;font-size:14.5px;margin:16px 0 4px}
+select,input[type=number]{font-size:16px;color:var(--ink);background:var(--paper-soft);border:2px solid var(--ink);border-radius:12px 3px 12px 3px;padding:9px 12px;max-width:100%}
+select:focus,input[type=number]:focus{outline:3px solid var(--petrol-tint);border-color:var(--petrol)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font-size:14px;font-weight:700;color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:225px 12px 255px 12px/12px 255px 12px 225px;padding:8px 16px;min-height:2.5rem;cursor:pointer}
+button[aria-pressed=true]{background:var(--petrol);color:#F7F4EA;border-color:var(--petrol)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:38px;background:transparent;cursor:pointer;margin:2px 0 0}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:99px;background:var(--paper-soft);border:1.5px solid var(--line)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:27px;height:27px;margin-top:-11px;border-radius:50%;background:var(--petrol);border:3px solid var(--card);box-shadow:0 1px 5px rgba(0,0,0,.3)}
+input[type=range]::-moz-range-track{height:8px;border-radius:99px;background:var(--paper-soft);border:1.5px solid var(--line)}
+input[type=range]::-moz-range-thumb{width:21px;height:21px;border-radius:50%;background:var(--petrol);border:3px solid var(--card);box-shadow:0 1px 5px rgba(0,0,0,.3)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.card{border:1.5px solid var(--line);border-radius:4px 14px 4px 14px;padding:16px;background:var(--paper-soft)}
+.card h3{margin:0 0 6px;font-size:16px;color:var(--petrol)}
+dl{margin:0}dt{font-size:12.5px;color:var(--ink-soft);margin-top:8px}dd{margin:0;font-size:23px;font-weight:700;font-family:"Klee One",sans-serif;line-height:1.3}
+.em{color:var(--brick)}
+.mini{font-size:12.5px;color:var(--ink-soft);line-height:1.7}
+.hide{display:none}
+.bars{display:grid;gap:9px;margin-top:10px}
+.brow{display:grid;grid-template-columns:3.2em 1fr;gap:8px;align-items:center;padding:4px 6px;border-radius:8px 3px 7px 4px/4px 7px 3px 8px}
+.brow.sel{outline:2px solid var(--ink);background:var(--petrol-tint)}
+.brow .nm{font-weight:700;text-align:right;font-size:15px}
+.bpair{display:grid;gap:4px}
+.bl{display:flex;align-items:center;gap:7px;min-height:16px}
+.bar{height:14px;border:2px solid var(--ink);border-radius:5px 2px 4px 3px/3px 4px 2px 5px;background:var(--petrol);min-width:2px}
+.bar.net{background:var(--petrol2)}
+.bl span{font-size:13.5px;white-space:nowrap}
+.tag{font-family:"Klee One",cursive;font-weight:600;color:var(--brick);font-size:12.5px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12.5px;margin-top:12px}
+.legend i{display:inline-block;width:14px;height:14px;border:2px solid var(--ink);vertical-align:-2px;margin-right:4px;border-radius:3px 1px 3px 2px}
+.legend i.sw{width:24px;height:0;border:0;border-top:3px solid var(--ink);vertical-align:middle;margin-right:5px;border-radius:0}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border-bottom:1px dashed rgba(35,38,36,.5);padding:7px 6px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font-family:"Klee One",cursive;font-weight:600}
+.gsvg{display:block;width:100%;max-width:100%;height:auto;margin:10px auto 0;background:var(--paper-soft);border:1.5px solid var(--line);border-radius:14px 4px 14px 4px}
+.gsvg text{font-family:"BIZ UDPGothic",sans-serif;font-size:17px;fill:var(--ink)}
+.gsvg .hd{font-family:"Klee One",cursive;font-weight:600;font-size:18px}
+.notes{font-size:13.5px;line-height:1.85;padding-left:1.2em}
+.notes li{margin:5px 0}
+.warn{border:2px dashed var(--brick);border-radius:12px 4px 10px 5px/5px 10px 4px 12px;padding:10px 14px;font-size:13.5px;margin-top:12px;background:var(--terra-tint)}
+@media(max-width:480px){.hero-amount .num{font-size:44px}}
+
+details.fold>summary{cursor:pointer;list-style:none;font-family:"Klee One",cursive;font-weight:600;font-size:19px;display:flex;align-items:center;gap:9px}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--brick);flex:none}
+details.fold>summary .chev{font-size:12px;transition:transform .18s ease;margin-left:auto}
+details.fold[open]>summary .chev{transform:rotate(90deg)}
+.hero-be{margin-top:12px;display:grid;gap:5px;font-size:14px;border-top:1px solid rgba(251,247,234,.25);padding-top:12px}
+.hero-be b{font-size:16px;white-space:nowrap}
+.hero-amount .num{white-space:nowrap}
+.hero-meta .pill{white-space:nowrap}
+.insight-list{margin:0;padding-left:1.2em}
+.insight-list li{margin:7px 0}
+#ageQuick button{font-size:16.5px;padding:10px 22px}
+#adv{margin-top:8px;border-top:1px dashed rgba(35,38,36,.3)}
+
+.hero-be{grid-template-columns:1.3fr .95fr .95fr;column-gap:10px;row-gap:6px;align-items:baseline}
+.hb-head{font-size:12px;opacity:.8}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "年金 受給開始タイミング 試算ツール", "url": "https://okanekangaesugi.com/tools/pension/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "isAccessibleForFree": true, "inLanguage": "ja", "description": "年金の受給開始年齢（60歳・65歳・70歳）による受給額と損益分岐を、令和8年度の年金額で試算します。"}</script>
+<style>main:fullscreen{background:#F3F0E8;overflow:auto;padding:14px}.fsbtn{font-family:inherit;border:2px solid #232624;background:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;margin:8px 0}</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="seal">お金を考えすぎる会社員｜検証ツール</span>
+    <h1>年金 受給開始タイミング<br><span class="accent">試算ツール</span></h1>
+<button type="button" class="fsbtn" id="fsBtn">全画面で使う</button>
+    <p>何歳から受け取ると、生涯の総額はどう変わるか。まず開始年齢のボタンから。</p>
+  </header>
+
+  <section class="box">
+    <h2>受給開始年齢を選ぶ</h2>
+    <div class="row" id="ageQuick">
+      <button type="button" data-a="60" aria-pressed="false">60歳から</button>
+      <button type="button" data-a="65" aria-pressed="true">65歳から</button>
+      <button type="button" data-a="70" aria-pressed="false">70歳から</button>
+    </div>
+    <div class="lab">運用益（受け取った年金を運用した場合）</div>
+    <div class="row" id="modeRow">
+      <button type="button" data-m="off" aria-pressed="true">含まない</button>
+      <button type="button" data-m="on" aria-pressed="false">含む</button>
+    </div>
+    <div class="row hide" id="rates" style="margin-top:8px">
+      <button type="button" data-r="3" aria-pressed="true">3%</button>
+      <button type="button" data-r="5" aria-pressed="false">5%</button>
+      <button type="button" data-r="10" aria-pressed="false">10%</button>
+      <span>任意 <input type="number" id="rate" min="0" max="20" step="0.1" value="3" style="width:5.5em"> %</span>
+    </div>
+    <div style="margin-top:12px"><button type="button" id="advBtn" aria-expanded="false">細かく設定する（1歳刻み・年金額・想定寿命）</button></div>
+    <div id="adv" class="hide">
+      <label for="age">受給開始年齢：<span id="ageVal">65</span>歳（1歳刻み）</label>
+      <input type="range" id="age" min="60" max="75" step="1" value="65">
+      <div class="lab">65歳時点の年金額（年額）— 総額の土台</div>
+      <div class="row" id="presets">
+        <button type="button" data-v="2000052" aria-pressed="true">モデルA：2,000,052円（基礎+厚生のモデル夫）</button>
+        <button type="button" data-v="847296" aria-pressed="false">モデルB：847,296円（基礎年金のみ）</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <input type="number" id="base" min="0" max="2000" step="0.0001" value="200.0052" style="width:9em" aria-label="65歳時点の年金額（万円/年）"> 万円/年
+        <span class="mini" id="baseYen"></span>
+      </div>
+      <label for="death">想定寿命（死亡年齢）</label>
+      <input type="number" id="death" min="60" max="110" step="1" value="85" style="width:6em"> 歳
+      <div class="warn hide" id="inWarn"></div>
+    </div>
+  </section>
+
+  <section class="hero" id="hero" aria-live="polite"></section>
+
+  <section class="box" id="pick" aria-live="polite"></section>
+
+  <section class="box" id="insight" aria-live="polite"></section>
+
+  <section class="box" id="chart" aria-live="polite"></section>
+  <section class="box" id="compare" aria-live="polite"></section>
+  <section class="box" id="be" aria-live="polite"></section>
+
+  <section class="box">
+        <h2>④ もう一つの物差し｜健康寿命</h2>
+        <p>損益分岐は「総額が逆転する年齢」です。運用なし・額面の場合、どの開始年齢の組み合わせでも81歳前後に現れます。もう一つ、別の物差しがあります。<b>健康寿命</b>——健康上の問題で日常生活が制限されない期間の平均——は、令和4年値で<b>男性72.57歳・女性75.45歳</b>です（厚生労働省）。上のグラフに縦の点線で重ねてあります。</p>
+        <p style="margin-bottom:0">分岐点（81歳前後）と健康寿命（72〜75歳）の間には、数年の開きがあります。総額の多い少ないと、「元気に自分で使える期間に受け取るかどうか」は別の話です。このツールはどちらが良いかを決めるものではありません。2つの物差しを同じグラフに並べて、自分の場合はどうかを考えるためのものです。</p>
+      </section>
+
+  <details class="fold box">
+    <summary>前提・注記（計算の細かい条件）<span class="chev">▶</span></summary>
+<ul class="notes">
+      <li>繰上げは1ヶ月あたり−0.4%（60歳開始＝0.76）、繰下げは1ヶ月あたり＋0.7%（70歳開始＝1.42、75歳開始＝1.84）。65歳を1.0とします。繰上げの0.4%は1962年4月2日以後生まれが対象です（それ以前の生まれは月0.5%で、このツールの対象外）。</li>
+      <li>年金額は令和8年度額（2026年4月分から）で固定し、将来の改定（マクロ経済スライド等）は入れていません。モデルAは「標準的な年金額237,279円/月（夫婦2人分）−老齢基礎年金満額70,608円/月」の算出値166,671円/月（年2,000,052円）、モデルBは老齢基礎年金の満額70,608円/月（年847,296円＝月額×12）です。満額は1956年4月2日以後生まれの場合で、同年4月1日以前生まれは70,408円です（出典：日本年金機構「令和8年4月分からの年金額等について」）。</li>
+      <li>生涯総額は、受給開始から死亡年齢まで月単位でちょうど受け取る単純化です（平均余命や死亡確率の重み付けはしていません）。</li>
+      <li><b>手取り概算の前提：</b>単身・年金収入のみ・各年同額。手取り＝額面−所得税（復興特別所得税2.1%込み）−住民税（所得割10%）。所得税は速算表5%・10%（令和7年分の基礎控除：合計所得132万円以下95万円／132万円超88万円）、住民税の基礎控除は43万円。公的年金等控除は国税庁の速算表どおりの全区分で計算します（65歳以上：年金収入330万円以下は110万円、410万円以下は収入×25%＋27.5万円、770万円以下は収入×15%＋68.5万円、1,000万円以下は収入×5%＋145.5万円、超えると195.5万円／65歳未満：130万円以下は60万円、ほかの区分は同じ式）。年金以外の合計所得が1,000万円を超えると控除が10万円（2,000万円超では20万円）減りますが、このツールは年金収入のみの前提なので、その減額は適用していません。60歳開始は60〜64歳の間「65歳未満」の控除を使い、就労収入なしと仮定しています。</li>
+      <li><b>社会保険料（国民健康保険・後期高齢者医療・介護保険料）は算入していません。</b>社会保険料控除も未適用です。自治体により異なるため、実際の手取りはこの表示より小さくなります。住民税の均等割・非課税判定も未実装です。</li>
+      <li>運用ケースは、受け取った額を毎月末に受け取り、毎月運用に回す想定です（実効年利・月次複利）。運用益は非課税で計算し、手数料も考えていません。<b>仮定のシナリオであり、この利回りを得られる保証はありません。</b></li>
+      <li>含めていない制度：在職老齢年金／加給年金・振替加算／遺族年金・障害年金との調整／繰上げ時の寡婦年金等の制限／付加年金／配偶者控除・扶養控除／運用益への課税。</li>
+      <li>公的年金等控除の最低保障額（65歳以上110万円・65歳未満60万円）と速算表の全区分は、国税庁の令和8年版資料で一次確認しました（2026年11月24日）。令和8年分以降の所得税基礎控除の引上げは適用していません（実際の将来手取りはこれより有利になり得ます）。</li>
+      <li>損益分岐は「後から開始する側の累計（運用込み）が、先に開始する側に追いつく死亡年齢」です。月単位で計算し、100歳までに追いつかない場合は「100歳まで逆転せず」と表示します。</li>
+      <li>健康寿命は厚生労働省が公表した令和4年値（2024年12月公表）で、男性72.57歳・女性75.45歳です。「健康上の問題で日常生活が制限されることなく生活できる期間」の平均を表す統計値であり、個人の健康状態や寿命を予測するものではありません。</li>
+      <li>このツールは『お金を考えすぎる会社員』の検証記事の補助ツールです。試算であり、将来の予測や特定の選択の推奨ではありません。</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+/*CORE-START*/
+var PensionCore=(function(){
+  'use strict';
+  var BASE_A=2000052, BASE_B=847296;
+  // 繰上げ −0.4%/月、繰下げ +0.7%/月（65歳=1.0）。Python版の係数リテラル(0.76/1.42)と同じ値になるよう丸める
+  function factor(s){
+    var m=(s-65)*12;
+    var f=m<0?1+m*0.004:1+m*0.007;
+    return Math.round(f*1e6)/1e6;
+  }
+  function pensionDed(rev,age65){
+    var mn=age65?1100000:600000;
+    if(age65?rev<=3300000:rev<=1300000)return mn;
+    if(rev<=4100000)return rev*0.25+275000;
+    if(rev<=7700000)return rev*0.15+685000;
+    if(rev<=10000000)return rev*0.05+1455000;
+    return 1955000;
+  }
+  // Python版と同じ範囲（課税所得 329.9万円以下＝速算表の5%・10%帯）。範囲外は throw
+  function tax(rev,age65){
+    var ded=pensionDed(rev,age65);
+    var inc=Math.max(0,rev-ded);
+    var basic=inc<=1320000?950000:880000;
+    var ti=Math.floor(Math.max(0,inc-basic)/1000)*1000;
+    var it;
+    if(ti<=1949000)it=ti*0.05;
+    else if(ti<=3299000)it=ti*0.10-97500;
+    else throw new Error('OUT_OF_RANGE');
+    it=it*1.021;
+    var rt=Math.max(0,inc-430000)*0.10;
+    return [it,rt];
+  }
+  function monthly(base,s,net,T){
+    var a=base*factor(s), out=[], n=Math.round((T-s)*12), c={};
+    for(var m=0;m<n;m++){
+      var age=s+Math.floor(m/12);
+      if(net){
+        var k=age>=65?1:0;
+        if(!c[k])c[k]=tax(a,age>=65);
+        out.push((a-c[k][0]-c[k][1])/12);
+      }else out.push(a/12);
+    }
+    return out;
+  }
+  function total(base,s,T,net,r){
+    r=r||0;
+    var p=monthly(base,s,net,T), n=p.length, mr=Math.pow(1+r,1/12)-1, sum=0, c=0;
+    // Python 3.12 の sum() と同じ補償加算（Neumaier）。同値点での損益分岐判定をPython版と一致させるため
+    for(var i=0;i<n;i++){
+      var x=p[i]*Math.pow(1+mr,n-1-i), t=sum+x;
+      if(Math.abs(sum)>=Math.abs(x))c+=(sum-t)+x;else c+=(x-t)+sum;
+      sum=t;
+    }
+    return sum+c;
+  }
+  function be(base,s1,s2,net,r){
+    var T=s2*12;
+    while(T<=1200){
+      var t=T/12;
+      if(total(base,s2,t,net,r)>=total(base,s1,t,net,r)&&T>s2*12)return t;
+      T+=1;
+    }
+    return null;
+  }
+  function fmtAge(t){
+    if(t===null)return '100歳まで逆転せず';
+    var y=Math.floor(t+1e-9), m=Math.round((t-y)*12);
+    if(m===12){y+=1;m=0}
+    return y+'歳'+m+'ヶ月';
+  }
+  // 範囲外などで計算できない場合は null
+  function safe(f){try{return f()}catch(e){if(e.message==='OUT_OF_RANGE')return null;throw e}}
+  return {BASE_A:BASE_A,BASE_B:BASE_B,factor:factor,pensionDed:pensionDed,tax:tax,monthly:monthly,total:total,be:be,fmtAge:fmtAge,safe:safe};
+})();
+/*CORE-END*/
+</script>
+<script>
+(function(){
+  var C=PensionCore;
+  var $=function(id){return document.getElementById(id)};
+  var st={base:C.BASE_A,age:65,rate:0,death:85,basis:'gross',p1:60,p2:70};
+  var inv=false, rateSel=0.03;
+  var yen=function(v){return Math.round(v).toLocaleString('ja-JP')+'円'};
+  var man=function(v){return (Math.round(v/1e3)/10).toLocaleString('ja-JP',{minimumFractionDigits:1,maximumFractionDigits:1})+'万円'};
+  var signMan=function(v){return (v>=0?'+':'−')+man(Math.abs(v))};
+  var pct=function(f){var d=Math.round((f-1)*1000)/10;return (d>=0?'+':'−')+Math.abs(d)+'%'};
+  // 損益分岐：範囲外(税計算不能)は {na:true}、逆転せずは {v:null}
+  var beR=function(s1,s2,net,r){try{return {v:C.be(st.base,s1,s2,net,r)}}catch(e){if(e.message==='OUT_OF_RANGE')return {na:true};throw e}};
+  var beOf=function(s1,s2,net){return beR(s1,s2,net,st.rate)};
+  var beTxt=function(o){return o.na?'—（計算範囲外）':C.fmtAge(o.v)};
+  var tot=function(s,net){return C.safe(function(){return C.total(st.base,s,st.death,net,st.rate)})};
+  var totAt=function(s,T,net,r){return C.safe(function(){return C.total(st.base,s,T,net,r)})};
+
+  function readInputs(){
+    var msgs=[];
+    var b=parseFloat($('base').value);
+    if(isFinite(b)&&b>=0){st.base=Math.round(Math.min(b,2000)*10000)}else{msgs.push('年金額は0以上の数値を入れてください。')}
+    var r=parseFloat($('rate').value);
+    if(isFinite(r)&&r>=0){rateSel=Math.min(r,20)/100}else{msgs.push('利回りは0以上の数値を入れてください。')}
+    st.rate=inv?rateSel:0;
+    var d=parseInt($('death').value,10);
+    if(isFinite(d)&&d>=60&&d<=110){st.death=d}else{msgs.push('想定寿命は60〜110歳で入れてください。')}
+    st.age=+$('age').value;
+    $('ageVal').textContent=st.age;
+    $('baseYen').textContent='＝ '+yen(st.base)+'/年';
+    var w=$('inWarn');
+    w.classList.toggle('hide',!msgs.length);w.textContent=msgs.join(' ');
+    [].forEach.call($('ageQuick').querySelectorAll('button'),function(btn){btn.setAttribute('aria-pressed',String(+btn.dataset.a===st.age))});
+  }
+
+  function renderHero(){
+    var s=st.age, el=$('hero');
+    if(st.death<=s){
+      el.innerHTML='<p class="hero-label">'+s+'歳から受給開始</p><p class="hero-note">想定寿命（'+st.death+'歳）が受給開始の年齢以下のため、生涯受給総額は表示されません。「細かく設定する」から想定寿命を上げると計算できます。</p>';
+      return;
+    }
+    var g=tot(s,false), n=tot(s,true);
+    var h='<p class="hero-label">'+s+'歳から受け取って、'+st.death+'歳まで生きた場合の'+(inv?'受給総額＋運用益（年利'+(rateSel*100).toFixed(1).replace(/\.0$/,'')+'%）':'生涯受給総額（運用なし）')+'・額面</p>';
+    h+='<div class="hero-amount"><span class="num">'+man(g)+'</span></div>';
+    h+='<div class="hero-meta"><span class="pill">手取り概算 '+(n===null?'計算範囲外':man(n))+'</span><span class="pill">年額 '+yen(st.base*C.factor(s))+'</span></div>';
+    // 損益分岐のオーバービュー：運用なし／運用あり の2列
+    var rl=(rateSel*100).toFixed(1).replace(/\.0$/,'');
+    var rows=['<span class="hb-head"></span><span class="hb-head">運用なし</span><span class="hb-head">運用あり'+rl+'%</span>'];
+    [60,65,70].forEach(function(o){
+      if(o===s)return;
+      var lab, b0, bR;
+      if(o>s){lab=o+'歳開始が追いつく';b0=beR(s,o,false,0);bR=beR(s,o,false,rateSel)}
+      else{lab=s+'歳開始が'+o+'歳開始に追いつく';b0=beR(o,s,false,0);bR=beR(o,s,false,rateSel)}
+      rows.push('<span>'+lab+'</span><b>'+beTxt(b0)+'</b><b>'+beTxt(bR)+'</b>');
+    });
+    h+='<div class="hero-be">'+rows.join('')+'</div>';
+    h+='<p class="hero-note">損益分岐は額面ベース。手取りは社会保険料（国保・介護等）を含まない概算です。</p>';
+    el.innerHTML=h;
+  }
+
+  function renderInsight(){
+    var lis=[];
+    // 健康寿命までの総額（運用なし・額面）: 75歳時点で 60/65/70 を比較
+    var hs=[60,65,70].map(function(s){return {s:s,v:totAt(s,75,false,0)}});
+    var hb=hs.reduce(function(a,b){return b.v>a.v?b:a});
+    lis.push('健康寿命までの総額で比べると、<b>75歳時点（運用なし）では'+hb.s+'歳開始が最大</b>（'+man(hb.v)+'）です。健康寿命の目安は男性72.57歳・女性75.45歳——総額の損益分岐より手前にあります。');
+    // 損益分岐と健康寿命の位置関係（運用なし・額面）
+    var b1=beR(60,65,false,0), b2=beR(65,70,false,0);
+    var rel=function(o){return o.na?'計算範囲外':(o.v===null?'100歳まで逆転しない':(C.fmtAge(o.v)+'（健康寿命の目安より'+(o.v<=72.57?'手前':(o.v<=75.45?'の範囲内':'先'))+'）'))};
+    lis.push('損益分岐（運用なし）は、60歳→65歳開始が <b>'+rel(b1)+'</b>、65歳→70歳開始が <b>'+rel(b2)+'</b>。運用益を入れると分岐はさらに後ろへ動きます。');
+    // 想定寿命までの最大（現在の条件）
+    if(st.death>70){
+      var ds=[60,65,70].map(function(s){return {s:s,v:tot(s,false)}});
+      var db=ds.reduce(function(a,b){return b.v>a.v?b:a});
+      lis.push('想定寿命（'+st.death+'歳）まで生きた場合の総額では、現在の条件で<b>'+db.s+'歳開始が最大</b>（'+man(db.v)+'）です。');
+    }
+    $('insight').innerHTML='<h2>ここからの示唆</h2><ul class="insight-list">'+lis.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><p class="mini" style="margin-bottom:0">数字はモデルの試算です。どちらが良いかを決めるものではなく、物差しを並べたものです。</p>';
+  }
+
+  function renderPick(){
+    var s=st.age, f=C.factor(s), a=st.base*f;
+    var g=tot(s,false), n=tot(s,true), pre=s<65;
+    var tx=function(old){return C.safe(function(){var t=C.tax(a,!old);return a-t[0]-t[1]})};
+    var nOld=pre?tx(true):null, nNew=tx(false);
+    var inv=st.rate>0;
+    var h='<h2>内訳｜'+s+'歳から受け取る場合</h2><div class="cards">';
+    h+='<div class="card"><h3>年額</h3><dl><dt>係数（65歳＝1.0）</dt><dd>'+f.toFixed(2)+' <span class="mini">（'+pct(f)+'）</span></dd>'+
+       '<dt>額面年額</dt><dd>'+yen(a)+'</dd>'+
+       '<dt>手取り概算（年額）'+(pre?'・65歳以上':'')+'</dt><dd>'+(nNew===null?'<span class="mini">計算範囲外</span>':yen(nNew))+'</dd>'+
+       (pre?'<dt>手取り概算（年額）・65歳未満の間</dt><dd>'+(nOld===null?'<span class="mini">計算範囲外</span>':yen(nOld))+'</dd>':'')+
+       '</dl></div>';
+    var label=inv?'受給総額＋運用益':'生涯受給総額';
+    h+='<div class="card"><h3>'+st.death+'歳まで（'+label+'）</h3><dl>'+
+       '<dt>額面</dt><dd>'+(st.death<=s?'受給開始前':yen(g))+'</dd>'+
+       '<dt>手取り概算</dt><dd>'+(st.death<=s?'受給開始前':(n===null?'<span class="mini">計算範囲外</span>':yen(n)))+'</dd></dl>'+
+       (inv?'<div class="mini">年利'+(st.rate*100).toFixed(1).replace(/\.0$/,'')+'%で運用した場合の仮定値です。</div>':'')+'</div>';
+    h+='</div>';
+    if(nNew===null)h+='<div class="warn">この年金額では課税所得が速算表の対象範囲（10%帯まで）を超えるため、手取り概算は計算していません。</div>';
+    $('pick').innerHTML=h;
+  }
+
+  function renderCompare(){
+    var rows=[], maxG=1, bestG=-1, bestN=-1, bgV=-1, bnV=-1, anyNull=false;
+    for(var s=60;s<=75;s++){
+      var g=st.death<=s?0:tot(s,false), n=st.death<=s?0:tot(s,true);
+      if(n===null)anyNull=true;
+      rows.push({s:s,g:g,n:n});
+      if(g>maxG)maxG=g;
+      if(g>bgV){bgV=g;bestG=s}
+      if(n!==null&&n>bnV){bnV=n;bestN=s}
+    }
+    var inv=st.rate>0;
+    var h='<h2>開始年齢ごとの総額（'+st.death+'歳まで）</h2><p class="mini" style="margin:0">'+(inv?'受給総額＋運用益':'生涯受給総額')+'（年利'+(st.rate*100).toFixed(1).replace(/\.0$/,'')+'%）。</p><div class="bars" role="img" aria-label="開始年齢60〜75歳ごとの生涯総額。額面が最大なのは'+bestG+'歳開始、手取り概算が最大なのは'+bestN+'歳開始">';
+    rows.forEach(function(r){
+      var w=function(v){return v===null?0:(v/maxG*100).toFixed(1)};
+      var gl=r.g>0?man(r.g):'受給開始前';
+      h+='<div class="brow'+(r.s===st.age?' sel':'')+'"><div class="nm">'+r.s+'歳</div><div class="bpair">'+
+        '<div class="bl"><div class="bar" style="width:calc('+w(r.g)+'% - 4.5em)"></div><span>'+gl+(r.s===bestG&&r.g>0?' <i class="tag">額面最大</i>':'')+'</span></div>'+
+        '<div class="bl"><div class="bar net" style="width:calc('+w(r.n)+'% - 4.5em)"></div><span>'+(r.g>0?(r.n===null?'—':man(r.n)):'')+(r.s===bestN&&r.n?' <i class="tag">手取り最大</i>':'')+'</span></div>'+
+        '</div></div>';
+    });
+    h+='</div><div class="legend"><span><i style="background:var(--petrol)"></i>額面</span><span><i style="background:var(--petrol2)"></i>手取り概算（社会保険料は未算入）</span></div>';
+    if(anyNull)h+='<div class="warn">一部の開始年齢は課税所得が速算表の範囲外のため、手取り概算を表示していません。</div>';
+    $('compare').innerHTML=h;
+  }
+
+  /* ---------- 結果グラフ（積み上げ面＋損益分岐マーカー）。表示のみ・計算は PensionCore を呼ぶだけ ---------- */
+  var SER=[{s:60,c:'#232624'},{s:65,c:'#315F5B'},{s:70,c:'#9A7B2F'}];
+  var PAIRS=[[60,65],[65,70],[60,70]];
+  function chartData(net){
+    var out=[],inv=st.rate>0,k;
+    for(k=0;k<SER.length;k++){
+      var s=SER[k].s,tot=[[s,0]],pri=[[s,0]];
+      for(var m=1;m<=(100-s)*12;m++){
+        var t=s+m/12;
+        var v=C.safe(function(){return C.total(st.base,s,t,net,st.rate)});
+        if(v===null)return null;
+        var p=inv?C.safe(function(){return C.total(st.base,s,t,net,0)}):v;
+        tot.push([t,v]);pri.push([t,p]);
+      }
+      out.push({s:s,c:SER[k].c,tot:tot,pri:pri});
+    }
+    return out;
+  }
+  function renderChart(){
+    var net=st.basis==='net', inv=st.rate>0, rl=(st.rate*100).toFixed(1).replace(/\.0$/,'');
+    var h='<h2>グラフ｜受給開始年齢ごとの累計（'+(net?'手取り概算':'額面')+'）</h2>'+
+      '<p class="mini" style="margin:0">横軸＝年齢、縦軸＝受け取った年金の累計。'+(inv?'受け取った年金（元本）を年利'+rl+'%で運用した場合、元本に運用益が上に乗ります。':'運用なし（元本のみ）の累計です。')+'縦の点線は健康寿命（男性72.57歳・女性75.45歳）です。</p>'+
+      '<div class="row" style="margin:8px 0 0"><button type="button" id="bg" aria-pressed="'+(!net)+'">額面</button><button type="button" id="bn" aria-pressed="'+net+'">手取り概算</button></div>';
+    var D=chartData(net);
+    if(!D){
+      $('chart').innerHTML=h+'<p class="mini">この条件では手取り概算を描けません（課税所得が速算表の範囲外）。額面に切り替えてください。</p>';bindChart();return;
+    }
+    var W=620,H=580,L=84,R=48,T=38,B=52, iw=W-L-R, ih=H-T-B, x0=60, x1=100, mx=1;
+    D.forEach(function(d){d.tot.forEach(function(q){if(q[1]>mx)mx=q[1]})});
+    var step=Math.pow(10,Math.floor(Math.log(mx/4)/Math.LN10)), cand=[1,2,2.5,5,10], best=step;
+    for(var i=0;i<cand.length;i++){if(cand[i]*step*4>=mx*1.02||i===cand.length-1){best=cand[i]*step;break}}
+    var topN=Math.max(2,Math.ceil(mx*1.02/best)), top=best*topN;
+    var X=function(a){return L+iw*(a-x0)/(x1-x0)}, Y=function(v){return T+ih*(1-v/top)};
+    var P=function(q){return X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1)};
+    var line=function(a){return 'M'+a.map(P).join(' L')};
+    var sv='<svg class="gsvg" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="開始年齢60・65・70歳ごとの累計受給額（'+(net?'手取り概算':'額面')+(inv?'、年利'+rl+'%運用あり':'、運用なし')+'）と損益分岐点" stroke-linejoin="round" stroke-linecap="round"><defs>';
+    D.forEach(function(d){sv+='<pattern id="hz'+d.s+'" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="'+d.c+'" fill-opacity=".10"/><path d="M0 0 L0 6" stroke="'+d.c+'" stroke-width="2" opacity=".55"/></pattern>'});
+    sv+='</defs>';
+    for(var g=0;g<=topN;g++){
+      var gy=Y(best*g).toFixed(1);
+      sv+='<path d="M'+L+' '+gy+' L'+(W-R)+' '+gy+'" fill="none" stroke="#232624" stroke-width="'+(g?1:1.5)+'"'+(g?' stroke-dasharray="1 5" opacity=".55"':'')+'/>';
+      sv+='<text x="'+(L-6)+'" y="'+(+gy+4)+'" text-anchor="end">'+(g?Math.round(best*g/1e4).toLocaleString('ja-JP')+'万':'0')+'</text>';
+    }
+    for(var t=60;t<=100;t+=5){
+      sv+='<path d="M'+X(t).toFixed(1)+' '+(T+ih)+' l0 5" stroke="#232624" stroke-width="1.5" fill="none"/>';
+      sv+='<text x="'+X(t).toFixed(1)+'" y="'+(T+ih+20)+'" text-anchor="middle">'+t+'歳</text>';
+    }
+    // 想定寿命
+    if(st.death>=x0&&st.death<=x1){
+      var dx=X(st.death).toFixed(1);
+      sv+='<path d="M'+dx+' '+T+' L'+dx+' '+(T+ih)+'" stroke="#232624" stroke-width="1.5" stroke-dasharray="2 4" fill="none" opacity=".7"/>';
+      sv+='<text x="'+dx+'" y="'+(T+ih+36)+'" text-anchor="middle" style="font-size:15px">想定寿命'+st.death+'歳</text>';
+    }
+    // 健康寿命（厚生労働省 令和4年値：男72.57歳・女75.45歳）
+    [[72.57,'男',0],[75.45,'女',1]].forEach(function(hx){
+      var hxx=X(hx[0]).toFixed(1);
+      sv+='<path d="M'+hxx+' '+T+' L'+hxx+' '+(T+ih)+'" stroke="#232624" stroke-width="1.5" stroke-dasharray="8 5" fill="none" opacity=".45"/>';
+      sv+='<text x="'+(hx[2]?(+hxx+5):(+hxx-5))+'" y="'+(T+16)+'" text-anchor="'+(hx[2]?'start':'end')+'" style="font-size:13px;fill:rgba(35,38,36,.75)">健康寿命 '+hx[1]+hx[0]+'歳</text>';
+    });
+    // 面：遅い開始から先に描き、早い開始を手前に
+    D.slice().reverse().forEach(function(d){
+      sv+='<path d="'+line(d.pri)+' L'+X(100).toFixed(1)+' '+Y(0).toFixed(1)+' L'+X(d.s).toFixed(1)+' '+Y(0).toFixed(1)+' Z" fill="'+d.c+'" fill-opacity="'+(inv?.12:.08)+'" stroke="none"/>';
+      if(inv)sv+='<path d="'+line(d.tot)+' L'+d.pri.slice().reverse().map(P).join(' L')+' Z" fill="url(#hz'+d.s+')" stroke="none"/>';
+    });
+    D.forEach(function(d){
+      if(inv)sv+='<path d="'+line(d.pri)+'" fill="none" stroke="'+d.c+'" stroke-width="1.5" stroke-dasharray="5 3"/>';
+      sv+='<path d="'+line(d.tot)+'" fill="none" stroke="'+d.c+'" stroke-width="'+(d.s===st.age?4:2.8)+'"/>';
+      var e=d.tot[d.tot.length-1];
+      sv+='<text class="hd" x="'+(X(100)+4).toFixed(1)+'" y="'+(Y(e[1])+4).toFixed(1)+'" style="fill:'+d.c+';font-size:15px">'+d.s+'歳</text>';
+    });
+    // 損益分岐マーカー
+    var marks=[],txts=[];
+    PAIRS.forEach(function(pr){
+      var o=beOf(pr[0],pr[1],net);
+      if(o.na||o.v===null){txts.push(pr[0]+'歳 vs '+pr[1]+'歳：'+(o.na?'計算範囲外':'100歳まで逆転せず'));return}
+      var bt=o.v, y=C.safe(function(){return C.total(st.base,pr[1],bt,net,st.rate)});
+      if(y===null)return;
+      marks.push({x:X(bt),y:Y(y),txt:C.fmtAge(bt)+'で逆転',pr:pr});
+      txts.push(pr[0]+'歳 vs '+pr[1]+'歳：'+C.fmtAge(bt)+'で逆転');
+    });
+    // ラベルは各マーカーの左上（曲線の上の空き領域）に右寄せで段差配置
+    marks.sort(function(p,q){return q.y-p.y});
+    marks.forEach(function(mk,i){
+      var lx=mk.x-12, ly=mk.y-16-i*24;
+      if(ly<T-4)ly=T-4;
+      sv+='<path d="M'+mk.x.toFixed(1)+' '+mk.y.toFixed(1)+' L'+(lx+3).toFixed(1)+' '+(ly+3).toFixed(1)+'" stroke="#B55B46" stroke-width="1.2" fill="none"/>';
+      sv+='<circle cx="'+mk.x.toFixed(1)+'" cy="'+mk.y.toFixed(1)+'" r="6" fill="#B55B46" stroke="#F3F0E8" stroke-width="2"/>';
+      sv+='<text class="hd" x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="end" style="fill:#B55B46;font-size:16px;paint-order:stroke;stroke:#ECE7D8;stroke-width:4px"><tspan style="font-size:13px">'+mk.pr[0]+'vs'+mk.pr[1]+'　</tspan>'+mk.txt+'</text>';
+    });
+    sv+='</svg>';
+    h+=sv;
+    h+='<div class="legend"><span><i style="background:rgba(35,38,36,.15)"></i>元本（受け取った年金の累計）</span>'+(inv?'<span><i style="background:repeating-linear-gradient(45deg,rgba(35,38,36,.6) 0 2px,rgba(35,38,36,.1) 2px 5px)"></i>運用益（年利'+rl+'%）</span>':'')+
+      SER.map(function(d){return '<span><i class="sw" style="border-top-color:'+d.c+'"></i>'+d.s+'歳開始</span>'}).join('')+
+      '<span><i class="sw" style="border-top:3px dashed rgba(35,38,36,.5)"></i>健康寿命 男72.57歳・女75.45歳</span>'+
+      '<span><svg width="14" height="14" viewBox="0 0 14 14" style="vertical-align:-2px;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#B55B46"/></svg>損益分岐（後から開始する側が追いつく点）</span></div>';
+    h+='<ul class="mini" style="margin:8px 0 0;padding-left:1.2em">'+txts.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';
+    h+='<p class="mini" style="margin:6px 0 0">'+(net?'手取りは概算で、社会保険料（国保・介護等）は未算入です。':'額面ベース（税・社会保険料を引く前）です。')+'下の「前提・注記」もあわせてご確認ください。</p>';
+    $('chart').innerHTML=h;bindChart();
+  }
+  function bindChart(){
+    var g=$('bg'),n=$('bn');
+    if(g)g.onclick=function(){st.basis='gross';renderChart()};
+    if(n)n.onclick=function(){st.basis='net';renderChart()};
+  }
+  function renderBe(){
+    var s1=st.p1, s2=st.p2, opts='';
+    var sel=function(id,v){var o='<select id="'+id+'" aria-label="'+(id==='p1'?'先に開始する側':'後から開始する側')+'">';for(var a=60;a<=75;a++)o+='<option value="'+a+'"'+(a===v?' selected':'')+'>'+a+'歳</option>';return o+'</select>'};
+    var h='<h2>損益分岐｜どこで追いつく？</h2><div class="row">先に開始 '+sel('p1',s1)+' と 後から開始 '+sel('p2',s2)+' を比べる</div>';
+    if(s1>=s2){
+      h+='<div class="warn">「先に開始」より「後から開始」の年齢を大きくしてください。</div>';
+      $('be').innerHTML=h;bind();return;
+    }
+    var bG=beOf(s1,s2,false), bN=beOf(s1,s2,true);
+    h+='<div class="cards" style="margin-top:10px"><div class="card"><h3>'+s2+'歳開始が追いつく年齢</h3><dl><dt>額面</dt><dd>'+beTxt(bG)+'</dd><dt>手取り概算</dt><dd>'+beTxt(bN)+'</dd></dl></div>';
+    var gA=tot(s1,false), gB=tot(s2,false), d=gB-gA;
+    h+='<div class="card"><h3>'+st.death+'歳まで生きた場合（額面）</h3><dl><dt>'+s1+'歳開始</dt><dd>'+man(gA)+'</dd><dt>'+s2+'歳開始</dt><dd>'+man(gB)+'</dd><dt>差（'+s2+'歳開始−'+s1+'歳開始）</dt><dd class="em">'+signMan(d)+'</dd></dl></div></div>';
+    h+='<h3 style="margin:16px 0 4px">年齢ペア別（年利'+(st.rate*100).toFixed(1).replace(/\.0$/,'')+'%）</h3><table><tr><th>比較</th><th>額面</th><th>手取り概算</th></tr>';
+    [[60,65],[65,70],[60,70]].forEach(function(p){
+      h+='<tr><td>'+p[0]+'歳 vs '+p[1]+'歳</td><td>'+beTxt(beOf(p[0],p[1],false))+'</td><td>'+beTxt(beOf(p[0],p[1],true))+'</td></tr>';
+    });
+    h+='</table><p class="mini">「後から開始する側の累計（運用込み）が、先に開始する側に追いつく死亡年齢」。社会保険料は未算入です。</p>';
+    $('be').innerHTML=h;bind();
+  }
+  function bind(){
+    var a=$('p1'),b=$('p2');
+    if(a)a.onchange=function(){st.p1=+this.value;renderBe()};
+    if(b)b.onchange=function(){st.p2=+this.value;renderBe()};
+  }
+
+  function render(){readInputs();renderHero();renderInsight();renderPick();renderCompare();renderChart();renderBe()}
+  function setPress(box,attr,val){[].forEach.call(box.querySelectorAll('button'),function(b){b.setAttribute('aria-pressed',String(+b.getAttribute(attr)===+val))})}
+  [].forEach.call($('ageQuick').querySelectorAll('button'),function(b){b.onclick=function(){
+    $('age').value=b.dataset.a;render();
+  }});
+  [].forEach.call($('modeRow').querySelectorAll('button'),function(b){b.onclick=function(){
+    inv=b.dataset.m==='on';
+    [].forEach.call($('modeRow').querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',String((x.dataset.m==='on')===inv))});
+    $('rates').classList.toggle('hide',!inv);render();
+  }});
+  $('advBtn').onclick=function(){
+    var adv=$('adv'), open=adv.classList.toggle('hide')===false;
+    this.setAttribute('aria-expanded',String(open));
+    this.textContent=open?'細かい設定を閉じる':'細かく設定する（1歳刻み・年金額・想定寿命）';
+  };
+  [].forEach.call($('presets').querySelectorAll('button'),function(b){b.onclick=function(){
+    var v=+b.dataset.v;$('base').value=(v/10000).toString();setPress($('presets'),'data-v',v);render();
+  }});
+  $('base').oninput=function(){setPress($('presets'),'data-v',-1);render()};
+  $('age').oninput=render;
+  $('death').oninput=render;
+  [].forEach.call($('rates').querySelectorAll('button'),function(b){b.onclick=function(){
+    $('rate').value=b.dataset.r;setPress($('rates'),'data-r',b.dataset.r);render();
+  }});
+  $('rate').oninput=function(){setPress($('rates'),'data-r',-1);var v=+this.value;[].forEach.call($('rates').querySelectorAll('button'),function(b){if(+b.dataset.r===v&&this.value!=='')b.setAttribute('aria-pressed','true')}.bind(this));render()};
+  render();
+})();
+</script>
+<script>
+/* 計測タグ：読み込み時に1回だけ fire-and-forget で送信（表示・計算には影響しない） */
+(function(){
+  try{
+    var p=fetch('https://abacus.jasoncameron.dev/hit/yGkhhzOtgN9Bi2WX/z5D0OHEJYL7hXyX-',{mode:'no-cors',keepalive:true});
+    if(p&&p.catch)p.catch(function(){});
+  }catch(e){
+    try{new Image().src='https://abacus.jasoncameron.dev/hit/yGkhhzOtgN9Bi2WX/z5D0OHEJYL7hXyX-';}catch(_){}
+  }
+})();
+</script>
+<nav class="related-nav" aria-label="ほかの道具" style="max-width:880px;margin:24px auto;padding:14px 18px;border:1px solid #d8d2c2;border-radius:12px;background:#fffdf6;font-size:.92rem;line-height:1.9"><strong>ほかの道具へ</strong><br><a href="../../stories/">物語（住宅編）</a> ／ <a href="../kodomo-nisa/">こどもNISA</a> ／ <a href="../furusato/">ふるさと納税</a> ／ <a href="../securities/">証券口座</a> ／ <a href="../investment/">積立投資</a> ／ <a href="../income/">手取り</a> ／ <a href="../household/">家事・育児</a> ／ <a href="../regional/">地域の物価比較</a> ／ <a href="../../products/">資産管理の道具（商品）</a></nav>
+<script>document.getElementById('fsBtn').addEventListener('click',function(){var m=document.querySelector('main');if(document.fullscreenElement){document.exitFullscreen();}else if(m&&m.requestFullscreen){m.requestFullscreen();}});</script>
+<div style="position:fixed;right:8px;bottom:8px;z-index:99999;background:#232624;color:#F3F0E8;font-size:11px;padding:4px 9px;border-radius:6px;font-family:sans-serif">UX05 preview · build c4d27d3</div>
+</body>
+</html>
