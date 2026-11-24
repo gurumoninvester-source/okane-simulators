@@ -87,7 +87,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
       </div>
       <div>
         <div class="scene-no" id="sceneNo">第1場面</div>
-        <button type="button" id="expandBtn" aria-expanded="false" style="white-space:nowrap;font-family:inherit;border:2px solid var(--ink);background:#fff;border-radius:10px;padding:6px 12px;cursor:pointer;margin-top:6px">大きく表示</button>
+        <button type="button" id="expandBtn" aria-expanded="false" style="min-height:44px;white-space:nowrap;font-family:inherit;border:2px solid var(--ink);background:#fff;border-radius:10px;padding:6px 12px;cursor:pointer;margin-top:6px">大きく表示</button>
       </div>
     </div>
     <svg id="ux05Timeline" class="ux05-timeline" role="img" aria-label="年齢ごとの累計現金支出"></svg>
@@ -283,6 +283,7 @@ import { renderTimeline } from '../assets/ux05.js';
   var expanded = false;
   var savedScroll = 0;
   function setExpand(on){
+    stop();
     expanded = on;
     $('storyStage').classList.toggle('ux05-expanded', on);
     $('expandBtn').setAttribute('aria-expanded', String(on));
@@ -296,6 +297,6 @@ import { renderTimeline } from '../assets/ux05.js';
   render();
 })();
 </script>
-<div style="position:fixed;right:8px;bottom:8px;z-index:99999;background:#232624;color:#F3F0E8;font-size:11px;padding:4px 9px;border-radius:6px;font-family:sans-serif">UX05 preview · build c4d27d3</div>
+<div style="position:fixed;right:8px;bottom:8px;z-index:99999;background:#232624;color:#F3F0E8;font-size:11px;padding:4px 9px;border-radius:6px;font-family:sans-serif">UX05 preview · build 52e96fe</div>
 </body>
 </html>
