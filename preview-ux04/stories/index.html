@@ -86,6 +86,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
 .boxgrid i.o{background:var(--green)}
 .boxgrid i.e{background:rgba(255,255,255,.4);border:1.5px solid rgba(35,38,36,.28);box-sizing:border-box}
 .box-note{font-size:.75rem;opacity:.75}
+.stamp[hidden]{display:none}
 .stamp{display:inline-block;border:2px solid var(--accent);color:var(--accent);border-radius:6px;padding:0 6px;font-weight:700;transform:rotate(-8deg);font-size:.85rem;margin-left:6px}
 .chart-wrap{margin:12px 0 2px}
 .chart-wrap h3{font-size:.95rem;margin:0 0 4px;font-family:"Klee One",cursive}
@@ -174,7 +175,6 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
       <svg id="chart" viewBox="0 0 320 180" width="100%" role="img" aria-label="年齢ごとの累計現金支出のグラフ"></svg>
     </div>
   </div>
-  </div>
 
   <div class="controls">
     <button type="button" id="playBtn">▶ 歩く</button>
@@ -204,6 +204,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
   </div>
   <p id="diffDir" aria-live="polite">同じ累計支出です</p>
   <p class="sr-only" id="srStatus" aria-live="polite"></p>
+  </div>
 
   <details>
     <summary>差の理由を開く</summary>
@@ -258,10 +259,13 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
   }
   function man(yen){ return Math.round(yen / 10000).toLocaleString('ja-JP'); }
   function yen(n){ return n.toLocaleString('ja-JP'); }
-  function chapter(age){
+  function chapter(age, p){
     if(age < 40) return { n: '第1場面', t: '30歳。賃貸と持家、どちらで暮らす？', s: '二人の月額は同じ。ここから55年が始まる。' };
     if(age < 50) return { n: '第2場面', t: '40歳。10年分の支払いが積み上がった。', s: '毎月の支払いが、静かに積み上がる。' };
-    if(age < 65) return { n: '第3場面', t: '50歳。20年。差はまだ小さい。', s: '積み上がる速さは、まだ同じ。' };
+    if(age < 65){
+      if(p && monthlyRent(age, p) > p.rent) return { n: '第3場面', t: '50歳。20年。家賃の差が出てきた。', s: '家賃が上がって、積み上がる速さに差がついた。' };
+      return { n: '第3場面', t: '50歳。20年。差はまだ小さい。', s: '積み上がる速さは、まだ同じ。' };
+    }
     if(age === 65) return { n: '第4場面', t: '65歳。持ち家のローンが終わった。', s: '返済が消えて、持家の月額は所有費だけになる。' };
     if(age < 75) return { n: '第4場面', t: '完済後。持家は維持費だけが続く。', s: '終わったのはローン。維持費は続く。' };
     if(age < 85) return { n: '第5場面', t: '75歳。二人の差が広がっていく。', s: '月々の差が、そのまま累計の差になる。' };
@@ -310,7 +314,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
   function render(){
     var p = params();
     var c = cum(state.age, p);
-    var ch = chapter(state.age);
+    var ch = chapter(state.age, p);
     $('bigAge').textContent = state.age;
     $('chapterTitle').textContent = ch.t;
     $('chapterSub').textContent = ch.s;

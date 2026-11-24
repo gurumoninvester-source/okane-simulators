@@ -49,14 +49,14 @@ header.site{max-width:1000px;margin:auto;padding:14px 22px 0;display:flex;justif
     <div>月平均<strong id="monthly"></strong></div>
     <div>手取り率<strong id="rate"></strong></div>
   </div>
-  <table><caption>差し引かれる内訳（円・年額）</caption>
-  <thead><tr><th scope="col">項目</th><th scope="col">金額</th></tr></thead><tbody id="rows"></tbody></table>
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table><caption>差し引かれる内訳（円・年額）</caption>
+  <thead><tr><th scope="col">項目</th><th scope="col">金額</th></tr></thead><tbody id="rows"></tbody></table></div>
 </section>
 <section class="paper">
   <h2>年収を変えると（同じ年齢のまま）</h2>
-  <table><caption>年収別の手取り比較（円）</caption>
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table><caption>年収別の手取り比較（円）</caption>
   <thead><tr><th scope="col">年収</th><th scope="col">社会保険料</th><th scope="col">所得税</th><th scope="col">住民税</th><th scope="col">手取り</th></tr></thead>
-  <tbody id="cmp"></tbody></table>
+  <tbody id="cmp"></tbody></table></div>
   <p>住民税は「前年の年収」にかかる税金です。上の住民税は、前年も同じ年収だった場合の金額です。住民税は翌年の6月から翌々年の5月にかけて給与から引かれます。転職や退職で前年の年収が違うと、その年の住民税はここから変わります（前年に課税される所得がなかった人は、働き始めた最初の年は住民税がかかりません）。</p>
 </section>
 <section class="paper">

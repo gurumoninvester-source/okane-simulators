@@ -52,6 +52,7 @@ header.site{max-width:1000px;margin:auto;padding:14px 22px 0;display:flex;justif
   </div>
   <table><caption>仕事ごとの内訳（年額・円）</caption>
   <thead><tr><th scope="col">仕事</th><th scope="col">時間/日</th><th scope="col">換算額</th></tr></thead><tbody id="rows"></tbody></table>
+  <div id="taskBars" role="img" aria-label="仕事ごとの年間換算額のバー" style="margin:10px 0"></div>
 </section>
 <section class="paper">
   <h2>時給の置き方で、ここまで変わる</h2>
@@ -107,6 +108,8 @@ function draw() {
   el('annual').textContent = yen(v.annualAmount);
   el('monthly').textContent = yen(v.monthlyAmount);
   el('rows').innerHTML = v.perTask.map((t) => '<tr><th scope="row">' + t.label + '</th><td>' + t.hours + '時間</td><td>' + t.amount.toLocaleString('ja-JP') + '</td></tr>').join('');
+  const maxAmt = Math.max(1, ...v.perTask.map((t) => t.amount));
+  el('taskBars').innerHTML = v.perTask.map((t) => '<div style="display:flex;align-items:center;gap:8px;margin:5px 0"><span style="flex:0 0 6em;font-size:.9rem">' + t.label + '</span><span style="flex:1;background:#E7E1D2;border-radius:6px;height:16px;display:block"><span style="display:block;height:16px;border-radius:6px;background:#315F5B;width:' + Math.round(t.amount / maxAmt * 100) + '%"></span></span><span style="flex:0 0 7em;text-align:right;font-size:.9rem">' + t.amount.toLocaleString('ja-JP') + '円</span></div>').join('');
   el('sens').innerHTML = sensitivity({ hoursPerDay: h, daysPerYear: days, wages: [1226, 1500, 2000, 2500, 3000] })
     .map((s) => '<tr><th scope="row">' + s.wage.toLocaleString('ja-JP') + '円</th><td>' + s.annualHours.toLocaleString('ja-JP') + '時間</td><td>' + s.annualAmount.toLocaleString('ja-JP') + '</td></tr>').join('');
 }

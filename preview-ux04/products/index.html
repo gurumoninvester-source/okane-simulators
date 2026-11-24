@@ -53,9 +53,9 @@
   <section class="paper" id="review-sample">
     <h2>AI月末レビュー 匿名サンプル（架空の数字）</h2>
     <p>上のLiteサンプルの最新月（2026年10月）をAIに点検させた想定例です。数字はすべて架空のサンプルです。</p>
-    <table><caption>入力の要約（架空）</caption>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table><caption>入力の要約（架空）</caption>
     <thead><tr><th scope="col">項目</th><th scope="col">前月</th><th scope="col">最新月</th></tr></thead>
-    <tbody><tr><th scope="row">純資産</th><td>11,719,669円</td><td>11,953,613円</td></tr></tbody></table>
+    <tbody><tr><th scope="row">純資産</th><td>11,719,669円</td><td>11,953,613円</td></tr></tbody></table></div>
     <p>AIの最初の回答：「純資産は前月比で<strong>+3.9%</strong>増えました」</p>
     <p>チェックリストの検算：(11,953,613 − 11,719,669) ÷ 11,719,669 = <strong>+2.0%</strong>。AIの+3.9%は誤りと分かるので、採用しません。月末レビューは、AIの答えをそのまま信じず、検算式で確かめるまでが1セットです。</p>
   </section>
@@ -69,9 +69,9 @@
     </div>
     <svg id="sChart" viewBox="0 0 640 260" role="img" aria-label="純資産の推移（架空のサンプル）" style="width:100%;height:auto"></svg>
     <p>純資産＝現金・預金＋投資信託＋株式＋その他−負債。線は右肩上がりでも、途中で下がる月があります（14か月目は車検と家電の買い替えを想定した架空のイベント）。</p>
-    <table><caption>月ごとの記録（架空のサンプル・円）</caption>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table><caption>月ごとの記録（架空のサンプル・円）</caption>
     <thead><tr><th scope="col">年月</th><th scope="col">現金・預金</th><th scope="col">投資信託</th><th scope="col">株式</th><th scope="col">その他</th><th scope="col">負債</th><th scope="col">純資産</th></tr></thead>
-    <tbody id="sRows"></tbody></table>
+    <tbody id="sRows"></tbody></table></div>
     <p><button id="sCsv" type="button">このサンプルをCSVで保存する</button></p>
   </section>
   <script type="module">
