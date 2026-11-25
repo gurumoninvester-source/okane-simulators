@@ -1,0 +1,9 @@
+# Codex review #20 — stories layout final adjustment (candidate/ux-v05)
+
+Scope is narrow by owner instruction: the calculation model and the card design are frozen; only the stories page information layout changed in the commits after 52e96fe (the layout commit and the review-19 commit). Write CODEX_REVIEW20.md with PASS/FAIL + evidence per check. Do not edit any other file.
+
+1. Frozen areas: assets/ux05.css and assets/ux05.js unchanged since review #18; index.html and tools/index.html unchanged since 52e96fe; on stories/index.html the model functions params(), cum(), chapter(), monthlyRent() and OWN_COST are byte-identical to candidate/ux-v04, and renderTimeline is still fed 56 cum() rows. The miles table, why texts, premises, sources and related links are unchanged.
+2. Layout requirements (from the owner, modeled on the pack reference): (a) age and scene title form one stacked heading (no side-by-side chapter block; the old .chapter/.big-age markup is gone) with the explanation as the chapter sub-sentence only; (b) vertical order inside the stage is: top row (scene number, expand), title, explanation, timeline, results, diff, monthly, playback controls, presets, collapsed details; (c) chapter jumps and the custom inputs live inside a <details> that is closed by default, and choosing the custom preset opens it; (d) stage buttons use a 1px border (page-level CSS after ux05.css, plus the expand button inline style) with no box-shadow on preset buttons; (e) all previous features still work: play/stop with holds, slider, ±1, presets, custom sliders, expand with Escape close and playback stop, srStatus.
+3. Report any requirement that is only partially met, with the exact element or rule.
+
+Chromium cannot start in your sandbox (known); live rendering was verified by the main agent with CDP (14 layout checks, all PASS) and is out of scope.

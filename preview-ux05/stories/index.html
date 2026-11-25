@@ -29,11 +29,6 @@ summary{cursor:pointer;font-weight:700;padding:6px 0}
 @media (max-width:640px){.agebox{font-size:1.25rem}}
 button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
 
-.chapter{display:flex;gap:14px;align-items:flex-start;margin:6px 0 2px}
-.big-age{font-size:3.2rem;font-weight:700;line-height:1;color:var(--green);white-space:nowrap}
-.big-age small{font-size:1.4rem}
-.chapter h2{font-size:1.25rem;margin:2px 0 4px;font-family:"Klee One",cursive}
-.chapter p{margin:0;font-size:.92rem}
 .scene-no{font-size:.8rem;letter-spacing:.08em;text-align:right;opacity:.75;white-space:nowrap}
 .chapters{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
 .chapters button{font-family:inherit;border:2px solid var(--ink);background:#fff;border-radius:10px;padding:8px 10px;cursor:pointer;text-align:center;line-height:1.25}
@@ -43,6 +38,20 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 <link rel="stylesheet" href="../assets/ux05.css">
+<style>
+.stage-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.stage-title{font-family:"Klee One",cursive;font-size:1.45rem;line-height:1.3;margin:4px 0 2px;color:var(--ink)}
+.stage-title #bigAge{font-size:2.1rem;font-weight:700;color:var(--green)}
+.stage-explain{font-size:.95rem;margin:0 0 6px}
+.ux05-stage .controls button,.ux05-stage .chapters button{border:1px solid #D8D4C9;background:#FAF8F2;box-shadow:none}
+.ux05-stage .controls button[aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--green)}
+.ux05-stage .chapters button[aria-current="true"]{background:#EFEAD9;border-color:var(--green)}
+.ux05-stage .ux05-controls button{border:1px solid #D8D4C9;background:#FAF8F2}
+.ux05-stage details{margin:10px 0 2px}
+.ux05-stage .controls[aria-label="家賃の条件"]{gap:6px;margin:8px 0 0}
+.ux05-stage .controls[aria-label="家賃の条件"] button{padding:6px 10px;font-size:.9rem}
+</style>
+
 <meta property="og:title" content="住宅の物語 ｜ お金を考えすぎる会社員">
 <meta property="og:description" content="30歳から85歳まで、賃貸と持家の累計現金支出を歩いて比べる体験ページ。年齢を動かして、差が生まれる理由まで見られます。">
 <meta property="og:type" content="website">
@@ -69,33 +78,18 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
   <p>この物語の動画版（Instagram・公開中）：<a href="https://www.instagram.com/reel/Df5xKEXDuIB/" rel="noopener">住宅編のリールを見る</a></p>
 
 <section class="ux05-stage" id="storyStage" aria-label="二人の人生の舞台">
-  <div class="controls" role="group" aria-label="家賃の条件">
-    <span>条件：</span>
-    <button type="button" id="presetFixed" aria-pressed="true">家賃はずっと同じ</button>
-    <button type="button" id="presetRise" aria-pressed="false">家賃が10年ごとに+5,000円</button>
-    <button type="button" id="presetCustom" aria-pressed="false">自分で設定（仮定）</button>
-  </div>
-  <div class="custombox" id="customBox">
-    <label>家賃（月額）<input type="range" id="rentRange" min="50000" max="120000" step="5000" value="75000" aria-label="家賃の月額"><output id="rentOut">75,000円</output></label>
-    <label>10年ごとの上昇<input type="range" id="riseRange" min="0" max="10000" step="1000" value="0" aria-label="10年ごとの家賃上昇額"><output id="riseOut">0円</output></label>
-    <p class="note">自分で設定した場合は「仮定」のモデルです。持家側の月額（返済＋所有費）も同じ初月の金額にそろえて計算します。</p>
-  </div>
-    <div style="display:flex;justify-content:space-between;align-items:flex-start">
-      <div class="chapter">
-        <div class="big-age"><span id="bigAge">30</span><small>歳</small></div>
-        <div><h2 id="chapterTitle">30歳。賃貸と持家、どちらで暮らす？</h2><p id="chapterSub">二人の月額は同じ。ここから55年が始まる。</p></div>
-      </div>
-      <div>
-        <div class="scene-no" id="sceneNo">第1場面</div>
-        <button type="button" id="expandBtn" aria-expanded="false" style="min-height:44px;white-space:nowrap;font-family:inherit;border:2px solid var(--ink);background:#fff;border-radius:10px;padding:6px 12px;cursor:pointer;margin-top:6px">大きく表示</button>
-      </div>
+    <div class="stage-top">
+      <span class="scene-no" id="sceneNo">第1場面</span>
+      <button type="button" id="expandBtn" aria-expanded="false" style="min-height:44px;white-space:nowrap;font-family:inherit;border:1px solid #D8D4C9;background:#FAF8F2;border-radius:10px;padding:6px 12px;cursor:pointer">大きく表示</button>
     </div>
+    <h2 class="stage-title"><span id="bigAge">30</span>歳｜<span id="sceneLabel">住まいを選ぶ</span></h2>
+    <p id="chapterSub" class="stage-explain">二人の月額は同じ。ここから55年が始まる。</p>
     <svg id="ux05Timeline" class="ux05-timeline" role="img" aria-label="年齢ごとの累計現金支出"></svg>
     <div class="ux05-results">
       <div><small>賃貸の累計（その年齢まで）</small><strong id="gRent" class="ux05-rent">0万円</strong></div>
       <div><small>持家の累計（その年齢まで）</small><strong id="gOwn" class="ux05-own">0万円</strong></div>
     </div>
-    <p>差（賃貸 − 持家）：<strong id="gDiff">0万円</strong></p>
+    <p>差（賃貸 − 持家）：<strong id="gDiff">0万円</strong> <span id="diffDir" aria-live="polite">同じ累計支出です</span></p>
     <p>その年齢からの月の支出：賃貸 <span id="mRent">75,000円</span>（家賃）／持家 <span id="mOwn">75,000円</span>（<span id="mOwnSub">返済＋所有費</span>）</p>
     <div class="ux05-controls">
       <button type="button" id="playBtn">▶ 歩く</button>
@@ -104,7 +98,15 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
       <button type="button" id="plusBtn" aria-label="1歳進む">＋1歳</button>
       <span class="agebox"><span id="ageNow">30</span>歳</span>
     </div>
-    <div class="chapters" role="group" aria-label="場面ジャンプ">
+    <div class="controls" role="group" aria-label="家賃の条件">
+    <span>条件：</span>
+    <button type="button" id="presetFixed" aria-pressed="true">家賃はずっと同じ</button>
+    <button type="button" id="presetRise" aria-pressed="false">家賃が10年ごとに+5,000円</button>
+    <button type="button" id="presetCustom" aria-pressed="false">自分で設定（仮定）</button>
+  </div>
+    <details id="moreBox">
+      <summary>場面ジャンプ・詳しい条件</summary>
+      <div class="chapters" role="group" aria-label="場面ジャンプ">
       <button type="button" data-ch="30"><b>30歳</b><span>選択</span></button>
       <button type="button" data-ch="40"><b>40歳</b><span>10年後</span></button>
       <button type="button" data-ch="50"><b>50歳</b><span>20年後</span></button>
@@ -112,7 +114,13 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
       <button type="button" data-ch="75"><b>75歳</b><span>完済後</span></button>
       <button type="button" data-ch="85"><b>85歳</b><span>振り返り</span></button>
     </div>
-    <p id="diffDir" aria-live="polite">同じ累計支出です</p>
+      <div class="custombox" id="customBox">
+    <label>家賃（月額）<input type="range" id="rentRange" min="50000" max="120000" step="5000" value="75000" aria-label="家賃の月額"><output id="rentOut">75,000円</output></label>
+    <label>10年ごとの上昇<input type="range" id="riseRange" min="0" max="10000" step="1000" value="0" aria-label="10年ごとの家賃上昇額"><output id="riseOut">0円</output></label>
+    <p class="note">自分で設定した場合は「仮定」のモデルです。持家側の月額（返済＋所有費）も同じ初月の金額にそろえて計算します。</p>
+  </div>
+
+    </details>
     <p class="sr-only" id="srStatus" aria-live="polite"></p>
   </section>
 
@@ -195,7 +203,8 @@ import { renderTimeline } from '../assets/ux05.js';
     var c = cum(state.age, p);
     var ch = chapter(state.age, p);
     $('bigAge').textContent = state.age;
-    $('chapterTitle').textContent = ch.t;
+    var sceneLabel = state.age < 40 ? '住まいを選ぶ' : state.age < 50 ? '支払いが積み上がる' : state.age < 65 ? (monthlyRent(state.age, p) > p.rent ? '家賃の差が出てきた' : '差はまだ小さい') : state.age === 65 ? 'ローン完済' : state.age < 75 ? '完済後' : state.age < 85 ? '差が広がる' : '55年の振り返り';
+    $('sceneLabel').textContent = sceneLabel;
     $('chapterSub').textContent = ch.s;
     $('sceneNo').textContent = ch.n;
     $('mRent').textContent = yen(monthlyRent(state.age, p)) + '円';
@@ -266,6 +275,7 @@ import { renderTimeline } from '../assets/ux05.js';
       $(pair[1]).setAttribute('aria-pressed', String(pair[0] === name));
     });
     $('customBox').classList.toggle('open', name === 'custom');
+    if(name === 'custom'){ $('moreBox').open = true; }
     render();
   }
   $('playBtn').addEventListener('click', play);
@@ -297,6 +307,6 @@ import { renderTimeline } from '../assets/ux05.js';
   render();
 })();
 </script>
-<div style="position:fixed;right:8px;bottom:8px;z-index:99999;background:#232624;color:#F3F0E8;font-size:11px;padding:4px 9px;border-radius:6px;font-family:sans-serif">UX05 preview · build 52e96fe</div>
+<div style="position:fixed;right:8px;bottom:8px;z-index:99999;background:#232624;color:#F3F0E8;font-size:11px;padding:4px 9px;border-radius:6px;font-family:sans-serif">UX05 preview · build b05daa8</div>
 </body>
 </html>
